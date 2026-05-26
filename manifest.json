@@ -1,0 +1,25 @@
+{
+  "name": "Pokémon Card Grader",
+  "short_name": "Card Grader",
+  "description": "AI-powered Pokémon card pre-grading for PSA submissions",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "start_url": ".",
+  "scope": ".",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjM2IiBmaWxsPSIjMGEwYTBmIi8+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iNzIiIHN0cm9rZT0iIzFlMWUyYSIgc3Ryb2tlLXdpZHRoPSIxMCIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yNCw5NiBBNzIsNzIgMCAwLDEgMTY4LDk2IFoiIGZpbGw9IiNjMDM5MmIiLz48cGF0aCBkPSJNMjQsOTYgQTcyLDcyIDAgMCwwIDE2OCw5NiBaIiBmaWxsPSIjZWNmMGYxIi8+PHJlY3QgeD0iMjQiIHk9IjkwIiB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjEyIiBmaWxsPSIjMGEwYTBmIi8+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iMjAiIGZpbGw9IiMwYTBhMGYiIHN0cm9rZT0iIzJkMmQzZiIgc3Ryb2tlLXdpZHRoPSI4Ii8+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iOSIgZmlsbD0iI2VjZjBmMSIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMGEwYTBmIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxOTIiIHN0cm9rZT0iIzFlMWUyYSIgc3Ryb2tlLXdpZHRoPSIyNCIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik02NCwyNTYgQTE5MiwxOTIgMCAwLDEgNDQ4LDI1NiBaIiBmaWxsPSIjYzAzOTJiIi8+PHBhdGggZD0iTTY0LDI1NiBBMTkyLDE5MiAwIDAsMCA0NDgsMjU2IFoiIGZpbGw9IiNlY2YwZjEiLz48cmVjdCB4PSI2NCIgeT0iMjQ0IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjI0IiBmaWxsPSIjMGEwYTBmIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSI1MiIgZmlsbD0iIzBhMGEwZiIgc3Ryb2tlPSIjMmQyZDNmIiBzdHJva2Utd2lkdGg9IjIwIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyMiIgZmlsbD0iI2VjZjBmMSIvPjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
