@@ -29,13 +29,8 @@
   <title>Pokémon Card Grader</title>
 
   <style>
-    /* ── Reset ────────────────────────────── */
-    *, *::before, *::after {
-      box-sizing: border-box; margin: 0; padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    /* ── Tokens ───────────────────────────── */
     :root {
       --bg:      #0a0a0f;
       --surf:    #13131a;
@@ -61,192 +56,98 @@
 
     html, body {
       width: 100%; height: 100%;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-      touch-action: manipulation;
-      overscroll-behavior: none;
+      overflow: hidden; touch-action: manipulation; overscroll-behavior: none;
     }
 
-    .screen {
-      position: fixed; inset: 0;
-      display: none; flex-direction: column;
-      background: var(--bg);
-    }
+    .screen { position: fixed; inset: 0; display: none; flex-direction: column; background: var(--bg); }
     .screen.active { display: flex; }
 
-    /* ════════════════════════════════════════
-       S0 — WELCOME
-    ════════════════════════════════════════ */
+    /* ── S0: Welcome ── */
     #s0 {
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       padding: calc(var(--safe-t) + 20px) 28px calc(var(--safe-b) + 28px);
-      gap: 32px;
-      overflow-y: auto;
+      gap: 32px; overflow-y: auto;
     }
-
-    .welcome-hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      text-align: center;
-    }
-
+    .welcome-hero { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
     .app-icon {
-      width: 88px; height: 88px;
-      border-radius: 24px;
-      background: var(--surf2);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 46px;
+      width: 88px; height: 88px; border-radius: 24px;
+      background: var(--surf2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 46px;
       box-shadow: 0 8px 36px rgba(124,58,237,0.25);
     }
-
     .app-name {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--text) 30%, var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
-    .app-tagline {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
+    .app-tagline { font-size: 15px; color: var(--muted); line-height: 1.5; }
     .offline-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16,185,129,0.12);
-      border: 1px solid rgba(16,185,129,0.3);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--success);
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; color: var(--success);
     }
-
     .steps-row {
-      display: flex;
-      gap: 0;
-      width: 100%;
-      max-width: 340px;
-      background: var(--surf);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
+      display: flex; width: 100%; max-width: 340px;
+      background: var(--surf); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
     }
-
     .step-cell {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 8px;
-      gap: 8px;
-      position: relative;
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 16px 8px; gap: 8px; position: relative;
     }
     .step-cell + .step-cell::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 16px; bottom: 16px;
-      width: 1px;
-      background: var(--border);
+      content: ''; position: absolute; left: 0; top: 16px; bottom: 16px;
+      width: 1px; background: var(--border);
     }
-
     .step-icon { font-size: 26px; }
-    .step-label {
-      font-size: 11px;
-      color: var(--muted);
-      text-align: center;
-      font-weight: 500;
-    }
-
+    .step-label { font-size: 11px; color: var(--muted); text-align: center; font-weight: 500; }
     .btn-start {
-      width: 100%;
-      max-width: 340px;
-      padding: 18px;
-      background: var(--accent);
-      border: none;
-      border-radius: 18px;
-      color: white;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 24px rgba(124,58,237,0.4);
-      transition: transform 0.1s;
+      width: 100%; max-width: 340px; padding: 18px;
+      background: var(--accent); border: none; border-radius: 18px;
+      color: white; font-size: 17px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(124,58,237,0.4); transition: transform 0.1s;
     }
     .btn-start:active { transform: scale(0.97); }
 
-    /* ════════════════════════════════════════
-       S1 & S2 — CAMERA
-    ════════════════════════════════════════ */
+    /* ── Camera screens ── */
     .camera-screen { overflow: hidden; }
-
-    .cam-video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
+    .cam-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .cam-hdr {
-      position: absolute;
-      top: var(--safe-t); left: 0; right: 0;
-      z-index: 20;
-      display: flex; align-items: center; justify-content: center;
-      padding: 14px 16px;
+      position: absolute; top: var(--safe-t); left: 0; right: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: center; padding: 14px 16px;
     }
-
     .cam-back {
       position: absolute; left: 16px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: white; width: 38px; height: 38px;
-      border-radius: 50%; font-size: 22px; cursor: pointer;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15); color: white;
+      width: 38px; height: 38px; border-radius: 50%; font-size: 22px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
-
     .cam-title {
-      font-size: 15px; font-weight: 700; color: white;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      padding: 6px 16px; border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 15px; font-weight: 700; color: white; text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
     }
-
     .cam-step {
       position: absolute; right: 16px;
       background: rgba(124,58,237,0.7); color: white;
-      font-size: 12px; font-weight: 700;
-      padding: 5px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 20px;
     }
 
+    /* Card guide overlay */
     .cam-overlay {
-      position: absolute; inset: 0;
-      z-index: 5;
+      position: absolute; inset: 0; z-index: 5;
       display: flex; align-items: center; justify-content: center;
-      padding-bottom: 80px;
+      padding-bottom: 80px;          /* matches footer height — keeps guide centred above shutter */
     }
-
-    /* Card guide: 5:7 ratio, 252×352px */
+    /* 2.5"×3.5" = 5:7 ratio → 252×352px guide */
     .card-guide {
-      position: relative;
-      width: 252px; height: 352px;
-      border: 2px dashed rgba(255,255,255,0.75);
-      border-radius: 10px;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.52);
+      position: relative; width: 252px; height: 352px;
+      border: 2px dashed rgba(255,255,255,0.8); border-radius: 10px;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.52);   /* darkened surround */
     }
     .cg-c { position: absolute; width: 22px; height: 22px; border-color: #fff; border-style: solid; }
     .cg-tl { top:-2px; left:-2px;  border-width: 3px 0 0 3px; border-radius: 5px 0 0 0; }
@@ -257,21 +158,17 @@
       position: absolute; bottom: -34px;
       left: 50%; transform: translateX(-50%);
       white-space: nowrap; font-size: 12px;
-      color: rgba(255,255,255,0.8);
-      text-shadow: 0 1px 4px rgba(0,0,0,1);
+      color: rgba(255,255,255,0.85); text-shadow: 0 1px 4px rgba(0,0,0,1);
     }
 
     .cam-footer {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      z-index: 10;
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
       padding: 20px 40px calc(var(--safe-b) + 20px);
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(transparent, rgba(0,0,0,0.65));
     }
-
     .shutter {
-      width: 76px; height: 76px; border-radius: 50%;
-      background: white; border: none;
+      width: 76px; height: 76px; border-radius: 50%; background: white; border: none;
       outline: 4px solid rgba(255,255,255,0.95); outline-offset: 4px;
       box-shadow: 0 0 0 7px rgba(255,255,255,0.2);
       cursor: pointer; transition: transform 0.1s;
@@ -279,217 +176,119 @@
     .shutter:active { transform: scale(0.88); }
 
     .front-thumb {
-      position: absolute;
-      bottom: calc(var(--safe-b) + 116px); left: 20px;
-      z-index: 15;
-      width: 50px; height: 70px; border-radius: 5px;
-      overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.7);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      position: absolute; bottom: calc(var(--safe-b) + 116px); left: 20px; z-index: 15;
+      width: 50px; height: 70px; border-radius: 5px; overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     }
     .front-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .front-thumb-lbl {
-      position: absolute; bottom: calc(var(--safe-b) + 110px); left: 18px;
-      z-index: 15; font-size: 10px; color: rgba(255,255,255,0.75);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+      position: absolute; bottom: calc(var(--safe-b) + 110px); left: 18px; z-index: 15;
+      font-size: 10px; color: rgba(255,255,255,0.75); text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
 
     /* Preview layer */
-    .cam-preview {
-      display: none; position: absolute; inset: 0;
-      z-index: 30; flex-direction: column; background: var(--bg);
-    }
+    .cam-preview { display: none; position: absolute; inset: 0; z-index: 30; flex-direction: column; background: var(--bg); }
     .cam-preview.show { display: flex; }
     .preview-hdr {
       padding: calc(var(--safe-t) + 16px) 20px 14px;
       font-size: 17px; font-weight: 700; text-align: center; flex-shrink: 0;
     }
-    .preview-img-wrap {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      padding: 12px 20px; min-height: 0;
-    }
-    .preview-img {
-      max-width: 100%; max-height: 100%;
-      border-radius: 14px; object-fit: contain;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    }
-    .preview-actions {
-      display: flex; gap: 12px;
-      padding: 16px 20px calc(var(--safe-b) + 20px); flex-shrink: 0;
-    }
-    .btn-retake {
-      flex: 1; padding: 16px;
-      background: var(--surf2); border: 1px solid var(--border);
-      border-radius: 16px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer;
-    }
-    .btn-use {
-      flex: 2; padding: 16px;
-      background: var(--accent); border: none;
-      border-radius: 16px; color: white; font-size: 15px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(124,58,237,0.35);
-    }
+    .preview-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px 20px; min-height: 0; }
+    .preview-img { max-width: 100%; max-height: 100%; border-radius: 14px; object-fit: contain; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+    .preview-actions { display: flex; gap: 12px; padding: 16px 20px calc(var(--safe-b) + 20px); flex-shrink: 0; }
+    .btn-retake { flex: 1; padding: 16px; background: var(--surf2); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn-use    { flex: 2; padding: 16px; background: var(--accent); border: none; border-radius: 16px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(124,58,237,0.35); }
 
-    /* ════════════════════════════════════════
-       S3 — GRADE THIS CARD
-    ════════════════════════════════════════ */
-    #s3 {
-      flex-direction: column;
-      overflow: hidden;
+    /* ── S3: Analyzing overlay ── */
+    #s3-analyzing {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
     }
+    #s3-analyzing.show { display: flex; }
+    .analyzing-ring {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--accent2); border-right-color: var(--accent2);
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .analyzing-txt { font-size: 16px; font-weight: 600; color: var(--text); }
+    .analyzing-sub { font-size: 12px; color: var(--muted); }
 
+    /* ── S3: Grade This Card ── */
+    #s3 { flex-direction: column; overflow: hidden; }
     .grade-hdr {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: calc(var(--safe-t) + 10px) 16px 10px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .grade-hdr-left {
       display: flex; align-items: center; gap: 10px;
+      padding: calc(var(--safe-t) + 10px) 16px 10px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
+    .btn-ghost { background: none; border: none; color: var(--accent2); font-size: 15px; font-weight: 600; cursor: pointer; padding: 4px 0; }
+    .grade-hdr h2 { font-size: 17px; font-weight: 700; }
+    .grade-hdr-right { margin-left: auto; font-size: 11px; color: var(--muted); font-style: italic; }
 
-    .btn-ghost {
-      background: none; border: none;
-      color: var(--accent2); font-size: 15px; font-weight: 600;
-      cursor: pointer; padding: 4px 0;
-    }
-
-    .grade-hdr h2 {
-      font-size: 17px; font-weight: 700;
-    }
-
-    /* Card thumbnail strip */
-    .card-thumbs {
-      display: flex; gap: 10px;
-      padding: 12px 16px;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .card-thumbs { display: flex; gap: 10px; padding: 10px 14px; flex-shrink: 0; border-bottom: 1px solid var(--border); }
     .card-thumb {
-      flex: 1;
-      border-radius: 10px; overflow: hidden;
-      background: var(--surf);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      position: relative;
+      flex: 1; border-radius: 10px; overflow: hidden; background: var(--surf);
+      border: 1px solid var(--border); cursor: pointer;
+      transition: border-color 0.15s; position: relative;
     }
-    .card-thumb:active { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(167,139,250,0.3); }
+    .card-thumb:active { border-color: var(--accent2); }
+    .card-thumb img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
+    .card-thumb-lbl { padding: 5px 8px; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center; }
+    .zoom-icon { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border-radius: 5px; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
-    .card-thumb img {
-      width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block;
-    }
-
-    .card-thumb-lbl {
-      padding: 5px 8px;
-      font-size: 10px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
+    /* Estimate banner */
+    .estimate-banner {
+      margin: 0 14px;
+      padding: 8px 12px;
+      background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 10px; font-size: 11px; color: var(--accent2); line-height: 1.4; flex-shrink: 0;
     }
 
-    .zoom-icon {
-      position: absolute; top: 5px; right: 5px;
-      width: 20px; height: 20px; border-radius: 4px;
-      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-    }
+    .criteria-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px 14px 4px; display: flex; flex-direction: column; gap: 10px; }
 
-    /* Scrollable criteria area */
-    .criteria-scroll {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 12px 14px 4px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-
-    .crit-card {
-      background: var(--surf);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-
-    .crit-top {
-      display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
-    }
-
+    .crit-card { background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .crit-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
     .crit-name-wrap { flex: 1; }
+    .crit-name { font-size: 14px; font-weight: 700; }
+    .crit-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .crit-score-badge { font-size: 24px; font-weight: 800; min-width: 32px; text-align: right; transition: color 0.2s; }
 
-    .crit-name {
-      font-size: 14px; font-weight: 700;
-    }
-
-    .crit-sub {
-      font-size: 11px; color: var(--muted); margin-top: 1px;
-    }
-
-    .crit-score-badge {
-      font-size: 24px; font-weight: 800;
-      min-width: 32px; text-align: right;
-      transition: color 0.2s;
-    }
-
-    /* Range slider */
     input[type=range].crit-slider {
       -webkit-appearance: none; appearance: none;
-      width: 100%; height: 6px; border-radius: 3px;
-      background: var(--dim);
+      width: 100%; height: 6px; border-radius: 3px; background: var(--dim);
       outline: none; cursor: pointer;
-      transition: background 0.15s;
     }
     input[type=range].crit-slider::-webkit-slider-thumb {
       -webkit-appearance: none; appearance: none;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: white; cursor: pointer;
-      border: 3px solid var(--bg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      transition: transform 0.1s;
+      width: 28px; height: 28px; border-radius: 50%; background: white; cursor: pointer;
+      border: 3px solid var(--bg); box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: transform 0.1s;
     }
-    input[type=range].crit-slider:active::-webkit-slider-thumb {
-      transform: scale(1.2);
-    }
+    input[type=range].crit-slider:active::-webkit-slider-thumb { transform: scale(1.2); }
 
-    /* Tick marks beneath slider */
-    .slider-ticks {
-      display: flex; justify-content: space-between;
-      padding: 0 2px;
-      margin-top: -4px;
-    }
-    .tick {
-      font-size: 9px; color: var(--dim); font-weight: 600;
-    }
+    .slider-ticks { display: flex; justify-content: space-between; padding: 0 2px; margin-top: -4px; }
+    .tick { font-size: 9px; color: var(--dim); font-weight: 600; }
 
-    .crit-desc {
-      font-size: 12px; color: var(--muted); line-height: 1.5;
-      min-height: 18px;
-      transition: color 0.2s;
-    }
+    .crit-desc { font-size: 12px; color: var(--muted); line-height: 1.5; min-height: 18px; }
+    .crit-psa-ref { font-size: 11px; color: var(--dim); line-height: 1.4; margin-top: -4px; font-style: italic; }
 
-    /* ── Grade footer ── */
+    /* PSA centering reference table */
+    .centering-ref {
+      background: var(--surf2); border-radius: 8px; padding: 8px 10px;
+      font-size: 10px; color: var(--muted); line-height: 1.8;
+      font-family: 'SF Mono', monospace;
+    }
+    .centering-ref strong { color: var(--text); font-weight: 600; }
+
     .grade-footer {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       padding: 12px 14px calc(var(--safe-b) + 12px);
-      border-top: 1px solid var(--border);
-      background: var(--bg);
-      flex-shrink: 0;
+      border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0;
     }
-
-    .live-grade-wrap {
-      display: flex; flex-direction: column; gap: 2px;
-    }
+    .live-grade-wrap { display: flex; flex-direction: column; gap: 2px; }
     .live-grade-lbl { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    .live-psa-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px;
-      border-radius: 10px; border: 2px solid;
-      font-weight: 800;
-    }
+    .live-psa-badge { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 10px; border: 2px solid; font-weight: 800; }
     .live-psa-badge .lbl { font-size: 9px; letter-spacing: 1.5px; opacity: 0.85; }
     .live-psa-badge .num { font-size: 22px; line-height: 1; }
 
@@ -498,64 +297,25 @@
     .grade-8  { color: var(--blue);   border-color: var(--blue);   background: rgba(59,130,246,0.1); }
     .grade-lo { color: var(--grey);   border-color: var(--grey);   background: rgba(107,114,128,0.1); }
 
-    .btn-results {
-      flex: 1; padding: 16px;
-      background: var(--accent); border: none;
-      border-radius: 16px; color: white; font-size: 15px; font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(124,58,237,0.35);
-      transition: transform 0.1s;
-    }
+    .btn-results { flex: 1; padding: 16px; background: var(--accent); border: none; border-radius: 16px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(124,58,237,0.35); transition: transform 0.1s; }
     .btn-results:active { transform: scale(0.97); }
 
-    /* ════════════════════════════════════════
-       S4 — RESULTS
-    ════════════════════════════════════════ */
-    #s4 {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-top: var(--safe-t);
-      padding-bottom: calc(var(--safe-b) + 24px);
-    }
-
-    .results-hdr {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border); flex-shrink: 0;
-    }
+    /* ── S4: Results ── */
+    #s4 { overflow-y: auto; -webkit-overflow-scrolling: touch; padding-top: var(--safe-t); padding-bottom: calc(var(--safe-b) + 24px); }
+    .results-hdr { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
     .results-hdr-text { flex: 1; }
     .results-hdr-text h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
-    .results-hdr-text p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-    .psa-badge-lg {
-      width: 72px; height: 72px; border-radius: 16px; border: 2.5px solid;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    .results-hdr-text p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .psa-badge-lg { width: 72px; height: 72px; border-radius: 16px; border: 2.5px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
     .psa-badge-lg .psa-lbl { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; opacity: 0.85; }
     .psa-badge-lg .psa-num { font-size: 30px; font-weight: 900; line-height: 1.1; }
-
-    .thumbs-row {
-      display: flex; gap: 12px; padding: 14px 18px;
-    }
-    .thumb-wrap {
-      flex: 1; border-radius: 12px; overflow: hidden;
-      background: var(--surf); border: 1px solid var(--border);
-    }
+    .thumbs-row { display: flex; gap: 12px; padding: 14px 18px; }
+    .thumb-wrap { flex: 1; border-radius: 12px; overflow: hidden; background: var(--surf); border: 1px solid var(--border); }
     .thumb-wrap img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
-    .thumb-lbl {
-      padding: 7px 10px; font-size: 11px; font-weight: 600;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
-    }
-
+    .thumb-lbl { padding: 7px 10px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center; }
     .scores-wrap { padding: 0 18px; display: flex; flex-direction: column; gap: 10px; }
     .section-lbl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; padding-top: 6px; }
-
-    .score-card {
-      background: var(--surf); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px 16px;
-      display: flex; flex-direction: column; gap: 9px;
-    }
+    .score-card { background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 9px; }
     .sc-top { display: flex; align-items: center; gap: 10px; }
     .sc-label { flex: 1; font-size: 14px; font-weight: 600; }
     .sc-weight { font-size: 11px; color: var(--muted); }
@@ -563,65 +323,25 @@
     .sc-bar-track { width: 100%; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
     .sc-bar-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
     .sc-notes { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-    .weighted-row {
-      background: var(--surf2); border: 1px solid var(--border2);
-      border-radius: 14px; padding: 14px 16px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
+    .weighted-row { background: var(--surf2); border: 1px solid var(--border2); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .wr-left { flex: 1; }
     .wr-label { font-size: 13px; font-weight: 600; }
     .wr-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .wr-score { font-size: 22px; font-weight: 800; color: var(--accent2); }
-
-    .btn-reset {
-      width: 100%; padding: 17px;
-      background: var(--surf2); border: 1px solid var(--border);
-      border-radius: 16px; color: var(--text); font-size: 16px; font-weight: 700;
-      cursor: pointer; transition: background 0.15s, transform 0.1s;
-    }
+    .btn-reset { width: 100%; padding: 17px; background: var(--surf2); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; }
     .btn-reset:active { background: var(--border); transform: scale(0.98); }
 
-    /* ════════════════════════════════════════
-       ZOOM OVERLAY
-    ════════════════════════════════════════ */
-    #zoomOverlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.95);
-      display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-    }
+    /* Zoom overlay */
+    #zoomOverlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; }
     #zoomOverlay.show { display: flex; }
-
-    .zoom-close {
-      position: absolute;
-      top: calc(var(--safe-t) + 12px); right: 18px;
-      width: 38px; height: 38px; border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; cursor: pointer;
-      color: white; z-index: 10;
-    }
-
-    .zoom-label {
-      position: absolute;
-      bottom: calc(var(--safe-b) + 20px);
-      font-size: 13px; color: rgba(255,255,255,0.5);
-    }
-
-    #zoomImg {
-      max-width: 94vw; max-height: 80vh;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
-    }
+    .zoom-close { position: absolute; top: calc(var(--safe-t) + 12px); right: 18px; width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; color: white; }
+    .zoom-label { position: absolute; bottom: calc(var(--safe-b) + 20px); font-size: 13px; color: rgba(255,255,255,0.5); }
+    #zoomImg { max-width: 94vw; max-height: 80vh; object-fit: contain; border-radius: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.8); }
   </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════
-     S0 — WELCOME
-════════════════════════════════════ -->
+<!-- S0: Welcome -->
 <div id="s0" class="screen active">
   <div class="welcome-hero">
     <div class="app-icon">🃏</div>
@@ -629,50 +349,32 @@
     <div class="app-tagline">Pre-grade your Pokémon cards before<br>sending them to PSA</div>
     <div class="offline-badge">✦ 100% offline · No account needed</div>
   </div>
-
   <div class="steps-row">
-    <div class="step-cell">
-      <div class="step-icon">📷</div>
-      <div class="step-label">Capture front &amp; back</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-icon">🔍</div>
-      <div class="step-label">Grade each criterion</div>
-    </div>
-    <div class="step-cell">
-      <div class="step-icon">🏆</div>
-      <div class="step-label">Get your PSA prediction</div>
-    </div>
+    <div class="step-cell"><div class="step-icon">📷</div><div class="step-label">Capture front &amp; back</div></div>
+    <div class="step-cell"><div class="step-icon">🔍</div><div class="step-label">Grade each criterion</div></div>
+    <div class="step-cell"><div class="step-icon">🏆</div><div class="step-label">Get PSA prediction</div></div>
   </div>
-
   <button class="btn-start" onclick="startApp()">Start Grading →</button>
 </div>
 
-
-<!-- ════════════════════════════════════
-     S1 — FRONT CAMERA
-════════════════════════════════════ -->
+<!-- S1: Front camera -->
 <div id="s1" class="screen camera-screen">
   <video id="vid1" class="cam-video" autoplay playsinline muted></video>
-
   <div class="cam-hdr">
     <button class="cam-back" onclick="s1Back()">‹</button>
     <span class="cam-title">Front of Card</span>
     <span class="cam-step">1 of 2</span>
   </div>
-
   <div class="cam-overlay">
-    <div class="card-guide">
+    <div class="card-guide" id="guide1">
       <div class="cg-c cg-tl"></div><div class="cg-c cg-tr"></div>
       <div class="cg-c cg-bl"></div><div class="cg-c cg-br"></div>
-      <span class="cg-hint">Align card within the frame</span>
+      <span class="cg-hint">Fill the guide with the card</span>
     </div>
   </div>
-
   <div class="cam-footer">
     <button class="shutter" onclick="doCapture(1)" aria-label="Capture front"></button>
   </div>
-
   <div class="cam-preview" id="prev1">
     <div class="preview-hdr">Use this photo?</div>
     <div class="preview-img-wrap"><img class="preview-img" id="prevImg1" src="" alt="Front preview"></div>
@@ -683,34 +385,26 @@
   </div>
 </div>
 
-
-<!-- ════════════════════════════════════
-     S2 — BACK CAMERA
-════════════════════════════════════ -->
+<!-- S2: Back camera -->
 <div id="s2" class="screen camera-screen">
   <video id="vid2" class="cam-video" autoplay playsinline muted></video>
-
   <div class="cam-hdr">
     <button class="cam-back" onclick="s2Back()">‹</button>
     <span class="cam-title">Back of Card</span>
     <span class="cam-step">2 of 2</span>
   </div>
-
   <div class="cam-overlay">
-    <div class="card-guide">
+    <div class="card-guide" id="guide2">
       <div class="cg-c cg-tl"></div><div class="cg-c cg-tr"></div>
       <div class="cg-c cg-bl"></div><div class="cg-c cg-br"></div>
-      <span class="cg-hint">Flip the card and align</span>
+      <span class="cg-hint">Flip the card — fill the guide</span>
     </div>
   </div>
-
   <div class="front-thumb" id="frontThumb"><img id="frontThumbImg" src="" alt="Front"></div>
   <div class="front-thumb-lbl">Front ✓</div>
-
   <div class="cam-footer">
     <button class="shutter" onclick="doCapture(2)" aria-label="Capture back"></button>
   </div>
-
   <div class="cam-preview" id="prev2">
     <div class="preview-hdr">Use this photo?</div>
     <div class="preview-img-wrap"><img class="preview-img" id="prevImg2" src="" alt="Back preview"></div>
@@ -721,69 +415,52 @@
   </div>
 </div>
 
-
-<!-- ════════════════════════════════════
-     S3 — GRADE THIS CARD
-════════════════════════════════════ -->
+<!-- S3: Grade This Card -->
 <div id="s3" class="screen">
   <div class="grade-hdr">
-    <div class="grade-hdr-left">
-      <button class="btn-ghost" onclick="s3Back()">‹ Back</button>
-      <h2>Grade This Card</h2>
-    </div>
+    <button class="btn-ghost" onclick="s3Back()">‹ Back</button>
+    <h2>Grade This Card</h2>
+    <span class="grade-hdr-right">Tap image to zoom</span>
   </div>
-
-  <!-- Card thumbnails -->
   <div class="card-thumbs">
     <div class="card-thumb" onclick="openZoom('front')">
-      <img id="grFront" src="" alt="Front">
-      <div class="card-thumb-lbl">Front</div>
+      <img id="grFront" src="" alt="Front"><div class="card-thumb-lbl">Front</div>
       <span class="zoom-icon">🔍</span>
     </div>
     <div class="card-thumb" onclick="openZoom('back')">
-      <img id="grBack" src="" alt="Back">
-      <div class="card-thumb-lbl">Back</div>
+      <img id="grBack" src="" alt="Back"><div class="card-thumb-lbl">Back</div>
       <span class="zoom-icon">🔍</span>
     </div>
   </div>
-
-  <!-- Criteria sliders — built by JS -->
+  <div class="estimate-banner" id="estimateBanner">
+    ✦ Scores are auto-estimated from image analysis — zoom in on each area and adjust to match what you see.
+  </div>
   <div class="criteria-scroll" id="criteriaScroll"></div>
-
-  <!-- Sticky footer -->
   <div class="grade-footer">
     <div class="live-grade-wrap">
       <div class="live-grade-lbl">Predicted</div>
       <div class="live-psa-badge grade-lo" id="liveBadge">
-        <span class="lbl">PSA</span>
-        <span class="num" id="liveNum">8</span>
+        <span class="lbl">PSA</span><span class="num" id="liveNum">—</span>
       </div>
     </div>
     <button class="btn-results" onclick="goToResults()">View Results →</button>
   </div>
 </div>
 
-
-<!-- ════════════════════════════════════
-     S4 — RESULTS
-════════════════════════════════════ -->
+<!-- S4: Results -->
 <div id="s4" class="screen">
   <div class="results-hdr">
     <div class="results-hdr-text">
-      <h2>Grading Results</h2>
-      <p>Predicted PSA grade</p>
+      <h2>Grading Results</h2><p>Predicted PSA grade</p>
     </div>
     <div class="psa-badge-lg" id="resBadge">
-      <span class="psa-lbl">PSA</span>
-      <span class="psa-num" id="resGradeNum">—</span>
+      <span class="psa-lbl">PSA</span><span class="psa-num" id="resGradeNum">—</span>
     </div>
   </div>
-
   <div class="thumbs-row">
     <div class="thumb-wrap"><img id="resFront" src="" alt="Front"><div class="thumb-lbl">Front</div></div>
     <div class="thumb-wrap"><img id="resBack"  src="" alt="Back"> <div class="thumb-lbl">Back</div></div>
   </div>
-
   <div class="scores-wrap">
     <div class="section-lbl">Score Breakdown</div>
     <div id="resScoreCards"></div>
@@ -798,130 +475,120 @@
   </div>
 </div>
 
+<!-- Analyzing overlay -->
+<div id="s3-analyzing">
+  <div class="analyzing-ring"></div>
+  <div class="analyzing-txt">Analyzing card…</div>
+  <div class="analyzing-sub">Cropping guide area &amp; estimating scores</div>
+</div>
 
-<!-- ════════════════════════════════════
-     ZOOM OVERLAY
-════════════════════════════════════ -->
+<!-- Zoom overlay -->
 <div id="zoomOverlay">
   <div class="zoom-close" onclick="closeZoom()">✕</div>
   <img id="zoomImg" src="" alt="">
   <div class="zoom-label" id="zoomLabel"></div>
 </div>
 
-
-<!-- ════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════ -->
 <script>
 'use strict';
 
-// ─── State ────────────────────────────────────────────
-let frontImg  = null;   // base64 data URLs
-let backImg   = null;
-let camStream = {};     // { 1: MediaStream, 2: MediaStream }
-let scores    = {};     // { centering_front: 8, centering_back: 8, corners: 8, edges: 8, surface: 8 }
+// ─── State ───────────────────────────────
+let frontImg = null, backImg = null;
+let camStream = {};
+let scores = {};
 
-// ─── Criteria definition ─────────────────────────────
+// ─── PSA criteria with official descriptions ──────────────────────
 const CRITERIA = [
   {
-    key: 'centering_front', label: 'Centering', sub: 'Front side',
-    weight: '12.5%', defaultVal: 8,
-    tip: 'Measure how even the borders are left↔right and top↔bottom.',
-    descs: [
-      null, // index 0 unused
-      'Severely off-center — major border on one side',
-      'Heavily off-center — extreme imbalance',
-      'Significantly off-center — obvious tilt',
-      'Noticeably off-center — clear imbalance',
-      'Slightly off-center — visible unevenness (≈75/25)',
-      'Fair centering (≈70/30)',
-      'Good centering (≈65/35)',
-      'Very good — slight difference only (≈60/40)',
-      'Excellent centering (≈57/43)',
-      'Gem Mint — near-perfect borders (≈55/45)',
+    key: 'centering_front', label: 'Centering', sub: 'Front side', weight: '12.5%',
+    tip: 'Measure how even the white inner borders are — left vs right, top vs bottom.',
+    descs: [null,
+      'PSA 1 — extreme miscut or severe misalignment',
+      'PSA 2 — 90/10 barely met; very wide border on one side',
+      'PSA 3 — ≈90/10; severe imbalance, borders very uneven',
+      'PSA 4/5 — ≈85/15; obvious off-center, clear border difference',
+      'PSA 5 — ≈85/15; clearly uneven borders, noticeable tilt',
+      'PSA 6 — ≈80/20; noticeable imbalance, one side clearly wider',
+      'PSA 7 — ≈70/30; small but visible border difference',
+      'PSA 8 — ≈65/35; very slight tilt detectable with scrutiny',
+      'PSA 9 — ≈60/40; borders nearly equal at a glance',
+      'PSA 10 — 55/45 or better; virtually perfect borders',
+    ],
+    ref: 'PSA 10: 55/45 front · PSA 9: 60/40 · PSA 8: 65/35 · PSA 7: 70/30 · PSA 6: 80/20'
+  },
+  {
+    key: 'centering_back', label: 'Centering', sub: 'Back side', weight: '12.5%',
+    tip: 'PSA grades front and back centering separately. The back has a wider tolerance.',
+    descs: [null,
+      'PSA 1 — extreme miscut or severe misalignment',
+      'PSA 2/3 — 90/10 barely met on reverse',
+      'PSA 3 — severe imbalance on back',
+      'PSA 4/5 — obvious off-center on back',
+      'PSA 5 — clearly uneven back borders',
+      'PSA 6 — noticeable off-center on back',
+      'PSA 7 — slight imbalance visible on reverse (≈90/10)',
+      'PSA 8 — slight difference on back (within 90/10 tolerance)',
+      'PSA 9 — very slight variance on reverse (90/10 or better)',
+      'PSA 10 — 75/25 or better on reverse; well-centred back',
+    ],
+    ref: 'PSA 10: 75/25 reverse · PSA 9–5: 90/10 reverse · Back tolerance is wider than front'
+  },
+  {
+    key: 'corners', label: 'Corners', sub: 'All 4 corners', weight: '30%',
+    tip: 'Zoom in and check all 4 corners under good light. Look for whitening (white fibres), fraying, rounding, or bending.',
+    descs: [null,
+      'PSA 1 — severely frayed, bent, or creased corners',
+      'PSA 2 — heavy rounding, fraying, and possible creasing at corners',
+      'PSA 3 — significant rounding on all corners; visible whitening throughout',
+      'PSA 4 — accelerated rounding with some corner discolouration',
+      'PSA 5 — corners show clear wear and slight fraying visible to the naked eye',
+      'PSA 6 — corners beginning to round with light whitening starting',
+      'PSA 7 — very slight fraying at some corners; near mint appearance overall',
+      'PSA 8 — slightest fraying at 1–2 corners only; near-mint at a glance',
+      'PSA 9 — near perfect; barely perceptible imperfection under magnification',
+      'PSA 10 — 4 perfectly sharp corners; no wear even under magnification',
     ]
   },
   {
-    key: 'centering_back', label: 'Centering', sub: 'Back side',
-    weight: '12.5%', defaultVal: 8,
-    tip: 'Check the back for even borders. The back is often graded independently.',
-    descs: [
-      null,
-      'Severely off-center — major border on one side',
-      'Heavily off-center — extreme imbalance',
-      'Significantly off-center — obvious tilt',
-      'Noticeably off-center — clear imbalance',
-      'Slightly off-center — visible unevenness (≈75/25)',
-      'Fair centering (≈70/30)',
-      'Good centering (≈65/35)',
-      'Very good — slight difference only (≈60/40)',
-      'Excellent centering (≈57/43)',
-      'Gem Mint — near-perfect borders (≈55/45)',
+    key: 'edges', label: 'Edges', sub: 'All 4 edges', weight: '25%',
+    tip: 'Hold the card up and look along each edge. Nicks appear as white dots or rough spots. Chips are small missing chunks.',
+    descs: [null,
+      'PSA 1 — severely frayed, split, or heavily chipped edges',
+      'PSA 2 — heavy chipping/nicking throughout; roughness very obvious',
+      'PSA 3 — significant edge damage on multiple edges',
+      'PSA 4 — moderate chipping and nicking; clearly visible',
+      'PSA 5 — obvious chips or nicks; original smoothness mostly gone',
+      'PSA 6 — several light chips or nicks along one or more edges',
+      'PSA 7 — minor roughness beginning; very slight nicks visible',
+      'PSA 8 — very slight roughness or barely-visible nicks with scrutiny',
+      'PSA 9 — near perfect; imperceptible flaw only under magnification',
+      'PSA 10 — perfectly smooth on all 4 edges; zero chips or nicks',
     ]
   },
   {
-    key: 'corners', label: 'Corners', sub: 'All 4 corners',
-    weight: '30%', defaultVal: 8,
-    tip: 'Zoom in and check each corner. Look for whitening, fraying, rounding, or bending.',
-    descs: [
-      null,
-      'Heavily damaged — major creasing or bending',
-      'Severe wear — significant fraying and bending',
-      'Serious wear — major whitening on multiple corners',
-      'Heavy wear — pronounced fraying and whitening',
-      'Obvious rounding — clear whitening on corners',
-      'Noticeable rounding — some whitening visible',
-      'Light rounding — minor whitening beginning',
-      'Slight wear — very minor fraying under scrutiny',
-      'Near perfect — barely visible under magnification',
-      'Gem Mint — razor sharp, flawless corners',
-    ]
-  },
-  {
-    key: 'edges', label: 'Edges', sub: 'All 4 edges',
-    weight: '25%', defaultVal: 8,
-    tip: 'Look along all 4 edges for nicks, chips, roughness, or white spots.',
-    descs: [
-      null,
-      'Heavily damaged edges',
-      'Severe edge wear and chipping',
-      'Major chips and nicks on multiple edges',
-      'Heavy nicking and chipping visible',
-      'Obvious nicks and chips throughout',
-      'Noticeable nicking or chipping',
-      'Minor chips or nicks visible',
-      'Slight roughness or very light nicks',
-      'Very slight imperfection, barely visible',
-      'Gem Mint — perfectly smooth, zero chips or nicks',
-    ]
-  },
-  {
-    key: 'surface', label: 'Surface', sub: 'Front & back',
-    weight: '20%', defaultVal: 8,
-    tip: 'Check for scratches (catch the light), print lines, creases, staining, or cloudiness (haze).',
-    descs: [
-      null,
-      'Heavily damaged surface',
-      'Severe scratches and creasing',
-      'Major scratches, creases, or staining',
-      'Heavy surface wear throughout',
-      'Significant scratches, print lines, or haze',
-      'Noticeable scratches or visible defects',
-      'Minor scratches or marks visible',
-      'Light surface scratches or minor print lines',
-      'Near perfect — very minor flaw under magnification',
-      'Gem Mint — flawless, like fresh from pack',
+    key: 'surface', label: 'Surface', sub: 'Front & back', weight: '20%',
+    tip: 'Tilt the card under a light. Scratches catch the light as bright lines. Check for creases (lines when card is flat), print defects, and cloudiness (haze).',
+    descs: [null,
+      'PSA 1 — heavy creasing, major surface damage, and/or discolouration throughout',
+      'PSA 2 — scratching, scuffing, staining, or chipping of surface; considerable discolouration',
+      'PSA 3 — notable wear; heavy scratches/creasing; original gloss completely absent; discolouration visible',
+      'PSA 4 — moderate surface grit, surface creases, or a moderate scratch visible',
+      'PSA 5 — several light scratches; original gloss absent or greatly reduced; light border discolouration',
+      'PSA 6 — light surface wear; several light scratches; original gloss largely intact; no creases',
+      'PSA 7 — very slight scratching; gloss slightly diminished; may show slight reverse wear from shuffling',
+      'PSA 8 — very slight wear; may have very slight print lines or very minor imperfection',
+      'PSA 9 — at most ONE: very slight wax stain on reverse OR minor print imperfection OR slightly off-white borders',
+      'PSA 10 — full original gloss; no staining; allows one slight printing imperfection if it doesn't affect appeal',
     ]
   },
 ];
 
-// ─── Screen management ───────────────────────────────
+// ─── Utilities ───────────────────────────
 function showScreen(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s' + n).classList.add('active');
 }
 
-// ─── Score helpers ───────────────────────────────────
 function scoreColor(s) {
   s = parseInt(s);
   if (s >= 9) return 'var(--gold)';
@@ -931,15 +598,8 @@ function scoreColor(s) {
 }
 
 function calcWeighted() {
-  const cf = (scores.centering_front || 8);
-  const cb = (scores.centering_back  || 8);
-  const cAvg = (cf + cb) / 2;
-  return (
-    cAvg                        * 0.25 +
-    (scores.corners  || 8)      * 0.30 +
-    (scores.edges    || 8)      * 0.25 +
-    (scores.surface  || 8)      * 0.20
-  );
+  const cAvg = ((scores.centering_front || 5) + (scores.centering_back || 5)) / 2;
+  return cAvg * 0.25 + (scores.corners || 5) * 0.30 + (scores.edges || 5) * 0.25 + (scores.surface || 5) * 0.20;
 }
 
 function psaFromWeighted(w) {
@@ -955,21 +615,15 @@ function psaFromWeighted(w) {
   return 1;
 }
 
-function badgeClass(grade) {
-  grade = parseInt(grade);
-  if (grade === 10) return 'grade-10';
-  if (grade === 9)  return 'grade-9';
-  if (grade === 8)  return 'grade-8';
-  return 'grade-lo';
+function badgeClass(g) {
+  g = parseInt(g);
+  return g === 10 ? 'grade-10' : g === 9 ? 'grade-9' : g === 8 ? 'grade-8' : 'grade-lo';
 }
 
-// ─── Welcome ─────────────────────────────────────────
-function startApp() {
-  showScreen(1);
-  startCam(1);
-}
+// ─── Welcome ─────────────────────────────
+function startApp() { showScreen(1); startCam(1); }
 
-// ─── Camera ──────────────────────────────────────────
+// ─── Camera ──────────────────────────────
 async function startCam(n) {
   stopCam(n);
   const vid = document.getElementById('vid' + n);
@@ -983,79 +637,247 @@ async function startCam(n) {
     vid.play();
     hidePrev(n);
   } catch (err) {
-    alert('Camera access denied.\n\nOn iPhone: Settings → Safari → Camera → Allow.\n\nError: ' + err.message);
+    alert('Camera access denied.\n\niPhone: Settings → Safari → Camera → Allow.\n\n' + err.message);
   }
 }
 
 function stopCam(n) {
   if (camStream[n]) { camStream[n].getTracks().forEach(t => t.stop()); delete camStream[n]; }
-  const vid = document.getElementById('vid' + n);
-  if (vid) vid.srcObject = null;
+  const v = document.getElementById('vid' + n);
+  if (v) v.srcObject = null;
 }
 
 function stopAllCams() { stopCam(1); stopCam(2); }
 
-// ─── Capture ─────────────────────────────────────────
+// ─── Capture & CROP to guide ──────────────
+// The card guide is 252×352px, centred on screen with padding-bottom:80px.
+// This function calculates the corresponding pixels in the full video frame
+// and crops to just that region, so the saved image is only the card.
+function captureCardCrop(vid) {
+  const vw = vid.videoWidth  || 1280;
+  const vh = vid.videoHeight || 720;
+  const sw = window.innerWidth;
+  const sh = window.innerHeight;
+
+  // Guide bounds on screen (must match CSS exactly)
+  const GW = 252, GH = 352;
+  const gLeft = (sw - GW) / 2;
+  const gTop  = (sh - 80 - GH) / 2;   // padding-bottom:80px shifts centre up
+
+  // Map screen → video pixel coords for object-fit:cover
+  // Cover: scale so the smaller dimension fills, crop the larger.
+  const videoAspect  = vw / vh;
+  const screenAspect = sw / sh;
+  let scale, ox = 0, oy = 0;
+
+  if (videoAspect > screenAspect) {
+    // Landscape video on portrait screen → scale by height, crop L/R
+    scale = vh / sh;
+    ox = (vw - sw * scale) / 2;
+  } else {
+    // Portrait video → scale by width, crop T/B
+    scale = vw / sw;
+    oy = (vh - sh * scale) / 2;
+  }
+
+  const cx = Math.round(gLeft * scale + ox);
+  const cy = Math.round(gTop  * scale + oy);
+  const cw = Math.round(GW    * scale);
+  const ch = Math.round(GH    * scale);
+
+  // Clamp to video bounds
+  const sx = Math.max(0, cx), sy = Math.max(0, cy);
+  const sw2 = Math.min(cw, vw - sx), sh2 = Math.min(ch, vh - sy);
+
+  // Normalise output to 504×704 (2× guide = sharper on Retina)
+  const canvas = document.createElement('canvas');
+  canvas.width = 504; canvas.height = 704;
+  canvas.getContext('2d').drawImage(vid, sx, sy, sw2, sh2, 0, 0, 504, 704);
+  return canvas;
+}
+
+// ─── Canvas image analysis ───────────────
+// Produces rough initial scores (not perfect — user should verify with zoom).
+function analyzeCardImage(canvas) {
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const d = ctx.getImageData(0, 0, W, H).data;
+
+  const g = (x, y) => {
+    if (x < 0 || x >= W || y < 0 || y >= H) return 128;
+    const i = (y * W + x) * 4;
+    return d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+  };
+
+  // Mean brightness over a sampled region
+  const mean = (x1, y1, x2, y2, step = 3) => {
+    let s = 0, n = 0;
+    for (let y = y1; y < y2; y += step)
+      for (let x = x1; x < x2; x += step) { s += g(x, y); n++; }
+    return n ? s / n : 128;
+  };
+
+  // Variance over a sampled region
+  const variance = (x1, y1, x2, y2, step = 3) => {
+    const vals = [];
+    for (let y = y1; y < y2; y += step)
+      for (let x = x1; x < x2; x += step) vals.push(g(x, y));
+    if (!vals.length) return 0;
+    const m = vals.reduce((a, b) => a + b, 0) / vals.length;
+    return vals.reduce((s, v) => s + (v - m) ** 2, 0) / vals.length;
+  };
+
+  // ── Centering ──
+  // Compare mean brightness of opposite border strips (~4% of dimensions).
+  // A well-printed card should have similar border brightness on all sides.
+  const bw = Math.floor(W * 0.04), bh = Math.floor(H * 0.04);
+  const mL = mean(0,    bh, bw,    H - bh);
+  const mR = mean(W-bw, bh, W,     H - bh);
+  const mT = mean(bw,   0,  W-bw,  bh);
+  const mB = mean(bw,   H-bh, W-bw, H);
+  const avg = (mL + mR + mT + mB) / 4 || 1;
+  const hDiff = Math.abs(mL - mR) / avg;
+  const vDiff = Math.abs(mT - mB) / avg;
+  // Low diff → well centred → higher score
+  const centering = Math.max(4, Math.min(10, Math.round(10 - (hDiff + vDiff) * 12)));
+
+  // ── Corners ──
+  // Fraying/whitening in corners → high local variance.
+  // White fibres on a coloured border raise variance significantly.
+  const cs = Math.floor(W * 0.09);
+  const cornerVars = [
+    variance(0, 0, cs, cs),
+    variance(W-cs, 0, W, cs),
+    variance(0, H-cs, cs, H),
+    variance(W-cs, H-cs, W, H),
+  ];
+  const avgCV = cornerVars.reduce((a, b) => a + b) / 4;
+  // Calibrated: clean corner ≈ variance 200–600, worn corner ≈ 800–2000+
+  const corners = Math.max(3, Math.min(10, Math.round(10 - avgCV / 250)));
+
+  // ── Edges ──
+  // Nicks/chips along edge strips (4% wide) create local brightness spikes.
+  const ew = Math.floor(W * 0.04), eh = Math.floor(H * 0.04);
+  const edgeVars = [
+    variance(0,    0,    W, eh),      // top
+    variance(0,    H-eh, W, H),       // bottom
+    variance(0,    0,    ew, H),      // left
+    variance(W-ew, 0,    W,  H),      // right
+  ];
+  const avgEV = edgeVars.reduce((a, b) => a + b) / 4;
+  const edges = Math.max(3, Math.min(10, Math.round(10 - avgEV / 220)));
+
+  // ── Surface ──
+  // High-frequency content in the card interior correlates with scratches.
+  // We use a simple gradient magnitude metric on a subsampled interior.
+  const ix1 = Math.floor(W * 0.15), iy1 = Math.floor(H * 0.15);
+  const ix2 = Math.floor(W * 0.85), iy2 = Math.floor(H * 0.85);
+  let gradSum = 0, gradN = 0;
+  for (let y = iy1 + 1; y < iy2; y += 4) {
+    for (let x = ix1 + 1; x < ix2; x += 4) {
+      const gx = Math.abs(g(x+1, y) - g(x-1, y));
+      const gy2 = Math.abs(g(x, y+1) - g(x, y-1));
+      gradSum += Math.sqrt(gx*gx + gy2*gy2);
+      gradN++;
+    }
+  }
+  const avgGrad = gradN ? gradSum / gradN : 0;
+  // Artwork naturally has high gradient; scratches push it higher.
+  // Calibrated so typical clean card ≈ 20–35, scratched ≈ 40+
+  const surface = Math.max(3, Math.min(10, Math.round(10 - Math.max(0, avgGrad - 18) / 4)));
+
+  return { centering_front: centering, centering_back: centering, corners, edges, surface };
+}
+
+// ─── Donut: capture → crop → analyze ─────
 function doCapture(n) {
   const vid = document.getElementById('vid' + n);
   if (!vid.videoWidth) { alert('Camera not ready, please try again.'); return; }
-  const cvs = document.createElement('canvas');
-  cvs.width = vid.videoWidth; cvs.height = vid.videoHeight;
-  cvs.getContext('2d').drawImage(vid, 0, 0);
-  const url = cvs.toDataURL('image/jpeg', 0.92);
-  document.getElementById('prevImg' + n).src = url;
+
+  const cropCanvas = captureCardCrop(vid);
+  const dataUrl = cropCanvas.toDataURL('image/jpeg', 0.92);
+
+  document.getElementById('prevImg' + n).src = dataUrl;
   document.getElementById('prev' + n).classList.add('show');
-  if (n === 1) frontImg = url; else backImg = url;
+  if (n === 1) frontImg = dataUrl; else backImg = dataUrl;
 }
 
-function retake(n) {
-  hidePrev(n);
-  if (n === 1) frontImg = null; else backImg = null;
-}
-
+function retake(n) { hidePrev(n); if (n === 1) frontImg = null; else backImg = null; }
 function hidePrev(n) { document.getElementById('prev' + n).classList.remove('show'); }
 
 function useFront() {
   stopCam(1);
   document.getElementById('frontThumbImg').src = frontImg;
-  showScreen(2);
-  startCam(2);
-}
-
-function useBack() {
-  stopCam(2);
-  buildGradingScreen();
-  showScreen(3);
-}
-
-// ─── Back navigation ─────────────────────────────────
-function s1Back() { stopCam(1); showScreen(0); }
-
-function s2Back() {
-  stopCam(2); backImg = null; hidePrev(2);
-  showScreen(1); startCam(1);
-}
-
-function s3Back() {
   showScreen(2); startCam(2);
 }
 
-// ─── Grading screen ───────────────────────────────────
+async function useBack() {
+  stopCam(2);
+  // Show analyzing overlay, run analysis, then show grading screen
+  document.getElementById('s3-analyzing').classList.add('show');
+  showScreen(3);
+
+  // Yield to browser to paint the overlay
+  await new Promise(r => setTimeout(r, 50));
+
+  // Analyze both images and blend scores
+  let estimated = { centering_front: 7, centering_back: 7, corners: 7, edges: 7, surface: 7 };
+  try {
+    const analyzeUrl = (url) => {
+      const img = new Image();
+      const cvs = document.createElement('canvas');
+      cvs.width = 504; cvs.height = 704;
+      img.src = url;
+      cvs.getContext('2d').drawImage(img, 0, 0, 504, 704);
+      return analyzeCardImage(cvs);
+    };
+
+    const front = analyzeUrl(frontImg);
+    const back  = analyzeUrl(backImg);
+
+    estimated = {
+      centering_front: front.centering_front,
+      centering_back:  back.centering_back,
+      corners:  Math.round((front.corners  + back.corners)  / 2),
+      edges:    Math.round((front.edges    + back.edges)    / 2),
+      surface:  Math.round((front.surface  + back.surface)  / 2),
+    };
+  } catch(e) {
+    console.warn('Analysis failed, using defaults:', e);
+  }
+
+  scores = { ...estimated };
+
+  await new Promise(r => setTimeout(r, 400)); // brief pause so overlay is visible
+  document.getElementById('s3-analyzing').classList.remove('show');
+  buildGradingScreen();
+}
+
+// ─── Navigation ──────────────────────────
+function s1Back() { stopCam(1); showScreen(0); }
+function s2Back() { stopCam(2); backImg = null; hidePrev(2); showScreen(1); startCam(1); }
+function s3Back() { showScreen(2); startCam(2); }
+
+// ─── Build grading screen ─────────────────
 function buildGradingScreen() {
-  // Set thumbnails
   document.getElementById('grFront').src = frontImg;
   document.getElementById('grBack').src  = backImg;
 
-  // Build criteria cards
   const container = document.getElementById('criteriaScroll');
   container.innerHTML = '';
 
   CRITERIA.forEach(c => {
-    const val = scores[c.key] !== undefined ? scores[c.key] : c.defaultVal;
+    const val = scores[c.key] !== undefined ? scores[c.key] : 7;
     scores[c.key] = val;
 
     const div = document.createElement('div');
     div.className = 'crit-card';
+
+    let extra = '';
+    if (c.ref) {
+      extra = `<div class="centering-ref">${c.ref}</div>`;
+    }
+
     div.innerHTML = `
       <div class="crit-top">
         <div class="crit-name-wrap">
@@ -1067,15 +889,12 @@ function buildGradingScreen() {
       <input type="range" class="crit-slider" id="slider-${c.key}"
              min="1" max="10" value="${val}"
              oninput="handleSlider('${c.key}', this)">
-      <div class="slider-ticks">
-        ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<span class="tick">${n}</span>`).join('')}
-      </div>
-      <div class="crit-desc" id="desc-${c.key}">${c.descs[val]}</div>
-      <div style="font-size:11px;color:var(--dim);margin-top:-4px">${c.tip}</div>
+      <div class="slider-ticks">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<span class="tick">${n}</span>`).join('')}</div>
+      <div class="crit-desc"  id="desc-${c.key}">${c.descs[val]}</div>
+      ${extra}
+      <div class="crit-psa-ref">${c.tip}</div>
     `;
     container.appendChild(div);
-
-    // Set initial slider fill
     setSliderFill(document.getElementById('slider-' + c.key), val);
   });
 
@@ -1088,78 +907,59 @@ function handleSlider(key, slider) {
   setSliderFill(slider, val);
   const color = scoreColor(val);
   document.getElementById('badge-' + key).textContent = val;
-  document.getElementById('badge-' + key).style.color = color;
+  document.getElementById('badge-' + key).style.color  = color;
   const crit = CRITERIA.find(c => c.key === key);
   document.getElementById('desc-' + key).textContent = crit.descs[val];
   updateLiveGrade();
 }
 
 function setSliderFill(slider, val) {
-  const pct  = ((val - 1) / 9) * 100;
+  const pct   = ((val - 1) / 9) * 100;
   const color = scoreColor(val);
   slider.style.background =
     `linear-gradient(to right, ${color} ${pct}%, var(--dim) ${pct}%)`;
 }
 
 function updateLiveGrade() {
-  const w   = calcWeighted();
-  const psa = psaFromWeighted(w);
+  const psa   = psaFromWeighted(calcWeighted());
   document.getElementById('liveNum').textContent = psa;
-  const badge = document.getElementById('liveBadge');
-  badge.className = 'live-psa-badge ' + badgeClass(psa);
+  document.getElementById('liveBadge').className = 'live-psa-badge ' + badgeClass(psa);
 }
 
-// ─── Zoom overlay ─────────────────────────────────────
+// ─── Zoom overlay ─────────────────────────
 function openZoom(side) {
-  const img   = side === 'front' ? frontImg : backImg;
-  const label = side === 'front' ? 'Front of Card' : 'Back of Card';
-  document.getElementById('zoomImg').src       = img;
-  document.getElementById('zoomLabel').textContent = label;
+  document.getElementById('zoomImg').src = side === 'front' ? frontImg : backImg;
+  document.getElementById('zoomLabel').textContent = side === 'front' ? 'Front of Card' : 'Back of Card';
   document.getElementById('zoomOverlay').classList.add('show');
 }
+function closeZoom() { document.getElementById('zoomOverlay').classList.remove('show'); }
 
-function closeZoom() {
-  document.getElementById('zoomOverlay').classList.remove('show');
-}
-
-// ─── Results ──────────────────────────────────────────
-function goToResults() {
-  renderResults();
-  showScreen(4);
-}
+// ─── Results ─────────────────────────────
+function goToResults() { renderResults(); showScreen(4); }
 
 function renderResults() {
   document.getElementById('resFront').src = frontImg;
   document.getElementById('resBack').src  = backImg;
-
-  const w   = calcWeighted();
-  const psa = psaFromWeighted(w);
-
+  const w = calcWeighted(), psa = psaFromWeighted(w);
   document.getElementById('resGradeNum').textContent = psa;
   document.getElementById('resWeighted').textContent = w.toFixed(2);
+  document.getElementById('resBadge').className = 'psa-badge-lg ' + badgeClass(psa);
 
-  const badge = document.getElementById('resBadge');
-  badge.className = 'psa-badge-lg ' + badgeClass(psa);
-
-  // Score cards
-  const resultRows = [
+  const rows = [
     { key: 'centering_front', label: 'Centering (Front)', weight: '12.5%' },
     { key: 'centering_back',  label: 'Centering (Back)',  weight: '12.5%' },
-    { key: 'corners',  label: 'Corners', weight: '30%'  },
-    { key: 'edges',    label: 'Edges',   weight: '25%'  },
-    { key: 'surface',  label: 'Surface', weight: '20%'  },
+    { key: 'corners', label: 'Corners', weight: '30%' },
+    { key: 'edges',   label: 'Edges',   weight: '25%' },
+    { key: 'surface', label: 'Surface', weight: '20%' },
   ];
 
   const container = document.getElementById('resScoreCards');
   container.innerHTML = '';
-
-  resultRows.forEach(({ key, label, weight }) => {
-    const s     = scores[key] || 8;
+  rows.forEach(({ key, label, weight }) => {
+    const s = scores[key] || 7;
     const color = scoreColor(s);
     const pct   = ((s - 1) / 9 * 100).toFixed(0) + '%';
     const crit  = CRITERIA.find(c => c.key === key);
-    const desc  = crit ? crit.descs[s] : '';
-
     const card = document.createElement('div');
     card.className = 'score-card';
     card.innerHTML = `
@@ -1171,29 +971,23 @@ function renderResults() {
       <div class="sc-bar-track">
         <div class="sc-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div>
       </div>
-      <div class="sc-notes">${desc}</div>
+      <div class="sc-notes">${crit ? crit.descs[s] : ''}</div>
     `;
     container.appendChild(card);
   });
 
-  // Animate bars
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    container.querySelectorAll('.sc-bar-fill').forEach(el => {
-      el.style.width = el.dataset.pct;
-    });
+    container.querySelectorAll('.sc-bar-fill').forEach(el => { el.style.width = el.dataset.pct; });
   }));
 }
 
-// ─── Grade another ────────────────────────────────────
+// ─── Grade another ────────────────────────
 function gradeAnother() {
-  frontImg = null; backImg = null;
-  scores   = {};
-  stopAllCams();
-  hidePrev(1); hidePrev(2);
-  showScreen(1);
-  startCam(1);
+  frontImg = null; backImg = null; scores = {};
+  stopAllCams(); hidePrev(1); hidePrev(2);
+  document.getElementById('scoreCards') && (document.getElementById('scoreCards').innerHTML = '');
+  showScreen(1); startCam(1);
 }
 </script>
-
 </body>
 </html>
