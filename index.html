@@ -1,13 +1,13 @@
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║         POKÉMON CARD GRADER — PWA                           ║
+  ║         POKÉMON CARD GRADER — PWA (No API Key)              ║
   ║  Hosting on GitHub Pages (required for iPhone install):      ║
   ║                                                              ║
   ║  1. Create a new GitHub repo (e.g. "pokemon-card-grader")   ║
   ║  2. Upload both index.html and manifest.json to the repo    ║
   ║  3. Go to Settings → Pages → Source: Deploy from branch     ║
   ║     → main → / (root) → Save                                ║
-  ║  4. Wait ~60s, then visit:                                   ║
+  ║  4. Wait ~60 seconds, then visit:                            ║
   ║     https://[username].github.io/[repo-name]/               ║
   ║  5. On iPhone: open that URL in Safari → tap Share ↑        ║
   ║     → "Add to Home Screen" → Add                            ║
@@ -29,35 +29,34 @@
   <title>Pokémon Card Grader</title>
 
   <style>
-    /* ── Reset ── */
+    /* ── Reset ────────────────────────────── */
     *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
+      box-sizing: border-box; margin: 0; padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ── Design tokens ── */
+    /* ── Tokens ───────────────────────────── */
     :root {
-      --bg:         #0a0a0f;
-      --surface:    #13131a;
-      --surface2:   #1c1c28;
-      --border:     #25253a;
-      --border2:    #32324a;
-      --accent:     #7c3aed;
-      --accent2:    #a78bfa;
-      --text:       #eeeef5;
-      --muted:      #6b6b85;
-      --dim:        #35354f;
-      --success:    #10b981;
-      --danger:     #ef4444;
-      --gold:       #f59e0b;
-      --silver:     #94a3b8;
-      --blue:       #3b82f6;
-      --grey:       #6b7280;
-      --safe-t:     env(safe-area-inset-top,    20px);
-      --safe-b:     env(safe-area-inset-bottom,  0px);
-      --safe-l:     env(safe-area-inset-left,    0px);
-      --safe-r:     env(safe-area-inset-right,   0px);
+      --bg:      #0a0a0f;
+      --surf:    #13131a;
+      --surf2:   #1c1c28;
+      --border:  #25253a;
+      --border2: #32324a;
+      --accent:  #7c3aed;
+      --accent2: #a78bfa;
+      --text:    #eeeef5;
+      --muted:   #6b6b85;
+      --dim:     #2e2e44;
+      --success: #10b981;
+      --danger:  #ef4444;
+      --gold:    #f59e0b;
+      --silver:  #94a3b8;
+      --blue:    #3b82f6;
+      --grey:    #6b7280;
+      --safe-t:  env(safe-area-inset-top,    20px);
+      --safe-b:  env(safe-area-inset-bottom,  0px);
+      --safe-l:  env(safe-area-inset-left,    0px);
+      --safe-r:  env(safe-area-inset-right,   0px);
     }
 
     html, body {
@@ -71,762 +70,601 @@
       overscroll-behavior: none;
     }
 
-    /* ── Screens ── */
     .screen {
-      position: fixed;
-      inset: 0;
-      display: none;
-      flex-direction: column;
+      position: fixed; inset: 0;
+      display: none; flex-direction: column;
       background: var(--bg);
-      padding-left:  var(--safe-l);
-      padding-right: var(--safe-r);
     }
     .screen.active { display: flex; }
 
-    /* ════════════════════════════════
-       SCREEN 0 — API KEY
-    ════════════════════════════════ */
+    /* ════════════════════════════════════════
+       S0 — WELCOME
+    ════════════════════════════════════════ */
     #s0 {
       align-items: center;
       justify-content: center;
-      padding-top:    calc(var(--safe-t) + 20px);
-      padding-bottom: calc(var(--safe-b) + 24px);
-      padding-left:   calc(var(--safe-l) + 24px);
-      padding-right:  calc(var(--safe-r) + 24px);
-      gap: 28px;
+      padding: calc(var(--safe-t) + 20px) 28px calc(var(--safe-b) + 28px);
+      gap: 32px;
       overflow-y: auto;
     }
 
-    .logo-wrap {
+    .welcome-hero {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       text-align: center;
     }
 
-    .logo-icon {
-      width: 80px; height: 80px;
-      background: var(--surface2);
-      border-radius: 22px;
+    .app-icon {
+      width: 88px; height: 88px;
+      border-radius: 24px;
+      background: var(--surf2);
       border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 42px;
-      box-shadow: 0 8px 32px rgba(124,58,237,0.2);
+      font-size: 46px;
+      box-shadow: 0 8px 36px rgba(124,58,237,0.25);
     }
 
-    .logo-title {
-      font-size: 24px;
+    .app-name {
+      font-size: 28px;
       font-weight: 800;
-      letter-spacing: -0.4px;
-      background: linear-gradient(135deg, var(--text) 40%, var(--accent2));
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text) 30%, var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .logo-sub {
-      font-size: 13px;
+    .app-tagline {
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.5;
     }
 
-    .form-block {
+    .offline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--success);
+    }
+
+    .steps-row {
+      display: flex;
+      gap: 0;
       width: 100%;
-      max-width: 360px;
+      max-width: 340px;
+      background: var(--surf);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .step-cell {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-    }
-
-    .field-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 6px;
-    }
-
-    .input-row {
-      position: relative;
-    }
-
-    .api-input {
-      width: 100%;
-      padding: 15px 48px 15px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      color: var(--text);
-      font-size: 14px;
-      font-family: 'SF Mono', 'Courier New', monospace;
-      letter-spacing: 0.5px;
-      outline: none;
-      -webkit-appearance: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .api-input::placeholder { color: var(--dim); }
-    .api-input:focus {
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
-    }
-
-    .eye-btn {
-      position: absolute;
-      right: 14px; top: 50%;
-      transform: translateY(-50%);
-      background: none; border: none;
-      color: var(--muted);
-      font-size: 18px;
-      cursor: pointer;
-      padding: 6px;
-      line-height: 1;
-    }
-
-    .info-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .info-box strong { color: var(--text); }
-
-    .btn-primary {
-      width: 100%;
-      padding: 17px;
-      background: var(--accent);
-      border: none;
-      border-radius: 16px;
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-    }
-    .btn-primary:active {
-      transform: scale(0.97);
-      box-shadow: 0 2px 10px rgba(124,58,237,0.3);
-    }
-
-    /* ════════════════════════════════
-       SCREENS 1 & 2 — CAMERA
-    ════════════════════════════════ */
-    .camera-screen { overflow: hidden; }
-
-    .cam-hdr {
-      position: absolute;
-      top: var(--safe-t);
-      left: 0; right: 0;
-      z-index: 20;
-      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 16px;
+      padding: 16px 8px;
+      gap: 8px;
+      position: relative;
+    }
+    .step-cell + .step-cell::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 16px; bottom: 16px;
+      width: 1px;
+      background: var(--border);
     }
 
-    .cam-back {
-      position: absolute;
-      left: 16px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
+    .step-icon { font-size: 26px; }
+    .step-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .btn-start {
+      width: 100%;
+      max-width: 340px;
+      padding: 18px;
+      background: var(--accent);
+      border: none;
+      border-radius: 18px;
       color: white;
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      font-size: 20px;
+      font-size: 17px;
+      font-weight: 700;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      line-height: 1;
+      box-shadow: 0 6px 24px rgba(124,58,237,0.4);
+      transition: transform 0.1s;
     }
+    .btn-start:active { transform: scale(0.97); }
 
-    .cam-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: white;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      padding: 6px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .cam-step {
-      position: absolute;
-      right: 16px;
-      background: rgba(124,58,237,0.7);
-      color: white;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 20px;
-    }
+    /* ════════════════════════════════════════
+       S1 & S2 — CAMERA
+    ════════════════════════════════════════ */
+    .camera-screen { overflow: hidden; }
 
     .cam-video {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
     }
 
-    /* Overlay = dark vignette around the card guide */
-    .cam-overlay {
+    .cam-hdr {
       position: absolute;
-      inset: 0;
+      top: var(--safe-t); left: 0; right: 0;
+      z-index: 20;
+      display: flex; align-items: center; justify-content: center;
+      padding: 14px 16px;
+    }
+
+    .cam-back {
+      position: absolute; left: 16px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white; width: 38px; height: 38px;
+      border-radius: 50%; font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .cam-title {
+      font-size: 15px; font-weight: 700; color: white;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      padding: 6px 16px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .cam-step {
+      position: absolute; right: 16px;
+      background: rgba(124,58,237,0.7); color: white;
+      font-size: 12px; font-weight: 700;
+      padding: 5px 10px; border-radius: 20px;
+    }
+
+    .cam-overlay {
+      position: absolute; inset: 0;
       z-index: 5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* nudge guide slightly above center for capture btn */
+      display: flex; align-items: center; justify-content: center;
       padding-bottom: 80px;
     }
 
-    /* Card guide: 2.5×3.5 in = 5:7 ratio. 252×352px */
+    /* Card guide: 5:7 ratio, 252×352px */
     .card-guide {
       position: relative;
       width: 252px; height: 352px;
       border: 2px dashed rgba(255,255,255,0.75);
       border-radius: 10px;
-      /* This creates the dimmed surround */
       box-shadow: 0 0 0 9999px rgba(0,0,0,0.52);
     }
-
-    .cg-corner {
-      position: absolute;
-      width: 22px; height: 22px;
-      border-color: rgba(255,255,255,1);
-      border-style: solid;
-    }
+    .cg-c { position: absolute; width: 22px; height: 22px; border-color: #fff; border-style: solid; }
     .cg-tl { top:-2px; left:-2px;  border-width: 3px 0 0 3px; border-radius: 5px 0 0 0; }
     .cg-tr { top:-2px; right:-2px; border-width: 3px 3px 0 0; border-radius: 0 5px 0 0; }
     .cg-bl { bottom:-2px; left:-2px;  border-width: 0 0 3px 3px; border-radius: 0 0 0 5px; }
     .cg-br { bottom:-2px; right:-2px; border-width: 0 3px 3px 0; border-radius: 0 0 5px 0; }
-
     .cg-hint {
-      position: absolute;
-      bottom: -34px;
+      position: absolute; bottom: -34px;
       left: 50%; transform: translateX(-50%);
-      white-space: nowrap;
-      font-size: 12px;
+      white-space: nowrap; font-size: 12px;
       color: rgba(255,255,255,0.8);
       text-shadow: 0 1px 4px rgba(0,0,0,1);
     }
 
-    /* Footer: capture button */
     .cam-footer {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
+      position: absolute; bottom: 0; left: 0; right: 0;
       z-index: 10;
       padding: 20px 40px calc(var(--safe-b) + 20px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       background: linear-gradient(transparent, rgba(0,0,0,0.65));
     }
 
     .shutter {
-      width: 76px; height: 76px;
-      border-radius: 50%;
-      background: white;
-      border: none;
-      outline: 4px solid rgba(255,255,255,0.95);
-      outline-offset: 4px;
+      width: 76px; height: 76px; border-radius: 50%;
+      background: white; border: none;
+      outline: 4px solid rgba(255,255,255,0.95); outline-offset: 4px;
       box-shadow: 0 0 0 7px rgba(255,255,255,0.2);
-      cursor: pointer;
-      transition: transform 0.1s, box-shadow 0.1s;
-      flex-shrink: 0;
+      cursor: pointer; transition: transform 0.1s;
     }
-    .shutter:active {
-      transform: scale(0.88);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.15);
-    }
+    .shutter:active { transform: scale(0.88); }
 
-    /* Front thumbnail shown during back capture */
     .front-thumb {
       position: absolute;
-      bottom: calc(var(--safe-b) + 116px);
-      left: 20px;
+      bottom: calc(var(--safe-b) + 116px); left: 20px;
       z-index: 15;
-      width: 50px; height: 70px;
-      border-radius: 5px;
+      width: 50px; height: 70px; border-radius: 5px;
       overflow: hidden;
       border: 2px solid rgba(255,255,255,0.7);
       box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     }
-    .front-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-    .front-thumb-label {
-      position: absolute;
-      bottom: calc(var(--safe-b) + 110px);
-      left: 18px;
-      z-index: 15;
-      font-size: 10px;
-      color: rgba(255,255,255,0.75);
+    .front-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .front-thumb-lbl {
+      position: absolute; bottom: calc(var(--safe-b) + 110px); left: 18px;
+      z-index: 15; font-size: 10px; color: rgba(255,255,255,0.75);
       text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
 
-    /* Preview layer (confirm/retake) */
+    /* Preview layer */
     .cam-preview {
-      display: none;
-      position: absolute;
-      inset: 0;
-      z-index: 30;
-      flex-direction: column;
-      background: var(--bg);
+      display: none; position: absolute; inset: 0;
+      z-index: 30; flex-direction: column; background: var(--bg);
     }
     .cam-preview.show { display: flex; }
-
     .preview-hdr {
       padding: calc(var(--safe-t) + 16px) 20px 14px;
-      font-size: 17px;
-      font-weight: 700;
-      text-align: center;
-      flex-shrink: 0;
+      font-size: 17px; font-weight: 700; text-align: center; flex-shrink: 0;
     }
-
     .preview-img-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 20px;
-      min-height: 0;
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 12px 20px; min-height: 0;
     }
-
     .preview-img {
-      max-width: 100%;
-      max-height: 100%;
-      border-radius: 14px;
-      object-fit: contain;
+      max-width: 100%; max-height: 100%;
+      border-radius: 14px; object-fit: contain;
       box-shadow: 0 8px 32px rgba(0,0,0,0.6);
     }
-
     .preview-actions {
-      display: flex;
-      gap: 12px;
-      padding: 16px 20px calc(var(--safe-b) + 20px);
-      flex-shrink: 0;
+      display: flex; gap: 12px;
+      padding: 16px 20px calc(var(--safe-b) + 20px); flex-shrink: 0;
     }
-
     .btn-retake {
-      flex: 1;
-      padding: 16px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
+      flex: 1; padding: 16px;
+      background: var(--surf2); border: 1px solid var(--border);
+      border-radius: 16px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer;
     }
-
     .btn-use {
-      flex: 2;
-      padding: 16px;
-      background: var(--accent);
-      border: none;
-      border-radius: 16px;
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
+      flex: 2; padding: 16px;
+      background: var(--accent); border: none;
+      border-radius: 16px; color: white; font-size: 15px; font-weight: 700; cursor: pointer;
       box-shadow: 0 4px 16px rgba(124,58,237,0.35);
     }
 
-    /* ════════════════════════════════
-       SCREEN 3 — ANALYZING
-    ════════════════════════════════ */
+    /* ════════════════════════════════════════
+       S3 — GRADE THIS CARD
+    ════════════════════════════════════════ */
     #s3 {
-      align-items: center;
-      justify-content: center;
-      gap: 36px;
-      padding: var(--safe-t) 24px var(--safe-b);
-    }
-
-    .spinner-wrap {
-      position: relative;
-      width: 110px; height: 110px;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .ring-outer {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-bottom-color: var(--accent);
-      border-left-color: var(--accent);
-      animation: spin 2s linear infinite reverse;
-      opacity: 0.6;
-    }
-
-    .ring-inner {
-      position: absolute;
-      inset: 10px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--accent2);
-      border-right-color: var(--accent2);
-      animation: spin 1.2s linear infinite;
-    }
-
-    .ring-core {
-      position: absolute;
-      inset: 26px;
-      border-radius: 50%;
-      background: var(--surface2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 30px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .analyzing-copy { text-align: center; }
-
-    .analyzing-copy h2 {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      margin-bottom: 6px;
-    }
-
-    .analyzing-copy p {
-      font-size: 13px;
-      color: var(--muted);
-      animation: fadeOsc 2s ease-in-out infinite;
-    }
-
-    @keyframes fadeOsc {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
-    }
-
-    .steps-list {
-      display: flex;
       flex-direction: column;
-      gap: 14px;
-      width: 220px;
+      overflow: hidden;
     }
 
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--muted);
-      transition: color 0.4s;
-    }
-    .step.active { color: var(--text); font-weight: 600; }
-    .step.done   { color: var(--success); }
-
-    .step-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--dim);
-      flex-shrink: 0;
-      transition: background 0.4s;
-    }
-    .step.active .step-dot {
-      background: var(--accent2);
-      animation: fadeOsc 0.9s ease-in-out infinite;
-    }
-    .step.done .step-dot { background: var(--success); animation: none; }
-
-    /* ════════════════════════════════
-       SCREEN 4 — RESULTS
-    ════════════════════════════════ */
-    #s4 {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-top:    var(--safe-t);
-      padding-bottom: calc(var(--safe-b) + 24px);
-    }
-
-    /* Results header */
-    .results-hdr {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
+    .grade-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: calc(var(--safe-t) + 10px) 16px 10px;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
 
-    .results-hdr-text { flex: 1; }
-
-    .results-hdr-text h2 {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
+    .grade-hdr-left {
+      display: flex; align-items: center; gap: 10px;
     }
 
-    .results-hdr-text p {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
+    .btn-ghost {
+      background: none; border: none;
+      color: var(--accent2); font-size: 15px; font-weight: 600;
+      cursor: pointer; padding: 4px 0;
     }
 
-    /* PSA badge */
-    .psa-badge {
-      width: 72px; height: 72px;
-      border-radius: 16px;
-      border: 2.5px solid;
+    .grade-hdr h2 {
+      font-size: 17px; font-weight: 700;
+    }
+
+    /* Card thumbnail strip */
+    .card-thumbs {
+      display: flex; gap: 10px;
+      padding: 12px 16px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-thumb {
+      flex: 1;
+      border-radius: 10px; overflow: hidden;
+      background: var(--surf);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+    .card-thumb:active { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(167,139,250,0.3); }
+
+    .card-thumb img {
+      width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block;
+    }
+
+    .card-thumb-lbl {
+      padding: 5px 8px;
+      font-size: 10px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
+    }
+
+    .zoom-icon {
+      position: absolute; top: 5px; right: 5px;
+      width: 20px; height: 20px; border-radius: 4px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+
+    /* Scrollable criteria area */
+    .criteria-scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 12px 14px 4px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .crit-card {
+      background: var(--surf);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .crit-top {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+    }
+
+    .crit-name-wrap { flex: 1; }
+
+    .crit-name {
+      font-size: 14px; font-weight: 700;
+    }
+
+    .crit-sub {
+      font-size: 11px; color: var(--muted); margin-top: 1px;
+    }
+
+    .crit-score-badge {
+      font-size: 24px; font-weight: 800;
+      min-width: 32px; text-align: right;
+      transition: color 0.2s;
+    }
+
+    /* Range slider */
+    input[type=range].crit-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px; border-radius: 3px;
+      background: var(--dim);
+      outline: none; cursor: pointer;
+      transition: background 0.15s;
+    }
+    input[type=range].crit-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: white; cursor: pointer;
+      border: 3px solid var(--bg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      transition: transform 0.1s;
+    }
+    input[type=range].crit-slider:active::-webkit-slider-thumb {
+      transform: scale(1.2);
+    }
+
+    /* Tick marks beneath slider */
+    .slider-ticks {
+      display: flex; justify-content: space-between;
+      padding: 0 2px;
+      margin-top: -4px;
+    }
+    .tick {
+      font-size: 9px; color: var(--dim); font-weight: 600;
+    }
+
+    .crit-desc {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+      min-height: 18px;
+      transition: color 0.2s;
+    }
+
+    /* ── Grade footer ── */
+    .grade-footer {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
+      padding: 12px 14px calc(var(--safe-b) + 12px);
+      border-top: 1px solid var(--border);
+      background: var(--bg);
       flex-shrink: 0;
     }
-    .psa-badge .psa-lbl {
-      font-size: 9px;
+
+    .live-grade-wrap {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .live-grade-lbl { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .live-psa-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px;
+      border-radius: 10px; border: 2px solid;
       font-weight: 800;
-      letter-spacing: 1.5px;
-      opacity: 0.85;
     }
-    .psa-badge .psa-num {
-      font-size: 30px;
-      font-weight: 900;
-      line-height: 1.1;
-    }
+    .live-psa-badge .lbl { font-size: 9px; letter-spacing: 1.5px; opacity: 0.85; }
+    .live-psa-badge .num { font-size: 22px; line-height: 1; }
 
     .grade-10 { color: var(--gold);   border-color: var(--gold);   background: rgba(245,158,11,0.1); }
     .grade-9  { color: var(--silver); border-color: var(--silver); background: rgba(148,163,184,0.1); }
     .grade-8  { color: var(--blue);   border-color: var(--blue);   background: rgba(59,130,246,0.1); }
     .grade-lo { color: var(--grey);   border-color: var(--grey);   background: rgba(107,114,128,0.1); }
 
-    /* Card thumbnails */
-    .thumbs-row {
-      display: flex;
-      gap: 12px;
+    .btn-results {
+      flex: 1; padding: 16px;
+      background: var(--accent); border: none;
+      border-radius: 16px; color: white; font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+      transition: transform 0.1s;
+    }
+    .btn-results:active { transform: scale(0.97); }
+
+    /* ════════════════════════════════════════
+       S4 — RESULTS
+    ════════════════════════════════════════ */
+    #s4 {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-top: var(--safe-t);
+      padding-bottom: calc(var(--safe-b) + 24px);
+    }
+
+    .results-hdr {
+      display: flex; align-items: center; gap: 14px;
       padding: 14px 18px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
+    .results-hdr-text { flex: 1; }
+    .results-hdr-text h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+    .results-hdr-text p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
+    .psa-badge-lg {
+      width: 72px; height: 72px; border-radius: 16px; border: 2.5px solid;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .psa-badge-lg .psa-lbl { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; opacity: 0.85; }
+    .psa-badge-lg .psa-num { font-size: 30px; font-weight: 900; line-height: 1.1; }
+
+    .thumbs-row {
+      display: flex; gap: 12px; padding: 14px 18px;
+    }
     .thumb-wrap {
-      flex: 1;
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      flex: 1; border-radius: 12px; overflow: hidden;
+      background: var(--surf); border: 1px solid var(--border);
     }
-
-    .thumb-wrap img {
-      width: 100%;
-      aspect-ratio: 5/7;
-      object-fit: cover;
-      display: block;
-    }
-
+    .thumb-wrap img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
     .thumb-lbl {
-      padding: 7px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      text-align: center;
+      padding: 7px 10px; font-size: 11px; font-weight: 600;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
     }
 
-    /* Score section */
-    .scores-wrap {
-      padding: 0 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .section-lbl {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding-top: 6px;
-    }
+    .scores-wrap { padding: 0 18px; display: flex; flex-direction: column; gap: 10px; }
+    .section-lbl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; padding-top: 6px; }
 
     .score-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
+      background: var(--surf); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 9px;
     }
+    .sc-top { display: flex; align-items: center; gap: 10px; }
+    .sc-label { flex: 1; font-size: 14px; font-weight: 600; }
+    .sc-weight { font-size: 11px; color: var(--muted); }
+    .sc-num { font-size: 22px; font-weight: 800; min-width: 30px; text-align: right; }
+    .sc-bar-track { width: 100%; height: 4px; background: var(--dim); border-radius: 2px; overflow: hidden; }
+    .sc-bar-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+    .sc-notes { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-    .sc-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sc-label {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .sc-weight {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .sc-num {
-      font-size: 22px;
-      font-weight: 800;
-      min-width: 30px;
-      text-align: right;
-    }
-
-    .sc-bar-track {
-      width: 100%;
-      height: 4px;
-      background: var(--dim);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .sc-bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .sc-notes {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* Weighted summary row */
     .weighted-row {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      background: var(--surf2); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
-
     .wr-left { flex: 1; }
+    .wr-label { font-size: 13px; font-weight: 600; }
+    .wr-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .wr-score { font-size: 22px; font-weight: 800; color: var(--accent2); }
 
-    .wr-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .wr-sub {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .wr-score {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent2);
-    }
-
-    /* Error banner */
-    .err-banner {
-      display: none;
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.3);
-      border-radius: 12px;
-      padding: 13px 16px;
-      font-size: 13px;
-      color: #fca5a5;
-      line-height: 1.5;
-    }
-
-    /* Reset button */
     .btn-reset {
-      width: 100%;
-      padding: 17px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      color: var(--text);
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      width: 100%; padding: 17px;
+      background: var(--surf2); border: 1px solid var(--border);
+      border-radius: 16px; color: var(--text); font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
     }
-    .btn-reset:active {
-      background: var(--border);
-      transform: scale(0.98);
+    .btn-reset:active { background: var(--border); transform: scale(0.98); }
+
+    /* ════════════════════════════════════════
+       ZOOM OVERLAY
+    ════════════════════════════════════════ */
+    #zoomOverlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.95);
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    #zoomOverlay.show { display: flex; }
+
+    .zoom-close {
+      position: absolute;
+      top: calc(var(--safe-t) + 12px); right: 18px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer;
+      color: white; z-index: 10;
+    }
+
+    .zoom-label {
+      position: absolute;
+      bottom: calc(var(--safe-b) + 20px);
+      font-size: 13px; color: rgba(255,255,255,0.5);
+    }
+
+    #zoomImg {
+      max-width: 94vw; max-height: 80vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.8);
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════
-     SCREEN 0 — API KEY ENTRY
-═══════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     S0 — WELCOME
+════════════════════════════════════ -->
 <div id="s0" class="screen active">
-  <div class="logo-wrap">
-    <div class="logo-icon">🃏</div>
-    <div class="logo-title">Card Grader</div>
-    <div class="logo-sub">AI-powered Pokémon card pre-grading<br>for PSA submissions</div>
+  <div class="welcome-hero">
+    <div class="app-icon">🃏</div>
+    <div class="app-name">Card Grader</div>
+    <div class="app-tagline">Pre-grade your Pokémon cards before<br>sending them to PSA</div>
+    <div class="offline-badge">✦ 100% offline · No account needed</div>
   </div>
 
-  <div class="form-block">
-    <div>
-      <div class="field-label">Anthropic API Key</div>
-      <div class="input-row">
-        <input
-          type="password"
-          id="apiKeyInput"
-          class="api-input"
-          placeholder="sk-ant-api03-..."
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-        >
-        <button class="eye-btn" id="eyeBtn" onclick="toggleVis()" aria-label="Toggle visibility">👁</button>
-      </div>
+  <div class="steps-row">
+    <div class="step-cell">
+      <div class="step-icon">📷</div>
+      <div class="step-label">Capture front &amp; back</div>
     </div>
-
-    <div class="info-box">
-      <strong>Privacy:</strong> Your API key is stored in <em>session memory only</em> — it's never written to disk, localStorage, or any server. It's sent directly from your browser to Anthropic's API to analyze card images. It disappears when you close the tab.
+    <div class="step-cell">
+      <div class="step-icon">🔍</div>
+      <div class="step-label">Grade each criterion</div>
     </div>
-
-    <button class="btn-primary" onclick="submitKey()">Start Grading →</button>
+    <div class="step-cell">
+      <div class="step-icon">🏆</div>
+      <div class="step-label">Get your PSA prediction</div>
+    </div>
   </div>
+
+  <button class="btn-start" onclick="startApp()">Start Grading →</button>
 </div>
 
 
-<!-- ═══════════════════════════════════
-     SCREEN 1 — FRONT CAMERA
-═══════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     S1 — FRONT CAMERA
+════════════════════════════════════ -->
 <div id="s1" class="screen camera-screen">
   <video id="vid1" class="cam-video" autoplay playsinline muted></video>
 
   <div class="cam-hdr">
-    <button class="cam-back" id="s1back" onclick="s1Back()">‹</button>
+    <button class="cam-back" onclick="s1Back()">‹</button>
     <span class="cam-title">Front of Card</span>
     <span class="cam-step">1 of 2</span>
   </div>
 
   <div class="cam-overlay">
-    <div class="card-guide" id="guide1">
-      <div class="cg-corner cg-tl"></div>
-      <div class="cg-corner cg-tr"></div>
-      <div class="cg-corner cg-bl"></div>
-      <div class="cg-corner cg-br"></div>
+    <div class="card-guide">
+      <div class="cg-c cg-tl"></div><div class="cg-c cg-tr"></div>
+      <div class="cg-c cg-bl"></div><div class="cg-c cg-br"></div>
       <span class="cg-hint">Align card within the frame</span>
     </div>
   </div>
@@ -835,12 +673,9 @@
     <button class="shutter" onclick="doCapture(1)" aria-label="Capture front"></button>
   </div>
 
-  <!-- Preview layer -->
   <div class="cam-preview" id="prev1">
     <div class="preview-hdr">Use this photo?</div>
-    <div class="preview-img-wrap">
-      <img class="preview-img" id="prevImg1" src="" alt="Front preview">
-    </div>
+    <div class="preview-img-wrap"><img class="preview-img" id="prevImg1" src="" alt="Front preview"></div>
     <div class="preview-actions">
       <button class="btn-retake" onclick="retake(1)">Retake</button>
       <button class="btn-use"    onclick="useFront()">Use Photo ✓</button>
@@ -849,9 +684,9 @@
 </div>
 
 
-<!-- ═══════════════════════════════════
-     SCREEN 2 — BACK CAMERA
-═══════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     S2 — BACK CAMERA
+════════════════════════════════════ -->
 <div id="s2" class="screen camera-screen">
   <video id="vid2" class="cam-video" autoplay playsinline muted></video>
 
@@ -862,31 +697,23 @@
   </div>
 
   <div class="cam-overlay">
-    <div class="card-guide" id="guide2">
-      <div class="cg-corner cg-tl"></div>
-      <div class="cg-corner cg-tr"></div>
-      <div class="cg-corner cg-bl"></div>
-      <div class="cg-corner cg-br"></div>
+    <div class="card-guide">
+      <div class="cg-c cg-tl"></div><div class="cg-c cg-tr"></div>
+      <div class="cg-c cg-bl"></div><div class="cg-c cg-br"></div>
       <span class="cg-hint">Flip the card and align</span>
     </div>
   </div>
 
-  <!-- Front thumb reference -->
-  <div class="front-thumb" id="frontThumb">
-    <img id="frontThumbImg" src="" alt="Front">
-  </div>
-  <div class="front-thumb-label">Front ✓</div>
+  <div class="front-thumb" id="frontThumb"><img id="frontThumbImg" src="" alt="Front"></div>
+  <div class="front-thumb-lbl">Front ✓</div>
 
   <div class="cam-footer">
     <button class="shutter" onclick="doCapture(2)" aria-label="Capture back"></button>
   </div>
 
-  <!-- Preview layer -->
   <div class="cam-preview" id="prev2">
     <div class="preview-hdr">Use this photo?</div>
-    <div class="preview-img-wrap">
-      <img class="preview-img" id="prevImg2" src="" alt="Back preview">
-    </div>
+    <div class="preview-img-wrap"><img class="preview-img" id="prevImg2" src="" alt="Back preview"></div>
     <div class="preview-actions">
       <button class="btn-retake" onclick="retake(2)">Retake</button>
       <button class="btn-use"    onclick="useBack()">Use Photo ✓</button>
@@ -895,343 +722,227 @@
 </div>
 
 
-<!-- ═══════════════════════════════════
-     SCREEN 3 — ANALYZING
-═══════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     S3 — GRADE THIS CARD
+════════════════════════════════════ -->
 <div id="s3" class="screen">
-  <div class="spinner-wrap">
-    <div class="ring-outer"></div>
-    <div class="ring-inner"></div>
-    <div class="ring-core">🔍</div>
+  <div class="grade-hdr">
+    <div class="grade-hdr-left">
+      <button class="btn-ghost" onclick="s3Back()">‹ Back</button>
+      <h2>Grade This Card</h2>
+    </div>
   </div>
 
-  <div class="analyzing-copy">
-    <h2>Analyzing Card</h2>
-    <p id="analyzeSubtxt">Sending images to Claude AI…</p>
+  <!-- Card thumbnails -->
+  <div class="card-thumbs">
+    <div class="card-thumb" onclick="openZoom('front')">
+      <img id="grFront" src="" alt="Front">
+      <div class="card-thumb-lbl">Front</div>
+      <span class="zoom-icon">🔍</span>
+    </div>
+    <div class="card-thumb" onclick="openZoom('back')">
+      <img id="grBack" src="" alt="Back">
+      <div class="card-thumb-lbl">Back</div>
+      <span class="zoom-icon">🔍</span>
+    </div>
   </div>
 
-  <div class="steps-list">
-    <div class="step" id="st1"><div class="step-dot"></div><span>Examining centering</span></div>
-    <div class="step" id="st2"><div class="step-dot"></div><span>Inspecting corners</span></div>
-    <div class="step" id="st3"><div class="step-dot"></div><span>Checking edges &amp; surface</span></div>
-    <div class="step" id="st4"><div class="step-dot"></div><span>Calculating PSA grade</span></div>
+  <!-- Criteria sliders — built by JS -->
+  <div class="criteria-scroll" id="criteriaScroll"></div>
+
+  <!-- Sticky footer -->
+  <div class="grade-footer">
+    <div class="live-grade-wrap">
+      <div class="live-grade-lbl">Predicted</div>
+      <div class="live-psa-badge grade-lo" id="liveBadge">
+        <span class="lbl">PSA</span>
+        <span class="num" id="liveNum">8</span>
+      </div>
+    </div>
+    <button class="btn-results" onclick="goToResults()">View Results →</button>
   </div>
 </div>
 
 
-<!-- ═══════════════════════════════════
-     SCREEN 4 — RESULTS
-═══════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     S4 — RESULTS
+════════════════════════════════════ -->
 <div id="s4" class="screen">
   <div class="results-hdr">
     <div class="results-hdr-text">
       <h2>Grading Results</h2>
-      <p id="resultSubtitle">Predicted PSA grade</p>
+      <p>Predicted PSA grade</p>
     </div>
-    <div class="psa-badge" id="psaBadge">
+    <div class="psa-badge-lg" id="resBadge">
       <span class="psa-lbl">PSA</span>
-      <span class="psa-num" id="psaNum">—</span>
+      <span class="psa-num" id="resGradeNum">—</span>
     </div>
   </div>
 
   <div class="thumbs-row">
-    <div class="thumb-wrap">
-      <img id="resFront" src="" alt="Front">
-      <div class="thumb-lbl">Front</div>
-    </div>
-    <div class="thumb-wrap">
-      <img id="resBack" src="" alt="Back">
-      <div class="thumb-lbl">Back</div>
-    </div>
+    <div class="thumb-wrap"><img id="resFront" src="" alt="Front"><div class="thumb-lbl">Front</div></div>
+    <div class="thumb-wrap"><img id="resBack"  src="" alt="Back"> <div class="thumb-lbl">Back</div></div>
   </div>
 
   <div class="scores-wrap">
     <div class="section-lbl">Score Breakdown</div>
-    <div id="scoreCards"></div>
-
+    <div id="resScoreCards"></div>
     <div class="weighted-row">
       <div class="wr-left">
         <div class="wr-label">Weighted Average</div>
         <div class="wr-sub">Centering 25% · Corners 30% · Edges 25% · Surface 20%</div>
       </div>
-      <div class="wr-score" id="wrScore">—</div>
+      <div class="wr-score" id="resWeighted">—</div>
     </div>
-
-    <div class="err-banner" id="errBanner"></div>
-
     <button class="btn-reset" onclick="gradeAnother()">🔄 Grade Another Card</button>
   </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- ════════════════════════════════════
+     ZOOM OVERLAY
+════════════════════════════════════ -->
+<div id="zoomOverlay">
+  <div class="zoom-close" onclick="closeZoom()">✕</div>
+  <img id="zoomImg" src="" alt="">
+  <div class="zoom-label" id="zoomLabel"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════
      JAVASCRIPT
-═══════════════════════════════════════════════ -->
+════════════════════════════════════════ -->
 <script>
 'use strict';
 
-// ─── State ────────────────────────────────────
-let API_KEY    = sessionStorage.getItem('_cgk') || '';
-let frontImg   = null;   // base64 data URL
-let backImg    = null;
-let camStreams  = {};     // { 1: MediaStream, 2: MediaStream }
+// ─── State ────────────────────────────────────────────
+let frontImg  = null;   // base64 data URLs
+let backImg   = null;
+let camStream = {};     // { 1: MediaStream, 2: MediaStream }
+let scores    = {};     // { centering_front: 8, centering_back: 8, corners: 8, edges: 8, surface: 8 }
 
-// Restore key field if already set
-if (API_KEY) document.getElementById('apiKeyInput').value = API_KEY;
+// ─── Criteria definition ─────────────────────────────
+const CRITERIA = [
+  {
+    key: 'centering_front', label: 'Centering', sub: 'Front side',
+    weight: '12.5%', defaultVal: 8,
+    tip: 'Measure how even the borders are left↔right and top↔bottom.',
+    descs: [
+      null, // index 0 unused
+      'Severely off-center — major border on one side',
+      'Heavily off-center — extreme imbalance',
+      'Significantly off-center — obvious tilt',
+      'Noticeably off-center — clear imbalance',
+      'Slightly off-center — visible unevenness (≈75/25)',
+      'Fair centering (≈70/30)',
+      'Good centering (≈65/35)',
+      'Very good — slight difference only (≈60/40)',
+      'Excellent centering (≈57/43)',
+      'Gem Mint — near-perfect borders (≈55/45)',
+    ]
+  },
+  {
+    key: 'centering_back', label: 'Centering', sub: 'Back side',
+    weight: '12.5%', defaultVal: 8,
+    tip: 'Check the back for even borders. The back is often graded independently.',
+    descs: [
+      null,
+      'Severely off-center — major border on one side',
+      'Heavily off-center — extreme imbalance',
+      'Significantly off-center — obvious tilt',
+      'Noticeably off-center — clear imbalance',
+      'Slightly off-center — visible unevenness (≈75/25)',
+      'Fair centering (≈70/30)',
+      'Good centering (≈65/35)',
+      'Very good — slight difference only (≈60/40)',
+      'Excellent centering (≈57/43)',
+      'Gem Mint — near-perfect borders (≈55/45)',
+    ]
+  },
+  {
+    key: 'corners', label: 'Corners', sub: 'All 4 corners',
+    weight: '30%', defaultVal: 8,
+    tip: 'Zoom in and check each corner. Look for whitening, fraying, rounding, or bending.',
+    descs: [
+      null,
+      'Heavily damaged — major creasing or bending',
+      'Severe wear — significant fraying and bending',
+      'Serious wear — major whitening on multiple corners',
+      'Heavy wear — pronounced fraying and whitening',
+      'Obvious rounding — clear whitening on corners',
+      'Noticeable rounding — some whitening visible',
+      'Light rounding — minor whitening beginning',
+      'Slight wear — very minor fraying under scrutiny',
+      'Near perfect — barely visible under magnification',
+      'Gem Mint — razor sharp, flawless corners',
+    ]
+  },
+  {
+    key: 'edges', label: 'Edges', sub: 'All 4 edges',
+    weight: '25%', defaultVal: 8,
+    tip: 'Look along all 4 edges for nicks, chips, roughness, or white spots.',
+    descs: [
+      null,
+      'Heavily damaged edges',
+      'Severe edge wear and chipping',
+      'Major chips and nicks on multiple edges',
+      'Heavy nicking and chipping visible',
+      'Obvious nicks and chips throughout',
+      'Noticeable nicking or chipping',
+      'Minor chips or nicks visible',
+      'Slight roughness or very light nicks',
+      'Very slight imperfection, barely visible',
+      'Gem Mint — perfectly smooth, zero chips or nicks',
+    ]
+  },
+  {
+    key: 'surface', label: 'Surface', sub: 'Front & back',
+    weight: '20%', defaultVal: 8,
+    tip: 'Check for scratches (catch the light), print lines, creases, staining, or cloudiness (haze).',
+    descs: [
+      null,
+      'Heavily damaged surface',
+      'Severe scratches and creasing',
+      'Major scratches, creases, or staining',
+      'Heavy surface wear throughout',
+      'Significant scratches, print lines, or haze',
+      'Noticeable scratches or visible defects',
+      'Minor scratches or marks visible',
+      'Light surface scratches or minor print lines',
+      'Near perfect — very minor flaw under magnification',
+      'Gem Mint — flawless, like fresh from pack',
+    ]
+  },
+];
 
-// ─── Utilities ────────────────────────────────
+// ─── Screen management ───────────────────────────────
 function showScreen(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s' + n).classList.add('active');
 }
 
+// ─── Score helpers ───────────────────────────────────
 function scoreColor(s) {
-  if (s >= 9)  return 'var(--gold)';
-  if (s >= 7)  return 'var(--blue)';
-  if (s >= 5)  return 'var(--muted)';
+  s = parseInt(s);
+  if (s >= 9) return 'var(--gold)';
+  if (s >= 7) return 'var(--blue)';
+  if (s >= 5) return 'var(--muted)';
   return 'var(--danger)';
 }
 
-// ─── Screen 0: API Key ────────────────────────
-function toggleVis() {
-  const inp = document.getElementById('apiKeyInput');
-  const btn = document.getElementById('eyeBtn');
-  if (inp.type === 'password') { inp.type = 'text';     btn.textContent = '🙈'; }
-  else                         { inp.type = 'password'; btn.textContent = '👁'; }
-}
-
-function submitKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key) { alert('Please enter your Anthropic API key.'); return; }
-  if (!key.startsWith('sk-ant-')) {
-    alert('That doesn\'t look like an Anthropic API key.\nIt should start with "sk-ant-".');
-    return;
-  }
-  API_KEY = key;
-  sessionStorage.setItem('_cgk', key);
-  showScreen(1);
-  startCam(1);
-}
-
-// ─── Camera ───────────────────────────────────
-async function startCam(n) {
-  stopCam(n);  // clean up any prior stream
-  const vid = document.getElementById('vid' + n);
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        facingMode: { ideal: 'environment' },
-        width:  { ideal: 1920 },
-        height: { ideal: 1080 }
-      }
-    });
-    camStreams[n] = stream;
-    vid.srcObject = stream;
-    vid.play();
-    hidePrev(n);
-  } catch (err) {
-    alert(
-      'Camera access denied.\n\n' +
-      'On iPhone: go to Settings → Safari → Camera → Allow.\n\n' +
-      'Detail: ' + err.message
-    );
-  }
-}
-
-function stopCam(n) {
-  if (camStreams[n]) {
-    camStreams[n].getTracks().forEach(t => t.stop());
-    delete camStreams[n];
-  }
-  const vid = document.getElementById('vid' + n);
-  if (vid) vid.srcObject = null;
-}
-
-function stopAllCams() { stopCam(1); stopCam(2); }
-
-// ─── Capture ──────────────────────────────────
-function doCapture(n) {
-  const vid = document.getElementById('vid' + n);
-  if (!vid.videoWidth) { alert('Camera not ready yet, try again.'); return; }
-
-  const cvs = document.createElement('canvas');
-  cvs.width  = vid.videoWidth;
-  cvs.height = vid.videoHeight;
-  cvs.getContext('2d').drawImage(vid, 0, 0);
-
-  const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
-
-  document.getElementById('prevImg' + n).src = dataUrl;
-  document.getElementById('prev' + n).classList.add('show');
-
-  // Stash tentatively
-  if (n === 1) frontImg = dataUrl;
-  else         backImg  = dataUrl;
-}
-
-function retake(n) {
-  hidePrev(n);
-  if (n === 1) frontImg = null;
-  else         backImg  = null;
-}
-
-function hidePrev(n) {
-  document.getElementById('prev' + n).classList.remove('show');
-}
-
-// Confirm front → go to back camera
-function useFront() {
-  stopCam(1);
-  // Show front thumbnail on screen 2
-  document.getElementById('frontThumbImg').src = frontImg;
-  showScreen(2);
-  startCam(2);
-}
-
-// Confirm back → run analysis
-function useBack() {
-  stopCam(2);
-  showScreen(3);
-  resetSteps();
-  runAnalysis();
-}
-
-// ─── Back button handlers ─────────────────────
-function s1Back() {
-  stopCam(1);
-  showScreen(0);
-}
-
-function s2Back() {
-  stopCam(2);
-  backImg = null;
-  hidePrev(2);
-  showScreen(1);
-  startCam(1);
-}
-
-// ─── Analysis ────────────────────────────────
-function resetSteps() {
-  ['st1','st2','st3','st4'].forEach(id =>
-    document.getElementById(id).className = 'step'
+function calcWeighted() {
+  const cf = (scores.centering_front || 8);
+  const cb = (scores.centering_back  || 8);
+  const cAvg = (cf + cb) / 2;
+  return (
+    cAvg                        * 0.25 +
+    (scores.corners  || 8)      * 0.30 +
+    (scores.edges    || 8)      * 0.25 +
+    (scores.surface  || 8)      * 0.20
   );
 }
 
-function setStep(id, cls) {
-  document.getElementById(id).className = 'step ' + cls;
-}
-
-async function runAnalysis() {
-  const stepTimings = [
-    { id:'st1', delay: 200  },
-    { id:'st2', delay: 1600 },
-    { id:'st3', delay: 3000 },
-    { id:'st4', delay: 4400 },
-  ];
-
-  // Start step animation
-  stepTimings.forEach(({ id, delay }, i) => {
-    setTimeout(() => {
-      if (i > 0) setStep(stepTimings[i-1].id, 'done');
-      setStep(id, 'active');
-    }, delay);
-  });
-
-  let results;
-  try {
-    results = await callClaude();
-  } catch (err) {
-    // Even on error go to results to show the error banner
-    stopAllCams();
-    showScreen(4);
-    document.getElementById('resFront').src = frontImg || '';
-    document.getElementById('resBack').src  = backImg  || '';
-    showError('⚠️ ' + err.message);
-    return;
-  }
-
-  // Finish steps
-  setTimeout(() => {
-    stepTimings.forEach(({ id }) => setStep(id, 'done'));
-    setTimeout(() => {
-      showScreen(4);
-      renderResults(results);
-    }, 600);
-  }, 5000);
-}
-
-// ─── Claude API call ─────────────────────────
-async function callClaude() {
-  const PROMPT = `You are an expert Pokémon card grader with deep knowledge of PSA grading standards.
-You have been given a front image (first) and a back image (second) of a Pokémon card.
-Carefully examine both images and grade each criterion on a scale of 1–10.
-
-Return ONLY a valid JSON object — absolutely no markdown, no code fences, no extra text — with this exact shape:
-{
-  "centering_front": { "score": <integer 1-10>, "notes": "<specific observation, e.g. border measurements if visible>" },
-  "centering_back":  { "score": <integer 1-10>, "notes": "<specific observation>" },
-  "corners":  { "score": <integer 1-10>, "notes": "<describe all 4 corners — whitening, fraying, bending, wear>" },
-  "edges":    { "score": <integer 1-10>, "notes": "<describe all 4 edges — nicks, chips, roughness>" },
-  "surface":  { "score": <integer 1-10>, "notes": "<describe surface — scratches, print lines, creases, staining, haze>" }
-}
-
-Scoring guide:
-10 = Gem Mint — flawless even under magnification
- 9 = Mint — near perfect, trivial flaw only under magnification
- 8 = Near Mint-Mint — slight wear, still very clean
- 7 = Near Mint — minor noticeable wear
- 6 = Excellent-Mint — light rounding on corners or light surface issues
- 5 = Excellent — noticeable wear throughout
- 4 = Very Good-Excellent — obvious wear
- 3 = Very Good — significant wear
- 2 = Good — heavy wear
- 1 = Poor — severely damaged
-
-Centering scale: 10 = 55/45 or better; 9 = 60/40; 8 = 65/35; 7 = 70/30; lower for worse.`;
-
-  const toB64 = (dataUrl) => dataUrl.replace(/^data:image\/\w+;base64,/, '');
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'x-api-key':     API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 1024,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: toB64(frontImg) } },
-          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: toB64(backImg)  } },
-          { type: 'text',  text: PROMPT }
-        ]
-      }]
-    })
-  });
-
-  if (!res.ok) {
-    let msg = `HTTP ${res.status}`;
-    try { const e = await res.json(); msg = e.error?.message || msg; } catch {}
-    throw new Error(msg);
-  }
-
-  const data = await res.json();
-  const raw  = data.content[0].text.trim();
-
-  // Extract JSON even if Claude wraps it in markdown
-  const match = raw.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('Could not parse AI response. Raw: ' + raw.slice(0, 120));
-
-  return JSON.parse(match[0]);
-}
-
-// ─── Results rendering ────────────────────────
-function psaGradeFromWeighted(w) {
+function psaFromWeighted(w) {
   if (w >= 9.5) return 10;
   if (w >= 8.5) return 9;
   if (w >= 7.5) return 8;
@@ -1244,35 +955,194 @@ function psaGradeFromWeighted(w) {
   return 1;
 }
 
-function renderResults(sc) {
-  // Images
+function badgeClass(grade) {
+  grade = parseInt(grade);
+  if (grade === 10) return 'grade-10';
+  if (grade === 9)  return 'grade-9';
+  if (grade === 8)  return 'grade-8';
+  return 'grade-lo';
+}
+
+// ─── Welcome ─────────────────────────────────────────
+function startApp() {
+  showScreen(1);
+  startCam(1);
+}
+
+// ─── Camera ──────────────────────────────────────────
+async function startCam(n) {
+  stopCam(n);
+  const vid = document.getElementById('vid' + n);
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+    });
+    camStream[n] = stream;
+    vid.srcObject = stream;
+    vid.play();
+    hidePrev(n);
+  } catch (err) {
+    alert('Camera access denied.\n\nOn iPhone: Settings → Safari → Camera → Allow.\n\nError: ' + err.message);
+  }
+}
+
+function stopCam(n) {
+  if (camStream[n]) { camStream[n].getTracks().forEach(t => t.stop()); delete camStream[n]; }
+  const vid = document.getElementById('vid' + n);
+  if (vid) vid.srcObject = null;
+}
+
+function stopAllCams() { stopCam(1); stopCam(2); }
+
+// ─── Capture ─────────────────────────────────────────
+function doCapture(n) {
+  const vid = document.getElementById('vid' + n);
+  if (!vid.videoWidth) { alert('Camera not ready, please try again.'); return; }
+  const cvs = document.createElement('canvas');
+  cvs.width = vid.videoWidth; cvs.height = vid.videoHeight;
+  cvs.getContext('2d').drawImage(vid, 0, 0);
+  const url = cvs.toDataURL('image/jpeg', 0.92);
+  document.getElementById('prevImg' + n).src = url;
+  document.getElementById('prev' + n).classList.add('show');
+  if (n === 1) frontImg = url; else backImg = url;
+}
+
+function retake(n) {
+  hidePrev(n);
+  if (n === 1) frontImg = null; else backImg = null;
+}
+
+function hidePrev(n) { document.getElementById('prev' + n).classList.remove('show'); }
+
+function useFront() {
+  stopCam(1);
+  document.getElementById('frontThumbImg').src = frontImg;
+  showScreen(2);
+  startCam(2);
+}
+
+function useBack() {
+  stopCam(2);
+  buildGradingScreen();
+  showScreen(3);
+}
+
+// ─── Back navigation ─────────────────────────────────
+function s1Back() { stopCam(1); showScreen(0); }
+
+function s2Back() {
+  stopCam(2); backImg = null; hidePrev(2);
+  showScreen(1); startCam(1);
+}
+
+function s3Back() {
+  showScreen(2); startCam(2);
+}
+
+// ─── Grading screen ───────────────────────────────────
+function buildGradingScreen() {
+  // Set thumbnails
+  document.getElementById('grFront').src = frontImg;
+  document.getElementById('grBack').src  = backImg;
+
+  // Build criteria cards
+  const container = document.getElementById('criteriaScroll');
+  container.innerHTML = '';
+
+  CRITERIA.forEach(c => {
+    const val = scores[c.key] !== undefined ? scores[c.key] : c.defaultVal;
+    scores[c.key] = val;
+
+    const div = document.createElement('div');
+    div.className = 'crit-card';
+    div.innerHTML = `
+      <div class="crit-top">
+        <div class="crit-name-wrap">
+          <div class="crit-name">${c.label}</div>
+          <div class="crit-sub">${c.sub} · ${c.weight}</div>
+        </div>
+        <div class="crit-score-badge" id="badge-${c.key}" style="color:${scoreColor(val)}">${val}</div>
+      </div>
+      <input type="range" class="crit-slider" id="slider-${c.key}"
+             min="1" max="10" value="${val}"
+             oninput="handleSlider('${c.key}', this)">
+      <div class="slider-ticks">
+        ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<span class="tick">${n}</span>`).join('')}
+      </div>
+      <div class="crit-desc" id="desc-${c.key}">${c.descs[val]}</div>
+      <div style="font-size:11px;color:var(--dim);margin-top:-4px">${c.tip}</div>
+    `;
+    container.appendChild(div);
+
+    // Set initial slider fill
+    setSliderFill(document.getElementById('slider-' + c.key), val);
+  });
+
+  updateLiveGrade();
+}
+
+function handleSlider(key, slider) {
+  const val = parseInt(slider.value);
+  scores[key] = val;
+  setSliderFill(slider, val);
+  const color = scoreColor(val);
+  document.getElementById('badge-' + key).textContent = val;
+  document.getElementById('badge-' + key).style.color = color;
+  const crit = CRITERIA.find(c => c.key === key);
+  document.getElementById('desc-' + key).textContent = crit.descs[val];
+  updateLiveGrade();
+}
+
+function setSliderFill(slider, val) {
+  const pct  = ((val - 1) / 9) * 100;
+  const color = scoreColor(val);
+  slider.style.background =
+    `linear-gradient(to right, ${color} ${pct}%, var(--dim) ${pct}%)`;
+}
+
+function updateLiveGrade() {
+  const w   = calcWeighted();
+  const psa = psaFromWeighted(w);
+  document.getElementById('liveNum').textContent = psa;
+  const badge = document.getElementById('liveBadge');
+  badge.className = 'live-psa-badge ' + badgeClass(psa);
+}
+
+// ─── Zoom overlay ─────────────────────────────────────
+function openZoom(side) {
+  const img   = side === 'front' ? frontImg : backImg;
+  const label = side === 'front' ? 'Front of Card' : 'Back of Card';
+  document.getElementById('zoomImg').src       = img;
+  document.getElementById('zoomLabel').textContent = label;
+  document.getElementById('zoomOverlay').classList.add('show');
+}
+
+function closeZoom() {
+  document.getElementById('zoomOverlay').classList.remove('show');
+}
+
+// ─── Results ──────────────────────────────────────────
+function goToResults() {
+  renderResults();
+  showScreen(4);
+}
+
+function renderResults() {
   document.getElementById('resFront').src = frontImg;
   document.getElementById('resBack').src  = backImg;
 
-  // Weighted average
-  const cAvg = (sc.centering_front.score + sc.centering_back.score) / 2;
-  const weighted = (
-    cAvg               * 0.25 +
-    sc.corners.score   * 0.30 +
-    sc.edges.score     * 0.25 +
-    sc.surface.score   * 0.20
-  );
+  const w   = calcWeighted();
+  const psa = psaFromWeighted(w);
 
-  const psaGrade = psaGradeFromWeighted(weighted);
+  document.getElementById('resGradeNum').textContent = psa;
+  document.getElementById('resWeighted').textContent = w.toFixed(2);
 
-  // PSA badge
-  const badge = document.getElementById('psaBadge');
-  document.getElementById('psaNum').textContent = psaGrade;
-  badge.className = 'psa-badge ' + (
-    psaGrade === 10 ? 'grade-10' :
-    psaGrade === 9  ? 'grade-9'  :
-    psaGrade === 8  ? 'grade-8'  : 'grade-lo'
-  );
+  const badge = document.getElementById('resBadge');
+  badge.className = 'psa-badge-lg ' + badgeClass(psa);
 
-  document.getElementById('wrScore').textContent = weighted.toFixed(2);
-
-  // Criteria rows
-  const criteria = [
+  // Score cards
+  const resultRows = [
     { key: 'centering_front', label: 'Centering (Front)', weight: '12.5%' },
     { key: 'centering_back',  label: 'Centering (Back)',  weight: '12.5%' },
     { key: 'corners',  label: 'Corners', weight: '30%'  },
@@ -1280,15 +1150,15 @@ function renderResults(sc) {
     { key: 'surface',  label: 'Surface', weight: '20%'  },
   ];
 
-  const container = document.getElementById('scoreCards');
+  const container = document.getElementById('resScoreCards');
   container.innerHTML = '';
 
-  criteria.forEach(({ key, label, weight }) => {
-    const item  = sc[key];
-    if (!item) return;
-    const s     = item.score;
+  resultRows.forEach(({ key, label, weight }) => {
+    const s     = scores[key] || 8;
     const color = scoreColor(s);
-    const pct   = (s / 10 * 100).toFixed(0) + '%';
+    const pct   = ((s - 1) / 9 * 100).toFixed(0) + '%';
+    const crit  = CRITERIA.find(c => c.key === key);
+    const desc  = crit ? crit.descs[s] : '';
 
     const card = document.createElement('div');
     card.className = 'score-card';
@@ -1301,40 +1171,25 @@ function renderResults(sc) {
       <div class="sc-bar-track">
         <div class="sc-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div>
       </div>
-      <div class="sc-notes">${item.notes || ''}</div>
+      <div class="sc-notes">${desc}</div>
     `;
     container.appendChild(card);
   });
 
-  // Animate bars after paint
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      container.querySelectorAll('.sc-bar-fill').forEach(el => {
-        el.style.width = el.dataset.pct;
-      });
+  // Animate bars
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    container.querySelectorAll('.sc-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct;
     });
-  });
+  }));
 }
 
-function showError(msg) {
-  const banner = document.getElementById('errBanner');
-  banner.style.display = 'block';
-  banner.textContent = msg;
-}
-
-// ─── Grade another card ───────────────────────
+// ─── Grade another ────────────────────────────────────
 function gradeAnother() {
-  frontImg = null;
-  backImg  = null;
+  frontImg = null; backImg = null;
+  scores   = {};
   stopAllCams();
-  hidePrev(1);
-  hidePrev(2);
-  resetSteps();
-  document.getElementById('scoreCards').innerHTML = '';
-  document.getElementById('errBanner').style.display = 'none';
-  document.getElementById('psaNum').textContent = '—';
-  document.getElementById('wrScore').textContent = '—';
-  document.getElementById('psaBadge').className = 'psa-badge grade-lo';
+  hidePrev(1); hidePrev(2);
   showScreen(1);
   startCam(1);
 }
