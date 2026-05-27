@@ -32,44 +32,31 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     :root {
-      /* ── Light palette (Slack-inspired) ── */
-      --bg:       #F7F3FA;   /* warm off-white lavender */
+      --bg:       #F7F3FA;
       --surf:     #FFFFFF;
       --surf2:    #F0EAF5;
       --border:   #E3D9EC;
       --border2:  #C9BBDA;
-
-      /* ── Brand purple (Slack's #4A154B) ── */
       --accent:   #4A154B;
-      --accent-h: #3A0B3B;   /* hover */
-      --accent-lt:#F5ECF8;   /* very light purple bg */
-      --accent-md:#C69DD4;   /* medium tint */
-
-      /* ── Text ── */
+      --accent-h: #3A0B3B;
+      --accent-lt:#F5ECF8;
+      --accent-md:#C69DD4;
       --text:     #1D1C1D;
       --text2:    #4A4450;
       --muted:    #7B7280;
       --dim:      #C9BBDA;
-
-      /* ── Semantic ── */
       --green:    #007A5A;
       --green-lt: #E4F3EE;
       --red:      #D0021B;
       --red-lt:   #FDEDF0;
-
-      /* ── PSA grade themes ── */
       --g10-bg: #FFF8E6; --g10-bd: #C8920A; --g10-txt: #7A5700;
       --g9-bg:  #EEF3F8; --g9-bd:  #607D8B; --g9-txt:  #334E5C;
       --g8-bg:  #E8F1FB; --g8-bd:  #1264A3; --g8-txt:  #0A3F6D;
       --glo-bg: #F2F2F2; --glo-bd: #9E9E9E; --glo-txt: #5A5A5A;
-
-      /* ── Safe areas ── */
       --safe-t: env(safe-area-inset-top,    20px);
       --safe-b: env(safe-area-inset-bottom,  0px);
       --safe-l: env(safe-area-inset-left,    0px);
       --safe-r: env(safe-area-inset-right,   0px);
-
-      /* ── Elevation ── */
       --shadow-sm:  0 1px 3px rgba(74,21,75,0.07), 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md:  0 3px 8px rgba(74,21,75,0.09), 0 1px 3px rgba(0,0,0,0.05);
       --shadow-lg:  0 8px 24px rgba(74,21,75,0.12), 0 2px 6px rgba(0,0,0,0.05);
@@ -77,8 +64,7 @@
 
     html, body {
       width: 100%; height: 100%;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow: hidden; touch-action: manipulation; overscroll-behavior: none;
@@ -87,503 +73,226 @@
     .screen { position: fixed; inset: 0; display: none; flex-direction: column; background: var(--bg); }
     .screen.active { display: flex; }
 
-    /* ════════════════════════════════════════
-       SHARED COMPONENTS
-    ════════════════════════════════════════ */
-
-    .pill-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 12px; border-radius: 99px;
-      font-size: 12px; font-weight: 600;
-    }
-
+    /* ════ SHARED ════ */
     .btn-primary {
       width: 100%; padding: 16px;
       background: var(--accent); border: none; border-radius: 10px;
-      color: #fff; font-size: 16px; font-weight: 600;
-      cursor: pointer; letter-spacing: -0.1px;
+      color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
       transition: background 0.15s, transform 0.1s;
       box-shadow: 0 2px 8px rgba(74,21,75,0.35);
     }
     .btn-primary:active { background: var(--accent-h); transform: scale(0.98); }
-
     .btn-secondary {
       flex: 1; padding: 15px;
       background: var(--surf); border: 1.5px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 15px; font-weight: 500;
-      cursor: pointer; transition: background 0.1s;
+      border-radius: 10px; color: var(--text); font-size: 15px; font-weight: 500; cursor: pointer;
     }
     .btn-secondary:active { background: var(--surf2); }
-
     .btn-accent {
       flex: 2; padding: 15px;
       background: var(--accent); border: none; border-radius: 10px;
-      color: #fff; font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background 0.15s;
+      color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
       box-shadow: 0 2px 6px rgba(74,21,75,0.3);
     }
     .btn-accent:active { background: var(--accent-h); }
 
-    /* ════════════════════════════════════════
-       S0 — WELCOME
-    ════════════════════════════════════════ */
-    #s0 {
-      justify-content: flex-start;
-      padding: calc(var(--safe-t) + 24px) 20px calc(var(--safe-b) + 28px);
-      overflow-y: auto; gap: 20px;
-    }
-
-    .welcome-top {
-      display: flex; flex-direction: column; gap: 6px;
-      padding-bottom: 4px;
-    }
-
-    .welcome-eyebrow {
-      font-size: 12px; font-weight: 600; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.8px;
-    }
-
-    .welcome-title {
-      font-size: 30px; font-weight: 800; letter-spacing: -0.6px;
-      color: var(--text); line-height: 1.15;
-    }
-
-    .welcome-sub {
-      font-size: 15px; color: var(--muted); line-height: 1.5; margin-top: 4px;
-    }
-
-    .welcome-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--green-lt); border: 1px solid rgba(0,122,90,0.2);
-      border-radius: 99px; padding: 5px 14px;
-      font-size: 12px; font-weight: 600; color: var(--green);
-      align-self: flex-start;
-    }
-
-    /* Feature cards */
+    /* ════ S0 — WELCOME ════ */
+    #s0 { justify-content: flex-start; padding: calc(var(--safe-t) + 24px) 20px calc(var(--safe-b) + 28px); overflow-y: auto; gap: 20px; }
+    .welcome-top { display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px; }
+    .welcome-eyebrow { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; }
+    .welcome-title   { font-size: 30px; font-weight: 800; letter-spacing: -0.6px; color: var(--text); line-height: 1.15; }
+    .welcome-sub     { font-size: 15px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+    .welcome-badge   { display: inline-flex; align-items: center; gap: 6px; background: var(--green-lt); border: 1px solid rgba(0,122,90,0.2); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--green); align-self: flex-start; }
     .feature-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .feature-row {
-      display: flex; align-items: center; gap: 14px;
-      background: var(--surf); border-radius: 12px;
-      padding: 14px 16px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-    }
-
-    .feature-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--accent-lt);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
-    }
-
+    .feature-row  { display: flex; align-items: center; gap: 14px; background: var(--surf); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+    .feature-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-lt); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
     .feature-text { flex: 1; }
     .feature-label { font-size: 14px; font-weight: 600; color: var(--text); }
     .feature-desc  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .feature-step  { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
 
-    .feature-step {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--accent); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
-    }
-
-    /* ════════════════════════════════════════
-       S1 & S2 — CAMERA (keep dark, clean UI)
-    ════════════════════════════════════════ */
+    /* ════ CAMERA (S1 + S2) ════ */
     .camera-screen { overflow: hidden; background: #000; }
-    .cam-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-
-    .cam-hdr {
-      position: absolute; top: var(--safe-t); left: 0; right: 0; z-index: 20;
-      display: flex; align-items: center; justify-content: center;
-      padding: 12px 16px;
-    }
-
-    .cam-back {
-      position: absolute; left: 16px;
-      background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.2); color: #fff;
-      width: 36px; height: 36px; border-radius: 99px;
-      font-size: 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .cam-title {
-      font-size: 14px; font-weight: 600; color: #fff;
-      background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      padding: 6px 16px; border-radius: 99px;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .cam-step {
-      position: absolute; right: 16px;
-      background: rgba(74,21,75,0.75); backdrop-filter: blur(8px);
-      color: #fff; font-size: 11px; font-weight: 700;
-      padding: 5px 10px; border-radius: 99px;
-    }
-
-    /* Card guide overlay */
-    .cam-overlay {
-      position: absolute; inset: 0; z-index: 5;
-      display: flex; align-items: center; justify-content: center;
-      padding-bottom: 80px;
-    }
-
-    .card-guide {
-      position: relative; width: 252px; height: 352px;
-      border-radius: 10px;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.48);
-      outline: 2px solid rgba(255,255,255,0.9);
-      outline-offset: 0px;
-    }
-
-    /* Solid corner accents */
+    .cam-video  { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .cam-hdr    { position: absolute; top: var(--safe-t); left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: 12px 16px; }
+    .cam-back   { position: absolute; left: 16px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 36px; height: 36px; border-radius: 99px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cam-title  { font-size: 14px; font-weight: 600; color: #fff; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 99px; border: 1px solid rgba(255,255,255,0.15); }
+    .cam-step   { position: absolute; right: 16px; background: rgba(74,21,75,0.75); backdrop-filter: blur(8px); color: #fff; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 99px; }
+    .cam-overlay { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; padding-bottom: 80px; }
+    .card-guide { position: relative; width: 252px; height: 352px; border-radius: 10px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.48); outline: 2px solid rgba(255,255,255,0.9); }
     .cg-c { position: absolute; width: 24px; height: 24px; border-color: #fff; border-style: solid; }
     .cg-tl { top:-3px; left:-3px;  border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
     .cg-tr { top:-3px; right:-3px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
     .cg-bl { bottom:-3px; left:-3px;  border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
     .cg-br { bottom:-3px; right:-3px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
-
-    .cg-hint {
-      position: absolute; bottom: -36px;
-      left: 50%; transform: translateX(-50%);
-      white-space: nowrap; font-size: 12px; font-weight: 500;
-      color: rgba(255,255,255,0.9);
-      background: rgba(0,0,0,0.4); backdrop-filter: blur(6px);
-      padding: 4px 12px; border-radius: 99px;
-    }
-
-    .cam-footer {
-      position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
-      padding: 16px 40px calc(var(--safe-b) + 20px);
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(transparent, rgba(0,0,0,0.55));
-    }
-
-    .shutter {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: #fff; border: none;
-      outline: 3px solid rgba(255,255,255,0.5); outline-offset: 5px;
-      cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    }
+    .cg-hint { position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); padding: 4px 12px; border-radius: 99px; }
+    .cam-footer  { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 16px 40px calc(var(--safe-b) + 20px); display: flex; align-items: center; justify-content: center; background: linear-gradient(transparent, rgba(0,0,0,0.55)); }
+    .shutter     { width: 72px; height: 72px; border-radius: 50%; background: #fff; border: none; outline: 3px solid rgba(255,255,255,0.5); outline-offset: 5px; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
     .shutter:active { transform: scale(0.88); }
-
-    .front-thumb {
-      position: absolute; bottom: calc(var(--safe-b) + 112px); left: 20px; z-index: 15;
-      width: 48px; height: 67px; border-radius: 6px; overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.8);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
+    .front-thumb { position: absolute; bottom: calc(var(--safe-b) + 112px); left: 20px; z-index: 15; width: 48px; height: 67px; border-radius: 6px; overflow: hidden; border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
     .front-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .front-thumb-lbl {
-      position: absolute; bottom: calc(var(--safe-b) + 106px); left: 18px; z-index: 15;
-      font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.8);
-      background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 99px;
-    }
-
-    /* Confirm/retake preview */
+    .front-thumb-lbl { position: absolute; bottom: calc(var(--safe-b) + 106px); left: 18px; z-index: 15; font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.8); background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 99px; }
     .cam-preview { display: none; position: absolute; inset: 0; z-index: 30; flex-direction: column; background: var(--bg); }
     .cam-preview.show { display: flex; }
-    .preview-hdr {
-      padding: calc(var(--safe-t) + 16px) 20px 12px;
-      font-size: 17px; font-weight: 700; text-align: center; flex-shrink: 0; color: var(--text);
-    }
+    .preview-hdr { padding: calc(var(--safe-t) + 16px) 20px 12px; font-size: 17px; font-weight: 700; text-align: center; flex-shrink: 0; color: var(--text); }
     .preview-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 10px 20px; min-height: 0; }
     .preview-img { max-width: 100%; max-height: 100%; border-radius: 14px; object-fit: contain; box-shadow: var(--shadow-lg); }
     .preview-actions { display: flex; gap: 10px; padding: 14px 20px calc(var(--safe-b) + 18px); flex-shrink: 0; }
 
-    /* ════════════════════════════════════════
-       ANALYZING OVERLAY
-    ════════════════════════════════════════ */
-    #s3-analyzing {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(247,243,250,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-    }
+    /* ════ ANALYZING OVERLAY ════ */
+    #s3-analyzing { position: fixed; inset: 0; z-index: 200; background: rgba(247,243,250,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
     #s3-analyzing.show { display: flex; }
-
-    .analyzing-icon {
-      width: 64px; height: 64px; border-radius: 18px;
-      background: var(--surf); border: 1px solid var(--border);
-      box-shadow: var(--shadow-md);
-      display: flex; align-items: center; justify-content: center; font-size: 30px;
-      position: relative;
-    }
-    .analyzing-ring {
-      position: absolute; inset: -6px; border-radius: 50%;
-      border: 2.5px solid transparent;
-      border-top-color: var(--accent); border-right-color: var(--accent-md);
-      animation: spin 1s linear infinite;
-    }
+    .analyzing-icon { width: 64px; height: 64px; border-radius: 18px; background: var(--surf); border: 1px solid var(--border); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; font-size: 30px; position: relative; }
+    .analyzing-ring { position: absolute; inset: -6px; border-radius: 50%; border: 2.5px solid transparent; border-top-color: var(--accent); border-right-color: var(--accent-md); animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .analyzing-txt { font-size: 16px; font-weight: 600; color: var(--text); }
     .analyzing-sub { font-size: 13px; color: var(--muted); }
 
-    /* ════════════════════════════════════════
-       S3 — GRADE THIS CARD
-    ════════════════════════════════════════ */
+    /* ════ NOT-A-CARD OVERLAY ════ */
+    #notCardOverlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(247,243,250,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; padding: 32px 24px calc(var(--safe-b) + 24px);
+    }
+    #notCardOverlay.show { display: flex; }
+    .nc-icon  { font-size: 52px; line-height: 1; }
+    .nc-title { font-size: 21px; font-weight: 800; color: var(--text); text-align: center; }
+    .nc-body  { font-size: 14px; color: var(--text2); text-align: center; line-height: 1.55; max-width: 290px; }
+    .nc-reason-pill { display: inline-flex; align-items: center; background: var(--red-lt); border: 1px solid rgba(208,2,27,0.2); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--red); }
+    .nc-divider { width: 40px; height: 1px; background: var(--border); }
+    .nc-tips { width: 100%; max-width: 290px; background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+    .nc-tips-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+    .nc-tip-row { font-size: 13px; color: var(--text2); line-height: 1.6; }
+    .nc-btn-row { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 290px; margin-top: 4px; }
+    .nc-btn-anyway { width: 100%; padding: 15px; background: var(--surf); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text2); font-size: 14px; font-weight: 500; cursor: pointer; }
+
+    /* ════ S3 — GRADE THIS CARD ════ */
     #s3 { overflow: hidden; background: var(--bg); }
-
-    .grade-hdr {
-      display: flex; align-items: center; gap: 8px;
-      padding: calc(var(--safe-t) + 10px) 16px 10px;
-      background: var(--surf);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn-back-link {
-      background: none; border: none; color: var(--accent);
-      font-size: 15px; font-weight: 500; cursor: pointer;
-      padding: 4px 0; display: flex; align-items: center; gap: 3px;
-    }
-
+    .grade-hdr { display: flex; align-items: center; gap: 8px; padding: calc(var(--safe-t) + 10px) 16px 10px; background: var(--surf); border-bottom: 1px solid var(--border); flex-shrink: 0; box-shadow: var(--shadow-sm); }
+    .btn-back-link { background: none; border: none; color: var(--accent); font-size: 15px; font-weight: 500; cursor: pointer; padding: 4px 0; display: flex; align-items: center; gap: 3px; }
     .hdr-divider { width: 1px; height: 16px; background: var(--border); }
-
     .grade-hdr h2 { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; }
     .hdr-hint { font-size: 11px; color: var(--muted); }
-
-    /* Card thumbnails */
-    .card-thumbs-row {
-      display: flex; gap: 10px;
-      padding: 12px 14px;
-      background: var(--surf);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .card-thumb {
-      flex: 1; border-radius: 10px; overflow: hidden;
-      background: var(--surf2); border: 1.5px solid var(--border);
-      cursor: pointer; position: relative;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .card-thumb:active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(74,21,75,0.15); }
+    .card-thumbs-row { display: flex; gap: 10px; padding: 12px 14px; background: var(--surf); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .card-thumb { flex: 1; border-radius: 10px; overflow: hidden; background: var(--surf2); border: 1.5px solid var(--border); cursor: pointer; position: relative; box-shadow: var(--shadow-sm); transition: border-color 0.15s; }
+    .card-thumb:active { border-color: var(--accent); }
     .card-thumb img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
-    .card-thumb-lbl {
-      padding: 5px 8px; font-size: 10px; font-weight: 700;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
-    }
-    .zoom-pill {
-      position: absolute; top: 6px; right: 6px;
-      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
-      border-radius: 99px; padding: 3px 8px;
-      font-size: 10px; font-weight: 600; color: #fff;
-      display: flex; align-items: center; gap: 3px;
-    }
-
-    /* Estimate banner */
-    .estimate-banner {
-      margin: 10px 14px 0;
-      padding: 9px 12px;
-      background: var(--accent-lt); border: 1px solid rgba(74,21,75,0.15);
-      border-radius: 8px; font-size: 12px; color: var(--accent); line-height: 1.4;
-      flex-shrink: 0;
-    }
-
-    /* Scrollable criteria */
-    .criteria-scroll {
-      flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      padding: 10px 14px 6px; display: flex; flex-direction: column; gap: 8px;
-    }
-
-    .crit-card {
-      background: var(--surf); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px;
-      box-shadow: var(--shadow-sm);
-      display: flex; flex-direction: column; gap: 10px;
-    }
-
+    .card-thumb-lbl { padding: 5px 8px; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center; }
+    .zoom-pill { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border-radius: 99px; padding: 3px 8px; font-size: 10px; font-weight: 600; color: #fff; }
+    .ctr-pill  { position: absolute; top: 6px; right: 6px; background: rgba(0,150,180,0.88); border-radius: 99px; padding: 3px 8px; font-size: 10px; font-weight: 700; color: #fff; }
+    .detect-badge { position: absolute; bottom: 28px; left: 4px; right: 4px; border-radius: 4px; font-size: 9px; font-weight: 700; color: #fff; text-align: center; padding: 2px 4px; line-height: 1.4; display: none; }
+    .detect-badge.visible { display: block; }
+    .detect-badge.card-ok   { background: rgba(0,122,90,0.82); }
+    .detect-badge.card-warn { background: rgba(208,2,27,0.82); }
+    .estimate-banner { margin: 10px 14px 0; padding: 9px 12px; background: var(--accent-lt); border: 1px solid rgba(74,21,75,0.15); border-radius: 8px; font-size: 12px; color: var(--accent); line-height: 1.4; flex-shrink: 0; }
+    .criteria-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px 14px 6px; display: flex; flex-direction: column; gap: 8px; }
+    .crit-card { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 10px; }
     .crit-top { display: flex; align-items: flex-start; gap: 10px; }
     .crit-name-wrap { flex: 1; }
     .crit-name { font-size: 14px; font-weight: 700; color: var(--text); }
     .crit-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
     .crit-score-badge { font-size: 26px; font-weight: 800; min-width: 34px; text-align: right; transition: color 0.15s; }
-
-    /* Custom range slider */
-    input[type=range].crit-slider {
-      -webkit-appearance: none; appearance: none;
-      width: 100%; height: 5px; border-radius: 99px;
-      background: var(--dim); outline: none; cursor: pointer;
-    }
-    input[type=range].crit-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none;
-      width: 26px; height: 26px; border-radius: 50%;
-      background: #fff; cursor: pointer;
-      border: 2px solid var(--border2);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px rgba(74,21,75,0.0);
-      transition: box-shadow 0.15s, transform 0.1s;
-    }
-    input[type=range].crit-slider:active::-webkit-slider-thumb {
-      transform: scale(1.15);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 0 0 3px rgba(74,21,75,0.2);
-    }
-
+    input[type=range].crit-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 99px; background: var(--dim); outline: none; cursor: pointer; }
+    input[type=range].crit-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #fff; cursor: pointer; border: 2px solid var(--border2); box-shadow: 0 1px 4px rgba(0,0,0,0.2); transition: box-shadow 0.15s, transform 0.1s; }
+    input[type=range].crit-slider:active::-webkit-slider-thumb { transform: scale(1.15); box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 0 0 3px rgba(74,21,75,0.2); }
     .slider-ticks { display: flex; justify-content: space-between; padding: 0 2px; }
     .tick { font-size: 9px; color: var(--dim); font-weight: 500; }
-
     .crit-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
     .crit-tip  { font-size: 11px; color: var(--muted); line-height: 1.4; font-style: italic; }
-
-    .centering-ref {
-      background: var(--surf2); border: 1px solid var(--border);
-      border-radius: 7px; padding: 8px 10px;
-      font-size: 10px; color: var(--muted); line-height: 1.9;
-      font-family: 'SF Mono', 'Menlo', monospace;
-    }
+    .centering-ref { background: var(--surf2); border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; font-size: 10px; color: var(--muted); line-height: 1.9; font-family: 'SF Mono', 'Menlo', monospace; }
     .centering-ref strong { color: var(--text2); font-weight: 600; }
-
-    /* Grade footer */
-    .grade-footer {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px calc(var(--safe-b) + 10px);
-      background: var(--surf); border-top: 1px solid var(--border);
-      flex-shrink: 0; box-shadow: 0 -2px 8px rgba(74,21,75,0.06);
-    }
-
+    .grade-footer { display: flex; align-items: center; gap: 10px; padding: 10px 14px calc(var(--safe-b) + 10px); background: var(--surf); border-top: 1px solid var(--border); flex-shrink: 0; box-shadow: 0 -2px 8px rgba(74,21,75,0.06); }
     .live-grade-wrap { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
     .live-grade-lbl { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
-
-    .live-psa-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 7px 14px; border-radius: 9px; border: 1.5px solid;
-      font-weight: 700; line-height: 1;
-    }
+    .live-psa-badge { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 9px; border: 1.5px solid; font-weight: 700; line-height: 1; }
     .live-psa-badge .lbl { font-size: 8px; letter-spacing: 1.2px; font-weight: 700; opacity: 0.75; }
     .live-psa-badge .num { font-size: 22px; font-weight: 800; }
-
     .grade-10 { color: var(--g10-txt); border-color: var(--g10-bd); background: var(--g10-bg); }
     .grade-9  { color: var(--g9-txt);  border-color: var(--g9-bd);  background: var(--g9-bg); }
     .grade-8  { color: var(--g8-txt);  border-color: var(--g8-bd);  background: var(--g8-bg); }
     .grade-lo { color: var(--glo-txt); border-color: var(--glo-bd); background: var(--glo-bg); }
-
-    .btn-view-results {
-      flex: 1; padding: 14px;
-      background: var(--accent); border: none; border-radius: 10px;
-      color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 2px 8px rgba(74,21,75,0.3);
-      transition: background 0.15s, transform 0.1s;
-    }
+    .btn-view-results { flex: 1; padding: 14px; background: var(--accent); border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(74,21,75,0.3); transition: background 0.15s, transform 0.1s; }
     .btn-view-results:active { background: var(--accent-h); transform: scale(0.98); }
 
-    /* ════════════════════════════════════════
-       S4 — RESULTS
-    ════════════════════════════════════════ */
+    /* ════ S4 — RESULTS ════ */
     #s4 { overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--bg); }
-
-    /* Results header card */
-    .res-hero {
-      background: var(--surf);
-      border-bottom: 1px solid var(--border);
-      padding: calc(var(--safe-t) + 14px) 18px 18px;
-      display: flex; align-items: center; gap: 16px;
-      box-shadow: var(--shadow-sm);
-    }
-
+    .res-hero { background: var(--surf); border-bottom: 1px solid var(--border); padding: calc(var(--safe-t) + 14px) 18px 18px; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); }
     .res-hero-text { flex: 1; }
     .res-hero-text h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); }
     .res-hero-text p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
-
-    /* Large PSA badge */
-    .psa-badge-lg {
-      width: 76px; height: 76px; border-radius: 16px; border: 2px solid;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      flex-shrink: 0; box-shadow: var(--shadow-md);
-    }
+    .psa-badge-lg { width: 76px; height: 76px; border-radius: 16px; border: 2px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: var(--shadow-md); }
     .psa-badge-lg .psa-lbl { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; opacity: 0.8; }
     .psa-badge-lg .psa-num { font-size: 32px; font-weight: 900; line-height: 1.1; }
 
-    /* Card image thumbnails */
-    .res-thumbs { display: flex; gap: 10px; padding: 14px; }
-    .res-thumb {
-      flex: 1; border-radius: 12px; overflow: hidden;
+    /* Centering Analysis card */
+    .centering-card {
+      margin: 14px 14px 0;
       background: var(--surf); border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
+      border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm);
     }
-    .res-thumb img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
-    .res-thumb-lbl {
-      padding: 6px 10px; font-size: 11px; font-weight: 600;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center;
-    }
+    .ca-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px 10px; border-bottom: 1px solid var(--border); }
+    .ca-header-left { display: flex; align-items: center; gap: 8px; }
+    .ca-icon  { font-size: 18px; }
+    .ca-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .ca-sub   { font-size: 11px; color: var(--muted); }
+    .ca-era-badge { font-size: 10px; font-weight: 600; color: var(--accent); background: var(--accent-lt); border: 1px solid rgba(74,21,75,0.15); padding: 3px 10px; border-radius: 99px; }
+    .ca-body { display: flex; }
+    .ca-img-col { width: 42%; flex-shrink: 0; position: relative; cursor: pointer; }
+    .ca-img-col img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
+    .ca-tap-hint { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: rgba(0,0,0,0.6); color: #fff; font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 99px; }
+    .ca-stats { flex: 1; padding: 12px 12px 12px 10px; display: flex; flex-direction: column; gap: 9px; justify-content: center; }
+    .ca-stat-row { display: flex; align-items: center; justify-content: space-between; }
+    .ca-stat-lbl { font-size: 11px; color: var(--muted); }
+    .ca-stat-val { font-size: 16px; font-weight: 800; color: var(--text); }
+    .ca-psa-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+    .ca-bar-wrap { display: flex; flex-direction: column; gap: 3px; }
+    .ca-bar-lbl  { font-size: 10px; color: var(--muted); }
+    .ca-bar-track { height: 6px; background: var(--border); border-radius: 99px; position: relative; overflow: visible; }
+    .ca-bar-center { position: absolute; top: 0; bottom: 0; left: 49%; width: 2%; background: var(--border2); border-radius: 1px; }
+    .ca-bar-dot { position: absolute; top: -3px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transform: translateX(-50%); left: 50%; transition: left 0.7s cubic-bezier(0.22,1,0.36,1), background 0.4s; }
+    .ca-divider { height: 1px; background: var(--border); }
+    .ca-score-row { display: flex; align-items: center; justify-content: space-between; }
+    .ca-score-lbl { font-size: 11px; color: var(--muted); }
+    .ca-score-val { font-size: 15px; font-weight: 800; color: var(--accent); }
 
-    /* Score section */
+    .res-thumbs { display: flex; gap: 10px; padding: 14px; }
+    .res-thumb { flex: 1; border-radius: 12px; overflow: hidden; background: var(--surf); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+    .res-thumb img { width: 100%; aspect-ratio: 5/7; object-fit: cover; display: block; }
+    .res-thumb-lbl { padding: 6px 10px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; text-align: center; }
     .res-section { padding: 0 14px; display: flex; flex-direction: column; gap: 8px; }
     .res-section-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; padding-top: 4px; }
-
-    .score-card {
-      background: var(--surf); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px;
-      box-shadow: var(--shadow-sm);
-      display: flex; flex-direction: column; gap: 8px;
-    }
-
+    .score-card { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 8px; }
     .sc-top { display: flex; align-items: center; gap: 8px; }
     .sc-label { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
     .sc-weight { font-size: 11px; color: var(--muted); }
     .sc-num { font-size: 22px; font-weight: 800; min-width: 28px; text-align: right; }
     .sc-bar-track { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-    .sc-bar-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+    .sc-bar-fill  { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
     .sc-notes { font-size: 12px; color: var(--text2); line-height: 1.5; }
-
-    /* Weighted average row */
-    .weighted-row {
-      background: var(--surf); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px;
-      box-shadow: var(--shadow-sm);
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
+    .weighted-row { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .wr-label { font-size: 14px; font-weight: 600; color: var(--text); }
     .wr-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .wr-score { font-size: 24px; font-weight: 800; color: var(--accent); }
-
     .res-footer { padding: 4px 14px calc(var(--safe-b) + 20px); }
-
-    .btn-reset {
-      width: 100%; padding: 15px;
-      background: var(--surf); border: 1.5px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 15px; font-weight: 600;
-      cursor: pointer; box-shadow: var(--shadow-sm);
-      transition: background 0.1s, transform 0.1s;
-    }
+    .btn-reset { width: 100%; padding: 15px; background: var(--surf); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); transition: background 0.1s, transform 0.1s; }
     .btn-reset:active { background: var(--surf2); transform: scale(0.98); }
 
-    /* ════════════════════════════════════════
-       ZOOM OVERLAY
-    ════════════════════════════════════════ */
-    #zoomOverlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.88);
-      display: none; flex-direction: column; align-items: center; justify-content: center;
-    }
+    /* ════ ZOOM OVERLAY ════ */
+    #zoomOverlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); display: none; flex-direction: column; align-items: center; justify-content: center; }
     #zoomOverlay.show { display: flex; }
-    .zoom-close {
-      position: absolute; top: calc(var(--safe-t) + 12px); right: 16px;
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.15); display: flex; align-items: center;
-      justify-content: center; font-size: 16px; cursor: pointer; color: #fff;
-    }
-    .zoom-label {
-      position: absolute; bottom: calc(var(--safe-b) + 18px);
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-      color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 500;
-      padding: 5px 16px; border-radius: 99px;
-    }
-    #zoomImg {
-      max-width: 92vw; max-height: 78vh;
-      object-fit: contain; border-radius: 12px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.7);
-    }
+    .zoom-close { position: absolute; top: calc(var(--safe-t) + 12px); right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; color: #fff; }
+    .zoom-toggle { position: absolute; top: calc(var(--safe-t) + 12px); left: 16px; display: none; gap: 6px; }
+    .zoom-toggle.show { display: flex; }
+    .zt-btn { padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.75); background: rgba(0,0,0,0.4); cursor: pointer; }
+    .zt-btn.active { background: rgba(0,150,180,0.75); border-color: rgba(0,229,255,0.7); color: #fff; }
+    .zoom-label { position: absolute; bottom: calc(var(--safe-b) + 18px); background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 500; padding: 5px 16px; border-radius: 99px; }
+    #zoomImg { max-width: 92vw; max-height: 78vh; object-fit: contain; border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.7); }
   </style>
 </head>
 <body>
 
-<!-- ══════════ S0: WELCOME ══════════ -->
+<!-- ══ S0: WELCOME ══ -->
 <div id="s0" class="screen active">
   <div class="welcome-top">
     <div class="welcome-eyebrow">Pokémon · PSA Pre-grading</div>
@@ -591,7 +300,6 @@
     <div class="welcome-sub">Know your card's grade before you submit — free and offline.</div>
     <div class="welcome-badge">✓ No account or API key needed</div>
   </div>
-
   <div class="feature-list">
     <div class="feature-row">
       <div class="feature-icon">📷</div>
@@ -602,12 +310,20 @@
       <div class="feature-step">1</div>
     </div>
     <div class="feature-row">
-      <div class="feature-icon">🔍</div>
+      <div class="feature-icon">🃏</div>
       <div class="feature-text">
-        <div class="feature-label">Review &amp; adjust scores</div>
-        <div class="feature-desc">Auto-estimates centering, corners, edges, surface</div>
+        <div class="feature-label">Card detection</div>
+        <div class="feature-desc">Verifies it's a Pokémon card across all eras &amp; rarities</div>
       </div>
       <div class="feature-step">2</div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-icon">📏</div>
+      <div class="feature-text">
+        <div class="feature-label">Centering analysis</div>
+        <div class="feature-desc">Detects card borders &amp; measures L/R and T/B margins</div>
+      </div>
+      <div class="feature-step">3</div>
     </div>
     <div class="feature-row">
       <div class="feature-icon">🏆</div>
@@ -615,15 +331,14 @@
         <div class="feature-label">Get your PSA prediction</div>
         <div class="feature-desc">Weighted score mapped to official PSA grade</div>
       </div>
-      <div class="feature-step">3</div>
+      <div class="feature-step">4</div>
     </div>
   </div>
-
   <button class="btn-primary" onclick="startApp()">Start Grading →</button>
 </div>
 
 
-<!-- ══════════ S1: FRONT CAMERA ══════════ -->
+<!-- ══ S1: FRONT CAMERA ══ -->
 <div id="s1" class="screen camera-screen">
   <video id="vid1" class="cam-video" autoplay playsinline muted></video>
   <div class="cam-hdr">
@@ -652,7 +367,7 @@
 </div>
 
 
-<!-- ══════════ S2: BACK CAMERA ══════════ -->
+<!-- ══ S2: BACK CAMERA ══ -->
 <div id="s2" class="screen camera-screen">
   <video id="vid2" class="cam-video" autoplay playsinline muted></video>
   <div class="cam-hdr">
@@ -683,20 +398,21 @@
 </div>
 
 
-<!-- ══════════ S3: GRADE THIS CARD ══════════ -->
+<!-- ══ S3: GRADE THIS CARD ══ -->
 <div id="s3" class="screen">
   <div class="grade-hdr">
     <button class="btn-back-link" onclick="s3Back()">‹ Back</button>
     <div class="hdr-divider"></div>
     <h2>Grade This Card</h2>
-    <span class="hdr-hint">Tap image to zoom</span>
+    <span class="hdr-hint">Tap front for centering</span>
   </div>
 
   <div class="card-thumbs-row">
-    <div class="card-thumb" onclick="openZoom('front')">
+    <div class="card-thumb" onclick="openCenteringZoom()">
       <img id="grFront" src="" alt="Front">
       <div class="card-thumb-lbl">Front</div>
-      <span class="zoom-pill">🔍 Zoom</span>
+      <span class="ctr-pill">📏 Centering</span>
+      <div class="detect-badge" id="detectBadge"></div>
     </div>
     <div class="card-thumb" onclick="openZoom('back')">
       <img id="grBack" src="" alt="Back">
@@ -723,7 +439,7 @@
 </div>
 
 
-<!-- ══════════ S4: RESULTS ══════════ -->
+<!-- ══ S4: RESULTS ══ -->
 <div id="s4" class="screen">
   <div class="res-hero">
     <div class="res-hero-text">
@@ -733,6 +449,60 @@
     <div class="psa-badge-lg" id="resBadge">
       <span class="psa-lbl">PSA</span>
       <span class="psa-num" id="resGradeNum">—</span>
+    </div>
+  </div>
+
+  <!-- ── Centering Analysis ── -->
+  <div class="centering-card">
+    <div class="ca-header">
+      <div class="ca-header-left">
+        <span class="ca-icon">📏</span>
+        <div>
+          <div class="ca-title">Centering Analysis</div>
+          <div class="ca-sub">Tap image for full-screen overlay</div>
+        </div>
+      </div>
+      <div class="ca-era-badge" id="caEraBadge">—</div>
+    </div>
+    <div class="ca-body">
+      <div class="ca-img-col" onclick="openCenteringZoom()">
+        <img id="caCenteringImg" src="" alt="Centering overlay">
+        <div class="ca-tap-hint">📏 Full view</div>
+      </div>
+      <div class="ca-stats">
+        <!-- L/R -->
+        <div class="ca-bar-wrap">
+          <div class="ca-bar-lbl">Left / Right</div>
+          <div class="ca-bar-track">
+            <div class="ca-bar-center"></div>
+            <div class="ca-bar-dot" id="dotLR"></div>
+          </div>
+        </div>
+        <div class="ca-stat-row">
+          <span class="ca-stat-lbl">L/R</span>
+          <span class="ca-stat-val" id="statLR">—</span>
+          <span class="ca-psa-pill" id="psaLR"></span>
+        </div>
+        <div class="ca-divider"></div>
+        <!-- T/B -->
+        <div class="ca-bar-wrap">
+          <div class="ca-bar-lbl">Top / Bottom</div>
+          <div class="ca-bar-track">
+            <div class="ca-bar-center"></div>
+            <div class="ca-bar-dot" id="dotTB"></div>
+          </div>
+        </div>
+        <div class="ca-stat-row">
+          <span class="ca-stat-lbl">T/B</span>
+          <span class="ca-stat-val" id="statTB">—</span>
+          <span class="ca-psa-pill" id="psaTB"></span>
+        </div>
+        <div class="ca-divider"></div>
+        <div class="ca-score-row">
+          <span class="ca-score-lbl">Centering score</span>
+          <span class="ca-score-val" id="ctrScore">—</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -758,19 +528,41 @@
 </div>
 
 
-<!-- ══════════ ANALYZING OVERLAY ══════════ -->
+<!-- ══ ANALYZING OVERLAY ══ -->
 <div id="s3-analyzing">
-  <div class="analyzing-icon">
-    🃏
-    <div class="analyzing-ring"></div>
-  </div>
-  <div class="analyzing-txt">Analyzing card…</div>
-  <div class="analyzing-sub">Cropping guide area &amp; estimating scores</div>
+  <div class="analyzing-icon">🃏<div class="analyzing-ring"></div></div>
+  <div class="analyzing-txt" id="analyzingTxt">Analyzing card…</div>
+  <div class="analyzing-sub" id="analyzingSub">Detecting card &amp; measuring centering</div>
 </div>
 
 
-<!-- ══════════ ZOOM OVERLAY ══════════ -->
+<!-- ══ NOT-A-CARD OVERLAY ══ -->
+<div id="notCardOverlay">
+  <div class="nc-icon">🔍</div>
+  <div class="nc-title">Not a Pokémon Card?</div>
+  <div class="nc-body" id="ncBody">The photo doesn't match the visual pattern of a Pokémon card. Make sure the card fills the guide and is well-lit.</div>
+  <div class="nc-reason-pill" id="ncReason">No uniform card border detected</div>
+  <div class="nc-divider"></div>
+  <div class="nc-tips">
+    <div class="nc-tips-title">Common fixes</div>
+    <div class="nc-tip-row">📐 Card should fill the guide edge-to-edge</div>
+    <div class="nc-tip-row">💡 Use good lighting — avoid glare &amp; shadows</div>
+    <div class="nc-tip-row">🎯 Hold steady — blur affects border detection</div>
+    <div class="nc-tip-row">🃏 Works with all eras: WOTC (yellow border), EX, modern (black border)</div>
+  </div>
+  <div class="nc-btn-row">
+    <button class="btn-primary" onclick="dismissNotCard(false)">Retake Photos</button>
+    <button class="nc-btn-anyway" onclick="dismissNotCard(true)">Grade Anyway →</button>
+  </div>
+</div>
+
+
+<!-- ══ ZOOM OVERLAY ══ -->
 <div id="zoomOverlay">
+  <div class="zoom-toggle" id="zoomToggle">
+    <button class="zt-btn" id="ztPlain"     onclick="setZoomMode('plain')">Photo</button>
+    <button class="zt-btn active" id="ztCtr" onclick="setZoomMode('centering')">📏 Centering</button>
+  </div>
   <div class="zoom-close" onclick="closeZoom()">✕</div>
   <img id="zoomImg" src="" alt="">
   <div class="zoom-label" id="zoomLabel"></div>
@@ -780,21 +572,87 @@
 <script>
 'use strict';
 
-// ─── State ───────────────────────────────
-let frontImg = null, backImg = null;
+// ─── State ───────────────────────────────────────────────
+let frontImg  = null, backImg = null;
 let camStream = {};
-let scores = {};
+let scores    = {};
+let centeringOverlayURL = null;   // canvas-rendered overlay data URL
+let centeringData       = null;   // { lPct, rPct, tPct, bPct }
+let detectionResult     = null;   // isPokemonCard() result
+let zoomMode = 'centering';
 
-// ─── PSA criteria ────────────────────────
+// ─── Pokémon Era + Rarity Reference Data ────────────────
+// Embedded reference covering all eras, their sets, rarities, and border visuals.
+// Used for detection heuristics and for display in the app.
+const POKEMON_ERAS = [
+  {
+    id:'wotc', name:'WOTC Era', years:'1999–2003', borderType:'yellow',
+    borderNote:'Distinctive yellow-gold outer border',
+    sets:['Base Set (Charizard, Blastoise, Venusaur)','Jungle (Scyther, Flareon, Vaporeon)','Fossil (Gengar, Lapras, Aerodactyl)','Base Set 2','Team Rocket (Dark Charizard, Dark Blastoise)','Gym Heroes / Gym Challenge','Neo Genesis (Lugia, Typhlosion, Feraligatr)','Neo Discovery (Espeon, Umbreon)','Neo Revelation (Ho-Oh, Suicune)','Neo Destiny (Shining Charizard, Shining Magikarp)','Legendary Collection','Expedition / Aquapolis / Skyridge (e-Card era)'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare (non-holo)'},{s:'★H',n:'Holo Rare',d:'Holofoil artwork window'},{s:'—',n:'Secret Rare',d:'Card number exceeds set total (e.g. 103/102)'}],
+    borderRGB:{rMin:160,rMax:240,gMin:120,gMax:210,bMin:30,bMax:120}
+  },
+  {
+    id:'ex', name:'EX Era', years:'2003–2007', borderType:'black',
+    borderNote:'Black outer border, colored inner frame',
+    sets:['EX Ruby & Sapphire (Blaziken ex, Mewtwo ex)','EX Sandstorm / EX Dragon','EX Team Magma vs Team Aqua','EX FireRed & LeafGreen (Charizard ex)','EX Team Rocket Returns','EX Deoxys / Emerald / Unseen Forces','EX Delta Species / Legend Maker','EX Holon Phantoms / Crystal Guardians','EX Dragon Frontiers / Power Keepers'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'EX',n:'Rare Holo EX',d:'Large HP, double the rarity'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'dp', name:'Diamond & Pearl Era', years:'2007–2011', borderType:'black',
+    borderNote:'Black outer border',
+    sets:['Diamond & Pearl (Dialga, Palkia)','Mysterious Treasures / Secret Wonders','Great Encounters / Majestic Dawn','Legends Awakened / Stormfront','Platinum (Giratina)','Rising Rivals / Supreme Victors / Arceus','HeartGold & SoulSilver (Lugia, Ho-Oh)','Unleashed / Undaunted / Triumphant / Call of Legends'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'X',n:'LV.X',d:'Level-Up cards on a platform'},{s:'☆',n:'Prime',d:'HGSS era, retro-frame holo'},{s:'LGND',n:'LEGEND',d:'Two-card halves that combine (e.g. Lugia LEGEND)'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'bw', name:'Black & White Era', years:'2011–2013', borderType:'black',
+    borderNote:'Black outer border, white inner border introduced',
+    sets:['Black & White (Reshiram, Zekrom)','Emerging Powers / Noble Victories / Next Destinies','Dark Explorers / Dragons Exalted','Boundaries Crossed / Plasma Storm','Plasma Freeze / Plasma Blast','Legendary Treasures (Charizard reprint, Radiant Collection)'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'EX',n:'Rare Holo EX'},{s:'FA',n:'Full Art',d:'Artwork extends to card edges'},{s:'SR',n:'Secret Rare',d:'Gold-bordered cards above set total'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'xy', name:'XY Era', years:'2014–2016', borderType:'black',
+    borderNote:'Black outer border',
+    sets:['XY Base (Yveltal EX, Xerneas EX)','Flashfire (Charizard EX, M Charizard EX)','Furious Fists / Phantom Forces','Primal Clash / Roaring Skies (Rayquaza EX)','Ancient Origins / BREAKthrough / BREAKpoint','Fates Collide / Steam Siege','Evolutions (Base Set reprints)','Generations (Pikachu EX, Radiant Collection)'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'EX',n:'Rare Holo EX'},{s:'MEX',n:'MEGA EX',d:'Mega Evolution cards'},{s:'BRK',n:'BREAK',d:'Horizontal card orientation'},{s:'SR',n:'Secret Rare',d:'Gold border, above set total'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'sm', name:'Sun & Moon Era', years:'2017–2019', borderType:'black',
+    borderNote:'Black outer border',
+    sets:['Sun & Moon Base (Solgaleo GX, Lunala GX)','Guardians Rising / Burning Shadows (Charizard GX)','Crimson Invasion / Ultra Prism','Forbidden Light / Celestial Storm','Dragon Majesty / Lost Thunder','Team Up (Tag Team GX: Pikachu & Zekrom GX)','Unbroken Bonds / Unified Minds / Cosmic Eclipse','Hidden Fates (Shiny Charizard GX)','Shining Legends (Shining Rayquaza)'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'GX',n:'Rare Holo GX'},{s:'GXA',n:'Full Art GX',d:'Artwork fills entire card face'},{s:'◇',n:'Prism Star',d:'One per deck rule, unique holo pattern'},{s:'RR',n:'Rainbow Rare',d:'Pastel rainbow holo on full art'},{s:'HR',n:'Hyper Rare',d:'Gold textured cards above set total'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'swsh', name:'Sword & Shield Era', years:'2020–2022', borderType:'black',
+    borderNote:'Black outer border',
+    sets:['Sword & Shield Base (Zacian V, Zamazenta V)','Rebel Clash / Darkness Ablaze (Charizard VMAX)','Champions Path (Charizard V/VMAX)','Vivid Voltage / Battle Styles','Chilling Reign / Evolving Skies (Rayquaza VMAX)','Fusion Strike / Brilliant Stars (Arceus VSTAR)','Astral Radiance / Pokemon GO','Lost Origin / Silver Tempest','Crown Zenith (Galarian Gallery)','Shining Fates (Shiny Charizard VMAX)'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★H',n:'Holo Rare'},{s:'V',n:'Ultra Rare V'},{s:'VX',n:'VMAX / VSTAR'},{s:'FA',n:'Full Art V / Trainer'},{s:'AA',n:'Alternate Art V',d:'High-demand illustration variants'},{s:'RR',n:'Rainbow Rare'},{s:'GLD',n:'Gold Secret Rare'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  },
+  {
+    id:'sv', name:'Scarlet & Violet Era', years:'2023–present', borderType:'black',
+    borderNote:'Black outer border; Special Illustration Rares are borderless',
+    sets:['Scarlet & Violet Base (Koraidon ex, Miraidon ex)','Paldea Evolved / Obsidian Flames (Charizard ex)','151 (Mew ex, all 151 original Pokémon)','Paradox Rift / Paldean Fates','Temporal Forces / Twilight Masquerade','Shrouded Fable / Stellar Crown','Prismatic Evolutions (Umbreon ex, Sylveon ex)','Journey Together'],
+    rarities:[{s:'●',n:'Common'},{s:'◆',n:'Uncommon'},{s:'★',n:'Rare'},{s:'★★',n:'Double Rare (ex)',d:'Standard ex card, holo'},{s:'UR',n:'Ultra Rare (ex FA)',d:'Full-art ex'},{s:'IR',n:'Illustration Rare',d:'Scenic full-art illustration style'},{s:'SIR',n:'Special Illustration Rare',d:'Highest-demand illustration cards'},{s:'HR',n:'Hyper Rare (Gold)'},{s:'ACE',n:'ACE SPEC Rare',d:'One per deck powerful trainer'},{s:'SH',n:'Shiny',d:'Black-bordered shiny variants'}],
+    borderRGB:{rMin:0,rMax:55,gMin:0,gMax:55,bMin:0,bMax:55}
+  }
+];
+
+// ─── PSA Criteria ────────────────────────────────────────
 const CRITERIA = [
   {
-    key: 'centering_front', label: 'Centering', sub: 'Front side', weight: '12.5%',
-    tip: 'Measure how even the white inner borders are — left vs right, top vs bottom.',
-    descs: [null,
+    key:'centering_front', label:'Centering', sub:'Front side', weight:'12.5%',
+    tip:'Measure how even the inner borders are — left vs right, top vs bottom.',
+    descs:[null,
       'PSA 1 — extreme miscut or severe misalignment',
       'PSA 2 — 90/10 barely met; very wide border on one side',
       'PSA 3 — ≈90/10; severe imbalance, borders very uneven',
-      'PSA 4/5 — ≈85/15; obvious off-center, clear border difference',
+      'PSA 4 — ≈85/15; obvious off-center, clear border difference',
       'PSA 5 — ≈85/15; clearly uneven borders, noticeable tilt',
       'PSA 6 — ≈80/20; noticeable imbalance, one side clearly wider',
       'PSA 7 — ≈70/30; small but visible border difference',
@@ -802,16 +660,16 @@ const CRITERIA = [
       'PSA 9 — ≈60/40; borders nearly equal at a glance',
       'PSA 10 — 55/45 or better; virtually perfect borders',
     ],
-    ref: '<strong>PSA 10</strong>: 55/45 front · <strong>PSA 9</strong>: 60/40 · <strong>PSA 8</strong>: 65/35 · <strong>PSA 7</strong>: 70/30 · <strong>PSA 6</strong>: 80/20'
+    ref:'<strong>PSA 10</strong>: 55/45 front · <strong>PSA 9</strong>: 60/40 · <strong>PSA 8</strong>: 65/35 · <strong>PSA 7</strong>: 70/30 · <strong>PSA 6</strong>: 80/20'
   },
   {
-    key: 'centering_back', label: 'Centering', sub: 'Back side', weight: '12.5%',
-    tip: 'PSA grades front and back separately. The back has a wider tolerance.',
-    descs: [null,
+    key:'centering_back', label:'Centering', sub:'Back side', weight:'12.5%',
+    tip:'PSA grades front and back separately. The back has a wider tolerance.',
+    descs:[null,
       'PSA 1 — extreme miscut on reverse',
-      'PSA 2/3 — 90/10 barely met on reverse',
+      'PSA 2 — 90/10 barely met on reverse',
       'PSA 3 — severe imbalance on back',
-      'PSA 4/5 — obvious off-center on back',
+      'PSA 4 — obvious off-center on back',
       'PSA 5 — clearly uneven back borders',
       'PSA 6 — noticeable off-center on back',
       'PSA 7 — slight imbalance visible on reverse',
@@ -819,12 +677,12 @@ const CRITERIA = [
       'PSA 9 — very slight variance on reverse (90/10 or better)',
       'PSA 10 — 75/25 or better on reverse; well-centred back',
     ],
-    ref: '<strong>PSA 10</strong>: 75/25 reverse · <strong>PSA 9–5</strong>: 90/10 reverse · Back tolerance is wider than front'
+    ref:'<strong>PSA 10</strong>: 75/25 reverse · <strong>PSA 9–5</strong>: 90/10 reverse · Back tolerance is wider than front'
   },
   {
-    key: 'corners', label: 'Corners', sub: 'All 4 corners', weight: '30%',
-    tip: 'Zoom in and check all 4 corners under good light. Look for whitening (white fibres), fraying, rounding, or bending.',
-    descs: [null,
+    key:'corners', label:'Corners', sub:'All 4 corners', weight:'30%',
+    tip:'Zoom in and check all 4 corners under good light. Look for whitening, fraying, rounding, or bending.',
+    descs:[null,
       'PSA 1 — severely frayed, bent, or creased corners',
       'PSA 2 — heavy rounding, fraying, and possible creasing at corners',
       'PSA 3 — significant rounding on all corners; visible whitening throughout',
@@ -838,9 +696,9 @@ const CRITERIA = [
     ]
   },
   {
-    key: 'edges', label: 'Edges', sub: 'All 4 edges', weight: '25%',
-    tip: 'Hold the card up and look along each edge. Nicks are white dots; chips are missing chunks.',
-    descs: [null,
+    key:'edges', label:'Edges', sub:'All 4 edges', weight:'25%',
+    tip:'Hold the card up and look along each edge. Nicks are white dots; chips are missing chunks.',
+    descs:[null,
       'PSA 1 — severely frayed, split, or heavily chipped edges',
       'PSA 2 — heavy chipping/nicking; roughness very obvious',
       'PSA 3 — significant edge damage on multiple edges',
@@ -854,313 +712,546 @@ const CRITERIA = [
     ]
   },
   {
-    key: 'surface', label: 'Surface', sub: 'Front & back', weight: '20%',
-    tip: 'Tilt the card under a light. Scratches catch the light as bright lines. Check for creases, print lines, and cloudiness (haze).',
-    descs: [null,
+    key:'surface', label:'Surface', sub:'Front & back', weight:'20%',
+    tip:'Tilt the card under a light. Scratches catch the light as bright lines. Check for creases, print lines, and cloudiness.',
+    descs:[null,
       'PSA 1 — heavy creasing, major surface damage, and/or discolouration throughout',
       'PSA 2 — scratching, scuffing, staining, or chipping; considerable discolouration',
       'PSA 3 — heavy scratches/creasing; original gloss completely absent; discolouration',
       'PSA 4 — moderate surface grit, surface creases, or a moderate scratch visible',
       'PSA 5 — several light scratches; original gloss absent or greatly reduced',
-      'PSA 6 — light surface wear; several light scratches; original gloss largely intact; no creases',
-      'PSA 7 — very slight scratching; gloss slightly diminished; may show slight reverse wear',
+      'PSA 6 — light surface wear; several light scratches; original gloss largely intact',
+      'PSA 7 — very slight scratching; gloss slightly diminished',
       'PSA 8 — very slight wear; may have very slight print lines or very minor imperfection',
-      'PSA 9 — at most ONE: very slight wax stain on reverse OR minor print imperfection OR slightly off-white borders',
-      'PSA 10 — full original gloss; no staining; allows one slight printing imperfection if it doesn\'t affect appeal',
+      'PSA 9 — at most ONE very slight wax stain on reverse OR minor print imperfection',
+      'PSA 10 — full original gloss; no staining; allows one slight printing imperfection',
     ]
   },
 ];
 
-// ─── Helpers ─────────────────────────────
-function showScreen(n) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('s' + n).classList.add('active');
-}
-
-function scoreColor(s) {
-  s = parseInt(s);
-  if (s >= 9) return 'var(--g10-txt)';
-  if (s >= 7) return 'var(--g8-txt)';
-  if (s >= 5) return 'var(--glo-txt)';
-  return 'var(--red)';
-}
-
-function scoreBarColor(s) {
-  s = parseInt(s);
-  if (s >= 9) return 'var(--g10-bd)';
-  if (s >= 7) return 'var(--g8-bd)';
-  if (s >= 5) return '#9E9E9E';
-  return 'var(--red)';
-}
-
-function sliderAccent(s) {
-  s = parseInt(s);
-  if (s >= 9) return '#C8920A';
-  if (s >= 7) return 'var(--accent)';
-  if (s >= 5) return '#888';
-  return 'var(--red)';
-}
-
+// ─── Helpers ────────────────────────────────────────────
+function showScreen(n) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('s'+n).classList.add('active'); }
+function scoreColor(s)    { s=parseInt(s); return s>=9?'var(--g10-txt)':s>=7?'var(--g8-txt)':s>=5?'var(--glo-txt)':'var(--red)'; }
+function scoreBarColor(s) { s=parseInt(s); return s>=9?'var(--g10-bd)':s>=7?'var(--g8-bd)':s>=5?'#9E9E9E':'var(--red)'; }
+function sliderAccent(s)  { s=parseInt(s); return s>=9?'#C8920A':s>=7?'var(--accent)':s>=5?'#888':'var(--red)'; }
 function calcWeighted() {
-  const cAvg = ((scores.centering_front || 5) + (scores.centering_back || 5)) / 2;
-  return cAvg * 0.25 + (scores.corners || 5) * 0.30 + (scores.edges || 5) * 0.25 + (scores.surface || 5) * 0.20;
+  const cAvg=((scores.centering_front||5)+(scores.centering_back||5))/2;
+  return cAvg*0.25+(scores.corners||5)*0.30+(scores.edges||5)*0.25+(scores.surface||5)*0.20;
 }
-
 function psaFromWeighted(w) {
-  if (w >= 9.5) return 10; if (w >= 8.5) return 9; if (w >= 7.5) return 8;
-  if (w >= 6.5) return 7;  if (w >= 5.5) return 6; if (w >= 4.5) return 5;
-  if (w >= 3.5) return 4;  if (w >= 2.5) return 3; if (w >= 1.5) return 2;
-  return 1;
+  if(w>=9.5)return 10;if(w>=8.5)return 9;if(w>=7.5)return 8;if(w>=6.5)return 7;
+  if(w>=5.5)return 6;if(w>=4.5)return 5;if(w>=3.5)return 4;if(w>=2.5)return 3;if(w>=1.5)return 2;return 1;
 }
+function badgeClass(g) { g=parseInt(g); return g===10?'grade-10':g===9?'grade-9':g===8?'grade-8':'grade-lo'; }
 
-function badgeClass(g) {
-  g = parseInt(g);
-  return g === 10 ? 'grade-10' : g === 9 ? 'grade-9' : g === 8 ? 'grade-8' : 'grade-lo';
-}
-
-// ─── Welcome ─────────────────────────────
-function startApp() { showScreen(1); startCam(1); }
-
-// ─── Camera ──────────────────────────────
-async function startCam(n) {
-  stopCam(n);
-  const vid = document.getElementById('vid' + n);
+// ─── Card Detection ──────────────────────────────────────
+// Checks if the captured image looks like a Pokémon card by analyzing:
+// 1. Border uniformity (low variance in outer ~7% ring)
+// 2. Border color (must match yellow/black/gray known to Pokémon cards)
+// 3. Interior complexity (complex artwork means high color variance)
+// 4. Border/interior contrast (border must look different from the artwork)
+function detectIfPokemonCard(imgDataURL) {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }
-    });
-    camStream[n] = stream;
-    vid.srcObject = stream; vid.play();
-    hidePrev(n);
-  } catch (err) {
-    alert('Camera access denied.\n\niPhone: Settings → Safari → Camera → Allow.\n\n' + err.message);
+    const im=new Image(), cv=document.createElement('canvas');
+    cv.width=504; cv.height=704; im.src=imgDataURL;
+    const ctx=cv.getContext('2d'); ctx.drawImage(im,0,0,504,704);
+    const W=cv.width, H=cv.height;
+    const data=ctx.getImageData(0,0,W,H).data;
+
+    const rgbAt=(x,y)=>{if(x<0||x>=W||y<0||y>=H)return[128,128,128];const i=(Math.floor(y)*W+Math.floor(x))*4;return[data[i],data[i+1],data[i+2]];};
+    const lumaAt=(x,y)=>{const[r,g,b]=rgbAt(x,y);return r*.299+g*.587+b*.114;};
+
+    const sampleRegion=(x1,y1,x2,y2,step)=>{
+      step=step||5; let sr=0,sg=0,sb=0,n=0;
+      const lumas=[];
+      for(let y=y1;y<y2;y+=step)for(let x=x1;x<x2;x+=step){
+        const[r,g,b]=rgbAt(x,y); sr+=r;sg+=g;sb+=b;n++;
+        lumas.push(r*.299+g*.587+b*.114);
+      }
+      if(!n)return{r:128,g:128,b:128,luma:128,variance:0};
+      const r=sr/n,g=sg/n,b=sb/n,luma=r*.299+g*.587+b*.114;
+      const mean_l=lumas.reduce((a,v)=>a+v,0)/lumas.length;
+      const variance=lumas.reduce((t,v)=>t+(v-mean_l)**2,0)/lumas.length;
+      return{r,g,b,luma,variance};
+    };
+
+    const BF=0.07, bw=Math.floor(W*BF), bh=Math.floor(H*BF);
+    const top   =sampleRegion(bw,0,    W-bw,bh);
+    const bottom=sampleRegion(bw,H-bh, W-bw,H);
+    const left  =sampleRegion(0, bh,   bw,  H-bh);
+    const right =sampleRegion(W-bw,bh, W,   H-bh);
+    const interior=sampleRegion(W*.15,H*.15,W*.85,H*.85,8);
+
+    const avgBorderVar=(top.variance+bottom.variance+left.variance+right.variance)/4;
+    const borderLumas=[top.luma,bottom.luma,left.luma,right.luma];
+    const avgBorderLuma=borderLumas.reduce((a,v)=>a+v)/4;
+    const lumaSpread=Math.max(...borderLumas)-Math.min(...borderLumas);
+
+    // Check 1: Border strips must be uniform (consistent color, low variance)
+    if(avgBorderVar>2200)
+      return{isCard:false,confidence:0.1,reason:'No uniform border — card doesn\'t fill the frame, or this isn\'t a card'};
+
+    // Check 2: All four borders must be the same color (consistent all around)
+    if(lumaSpread>65)
+      return{isCard:false,confidence:0.2,reason:'Border color varies around the edges — likely not a card'};
+
+    // Check 3: Border color must match a known Pokémon card era
+    const avgR=(top.r+bottom.r+left.r+right.r)/4;
+    const avgG=(top.g+bottom.g+left.g+right.g)/4;
+    const avgB=(top.b+bottom.b+left.b+right.b)/4;
+    const isBlack =avgBorderLuma<65;
+    const isYellow=avgR>140&&avgG>110&&avgR>avgB*1.4&&avgBorderLuma>65&&avgBorderLuma<215;
+    const isGray  =avgBorderLuma>155&&(Math.max(avgR,avgG,avgB)-Math.min(avgR,avgG,avgB))<50;
+
+    if(!isBlack&&!isYellow&&!isGray)
+      return{isCard:false,confidence:0.25,reason:`Border color (R:${Math.round(avgR)} G:${Math.round(avgG)} B:${Math.round(avgB)}) doesn't match any known Pokémon card border`};
+
+    // Check 4: Interior must have complex artwork (not a blank surface)
+    if(interior.variance<100)
+      return{isCard:false,confidence:0.3,reason:'Interior is too uniform — no artwork detected'};
+
+    // Check 5: Border must visually contrast with interior
+    if(Math.abs(avgBorderLuma-interior.luma)<10)
+      return{isCard:false,confidence:0.35,reason:'No contrast between border and interior — may not be a card'};
+
+    // Map to era
+    let eraName='Modern Era (2003–present)', borderType='black';
+    if(isYellow){eraName='WOTC Era (1999–2003)';borderType='yellow';}
+    else if(isGray){eraName='Modern Era';borderType='gray';}
+
+    const confidence=(Math.max(0,1-avgBorderVar/2200)*0.4+Math.max(0,1-lumaSpread/65)*0.3+Math.min(1,interior.variance/600)*0.3);
+    return{isCard:true,confidence,eraName,borderType,reason:`Detected as ${eraName}`};
+  } catch(e){
+    console.warn('Detection error:',e);
+    return{isCard:true,confidence:0.5,reason:'Detection skipped',eraName:'Unknown',borderType:'black'};
   }
 }
 
-function stopCam(n) {
-  if (camStream[n]) { camStream[n].getTracks().forEach(t => t.stop()); delete camStream[n]; }
-  const v = document.getElementById('vid' + n);
-  if (v) v.srcObject = null;
+// ─── Border Edge Detection ───────────────────────────────
+// Scans inward from each of the 4 edges to find where the printed
+// card border ends (point of maximum brightness gradient).
+// Returns pixel positions { left, right, top, bottom } within a 504×704 canvas.
+function detectCardBorderEdges(ctx, W, H) {
+  const data=ctx.getImageData(0,0,W,H).data;
+  const luma=(x,y)=>{if(x<0||x>=W||y<0||y>=H)return 128;const i=(Math.floor(y)*W+Math.floor(x))*4;return data[i]*.299+data[i+1]*.587+data[i+2]*.114;};
+
+  // Scan from edge inward, sample 3 scanlines, return median peak gradient index
+  const findEdge=(getVal,total)=>{
+    const scanLines=[0.33,0.50,0.67];
+    const results=scanLines.map(pos=>{
+      let maxG=0, bestD=Math.floor(total*.075);
+      for(let d=2;d<Math.floor(total*.28);d++){
+        const g=Math.abs(getVal(d,pos)-getVal(d-2,pos));
+        if(g>maxG){maxG=g;bestD=d;}
+      }
+      return maxG>10?bestD:Math.floor(total*.075);
+    });
+    results.sort((a,b)=>a-b);
+    return results[1]; // median
+  };
+
+  const rawL=findEdge((d,p)=>luma(d,H*p),W);
+  const rawR=findEdge((d,p)=>luma(W-1-d,H*p),W);
+  const rawT=findEdge((d,p)=>luma(W*p,d),H);
+  const rawB=findEdge((d,p)=>luma(W*p,H-1-d),H);
+
+  // Clamp to 4%–18% of dimension
+  const clamp=(v,total)=>Math.max(Math.floor(total*.04),Math.min(Math.floor(total*.18),v));
+  return{left:clamp(rawL,W),right:W-clamp(rawR,W),top:clamp(rawT,H),bottom:H-clamp(rawB,H)};
 }
-function stopAllCams() { stopCam(1); stopCam(2); }
 
-// ─── Crop to guide region ─────────────────
-function captureCardCrop(vid) {
-  const vw = vid.videoWidth || 1280, vh = vid.videoHeight || 720;
-  const sw = window.innerWidth, sh = window.innerHeight;
-  const GW = 252, GH = 352;
-  const gLeft = (sw - GW) / 2;
-  const gTop  = (sh - 80 - GH) / 2;  // padding-bottom:80px shifts centre up
+// ─── Centering Overlay Generator ─────────────────────────
+// Draws the card image with:
+//   • Detected inner border as cyan rectangle + guide lines
+//   • Corner score labels at each corner
+//   • Border margin px + % labels on each side
+//   • Center summary: L/R and T/B ratios + centering score
+function generateCenteringOverlay(imgDataURL, scoreData) {
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>{
+      const CW=504, CH=704;
+      const cv=document.createElement('canvas'); cv.width=CW; cv.height=CH;
+      const ctx=cv.getContext('2d');
+      ctx.drawImage(img,0,0,CW,CH);
 
-  const videoAspect = vw / vh, screenAspect = sw / sh;
-  let scale, ox = 0, oy = 0;
-  if (videoAspect > screenAspect) { scale = vh / sh; ox = (vw - sw * scale) / 2; }
-  else                             { scale = vw / sw; oy = (vh - sh * scale) / 2; }
+      // Must detect edges BEFORE drawing overlay (reads raw pixels)
+      const edges=detectCardBorderEdges(ctx,CW,CH);
 
-  const cx = Math.max(0, Math.round(gLeft * scale + ox));
-  const cy = Math.max(0, Math.round(gTop  * scale + oy));
-  const cw = Math.min(Math.round(GW * scale), vw - cx);
-  const ch = Math.min(Math.round(GH * scale), vh - cy);
+      // Centering math
+      const lw=edges.left, rw=CW-edges.right;
+      const tw=edges.top,  bw=CH-edges.bottom;
+      const hTot=lw+rw||1, vTot=tw+bw||1;
+      const lPct=Math.round(lw/hTot*100), rPct=100-lPct;
+      const tPct=Math.round(tw/vTot*100), bPct=100-tPct;
 
-  const canvas = document.createElement('canvas');
-  canvas.width = 504; canvas.height = 704;
-  canvas.getContext('2d').drawImage(vid, cx, cy, cw, ch, 0, 0, 504, 704);
-  return canvas;
+      // Darken border region
+      ctx.fillStyle='rgba(0,0,0,0.28)';
+      ctx.fillRect(0,0,CW,edges.top);
+      ctx.fillRect(0,edges.bottom,CW,CH-edges.bottom);
+      ctx.fillRect(0,edges.top,edges.left,edges.bottom-edges.top);
+      ctx.fillRect(edges.right,edges.top,CW-edges.right,edges.bottom-edges.top);
+
+      // Outer card boundary
+      ctx.strokeStyle='rgba(255,255,255,0.45)';ctx.lineWidth=1.5;ctx.strokeRect(1,1,CW-2,CH-2);
+
+      // Inner detected border box (cyan)
+      ctx.strokeStyle='#00E5FF';ctx.lineWidth=2;
+      ctx.strokeRect(edges.left,edges.top,edges.right-edges.left,edges.bottom-edges.top);
+
+      // Dashed guide lines extending to edges
+      ctx.strokeStyle='rgba(0,229,255,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+      [[edges.left,0,edges.left,CH],[edges.right,0,edges.right,CH],[0,edges.top,CW,edges.top],[0,edges.bottom,CW,edges.bottom]]
+        .forEach(([x1,y1,x2,y2])=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});
+      ctx.setLineDash([]);
+
+      // Label helper
+      const lbl=(x,y,text,align,fg,bg)=>{
+        align=align||'center'; fg=fg||'#fff'; bg=bg||'rgba(0,0,0,0.72)';
+        ctx.font='bold 11px -apple-system,Helvetica,sans-serif';
+        ctx.textAlign=align; ctx.textBaseline='middle';
+        const mw=ctx.measureText(text).width, ph=16, pw=6;
+        let bx=align==='center'?x-mw/2-pw:align==='right'?x-mw-pw:x-pw;
+        ctx.fillStyle=bg; ctx.fillRect(bx,y-ph/2,mw+pw*2,ph);
+        ctx.fillStyle=fg; ctx.fillText(text,x,y);
+      };
+
+      // Corner score labels
+      const cs=scoreData.corners||7;
+      const cc=cs>=9?'#FFD700':cs>=7?'#00E5FF':cs>=5?'#FF9800':'#F44336';
+      const cBg='rgba(0,0,0,0.78)';
+      lbl(edges.left-4, edges.top-10,    `${cs}`, 'right', cc, cBg);
+      lbl(edges.right+4,edges.top-10,    `${cs}`, 'left',  cc, cBg);
+      lbl(edges.left-4, edges.bottom+10, `${cs}`, 'right', cc, cBg);
+      lbl(edges.right+4,edges.bottom+10, `${cs}`, 'left',  cc, cBg);
+
+      // Side margin labels (px count)
+      const midY=(edges.top+edges.bottom)/2, midX=(edges.left+edges.right)/2;
+      lbl(lw/2,         midY, `L: ${lw}px`);
+      lbl(CW-rw/2,      midY, `R: ${rw}px`);
+      lbl(midX,         tw/2, `T: ${tw}px`);
+      lbl(midX,         CH-bw/2, `B: ${bw}px`);
+
+      // % offset labels at border lines
+      const pColor=(p)=>{const d=Math.abs(p-50);return d<6?'#4CAF50':d<12?'#FF9800':'#F44336';};
+      lbl(edges.left,  edges.top-22, `${lPct}%`, 'center', pColor(lPct), 'rgba(0,0,0,0.82)');
+      lbl(edges.right, edges.top-22, `${rPct}%`, 'center', pColor(rPct), 'rgba(0,0,0,0.82)');
+      lbl(CW-26, edges.top,          `${tPct}%`, 'center', pColor(tPct), 'rgba(0,0,0,0.82)');
+      lbl(CW-26, edges.bottom,       `${bPct}%`, 'center', pColor(bPct), 'rgba(0,0,0,0.82)');
+
+      // Center summary panel
+      const cx=midX, cy=midY;
+      const lines=[
+        {t:`L/R: ${lPct}/${rPct}`,  c:'#00E5FF'},
+        {t:`T/B: ${tPct}/${bPct}`,  c:'#00E5FF'},
+        {t:`Center: ${scoreData.centering_front||7}/10`, c:'#FFFFFF'},
+      ];
+      lines.forEach((line,i)=>{
+        const ly=cy-18+(i*20);
+        lbl(cx,ly,line.t,'center',line.c,'rgba(0,0,0,0.82)');
+      });
+
+      resolve({dataURL:cv.toDataURL('image/jpeg',0.92),lPct,rPct,tPct,bPct,edges});
+    };
+    img.onerror=()=>resolve({dataURL:imgDataURL,lPct:50,rPct:50,tPct:50,bPct:50,edges:{left:38,right:466,top:53,bottom:651}});
+    img.src=imgDataURL;
+  });
 }
 
-// ─── Image analysis ───────────────────────
-function analyzeCardImage(canvas) {
-  const W = canvas.width, H = canvas.height;
-  const d = canvas.getContext('2d').getImageData(0, 0, W, H).data;
-  const g = (x, y) => { if (x<0||x>=W||y<0||y>=H) return 128; const i=(y*W+x)*4; return d[i]*.299+d[i+1]*.587+d[i+2]*.114; };
-  const mean = (x1,y1,x2,y2,s=3) => { let t=0,n=0; for(let y=y1;y<y2;y+=s) for(let x=x1;x<x2;x+=s){t+=g(x,y);n++;} return n?t/n:128; };
-  const vari = (x1,y1,x2,y2,s=3) => { const a=[]; for(let y=y1;y<y2;y+=s) for(let x=x1;x<x2;x+=s) a.push(g(x,y)); if(!a.length)return 0; const m=a.reduce((a,b)=>a+b)/a.length; return a.reduce((t,v)=>t+(v-m)**2,0)/a.length; };
+// ─── Welcome ─────────────────────────────────────────────
+function startApp(){showScreen(1);startCam(1);}
 
-  const bw=Math.floor(W*.04), bh=Math.floor(H*.04);
-  const mL=mean(0,bh,bw,H-bh), mR=mean(W-bw,bh,W,H-bh), mT=mean(bw,0,W-bw,bh), mB=mean(bw,H-bh,W-bw,H);
+// ─── Camera ──────────────────────────────────────────────
+async function startCam(n){
+  stopCam(n);
+  const vid=document.getElementById('vid'+n);
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});
+    camStream[n]=stream;vid.srcObject=stream;vid.play();hidePrev(n);
+  }catch(err){alert('Camera access denied.\n\niPhone: Settings → Safari → Camera → Allow.\n\n'+err.message);}
+}
+function stopCam(n){if(camStream[n]){camStream[n].getTracks().forEach(t=>t.stop());delete camStream[n];}const v=document.getElementById('vid'+n);if(v)v.srcObject=null;}
+function stopAllCams(){stopCam(1);stopCam(2);}
+
+// ─── Capture helpers ─────────────────────────────────────
+function captureCardCrop(vid){
+  const vw=vid.videoWidth||1280,vh=vid.videoHeight||720;
+  const sw=window.innerWidth,sh=window.innerHeight;
+  const GW=252,GH=352,gLeft=(sw-GW)/2,gTop=(sh-80-GH)/2;
+  const va=vw/vh,sa=sw/sh;let scale,ox=0,oy=0;
+  if(va>sa){scale=vh/sh;ox=(vw-sw*scale)/2;}else{scale=vw/sw;oy=(vh-sh*scale)/2;}
+  const cx=Math.max(0,Math.round(gLeft*scale+ox)),cy=Math.max(0,Math.round(gTop*scale+oy));
+  const cw=Math.min(Math.round(GW*scale),vw-cx),ch=Math.min(Math.round(GH*scale),vh-cy);
+  const canvas=document.createElement('canvas');canvas.width=504;canvas.height=704;
+  canvas.getContext('2d').drawImage(vid,cx,cy,cw,ch,0,0,504,704);return canvas;
+}
+
+function analyzeCardImage(canvas){
+  const W=canvas.width,H=canvas.height;
+  const d=canvas.getContext('2d').getImageData(0,0,W,H).data;
+  const g=(x,y)=>{if(x<0||x>=W||y<0||y>=H)return 128;const i=(y*W+x)*4;return d[i]*.299+d[i+1]*.587+d[i+2]*.114;};
+  const mean=(x1,y1,x2,y2,s)=>{s=s||3;let t=0,n=0;for(let y=y1;y<y2;y+=s)for(let x=x1;x<x2;x+=s){t+=g(x,y);n++;}return n?t/n:128;};
+  const vari=(x1,y1,x2,y2,s)=>{s=s||3;const a=[];for(let y=y1;y<y2;y+=s)for(let x=x1;x<x2;x+=s)a.push(g(x,y));if(!a.length)return 0;const m=a.reduce((a,b)=>a+b)/a.length;return a.reduce((t,v)=>t+(v-m)**2,0)/a.length;};
+  const bw=Math.floor(W*.04),bh=Math.floor(H*.04);
+  const mL=mean(0,bh,bw,H-bh),mR=mean(W-bw,bh,W,H-bh),mT=mean(bw,0,W-bw,bh),mB=mean(bw,H-bh,W-bw,H);
   const avg=(mL+mR+mT+mB)/4||1;
-  const hD=Math.abs(mL-mR)/avg, vD=Math.abs(mT-mB)/avg;
-  const centering = Math.max(4,Math.min(10,Math.round(10-(hD+vD)*12)));
-
+  const hD=Math.abs(mL-mR)/avg,vD=Math.abs(mT-mB)/avg;
+  const centering=Math.max(4,Math.min(10,Math.round(10-(hD+vD)*12)));
   const cs=Math.floor(W*.09);
   const cVars=[vari(0,0,cs,cs),vari(W-cs,0,W,cs),vari(0,H-cs,cs,H),vari(W-cs,H-cs,W,H)];
-  const corners = Math.max(3,Math.min(10,Math.round(10-cVars.reduce((a,b)=>a+b)/4/250)));
-
-  const ew=Math.floor(W*.04), eh=Math.floor(H*.04);
+  const corners=Math.max(3,Math.min(10,Math.round(10-cVars.reduce((a,b)=>a+b)/4/250)));
+  const ew=Math.floor(W*.04),eh=Math.floor(H*.04);
   const eVars=[vari(0,0,W,eh),vari(0,H-eh,W,H),vari(0,0,ew,H),vari(W-ew,0,W,H)];
-  const edges = Math.max(3,Math.min(10,Math.round(10-eVars.reduce((a,b)=>a+b)/4/220)));
-
+  const edges=Math.max(3,Math.min(10,Math.round(10-eVars.reduce((a,b)=>a+b)/4/220)));
   const ix1=Math.floor(W*.15),iy1=Math.floor(H*.15),ix2=Math.floor(W*.85),iy2=Math.floor(H*.85);
   let gSum=0,gN=0;
-  for(let y=iy1+1;y<iy2;y+=4) for(let x=ix1+1;x<ix2;x+=4){const gx=Math.abs(g(x+1,y)-g(x-1,y)),gy=Math.abs(g(x,y+1)-g(x,y-1));gSum+=Math.sqrt(gx*gx+gy*gy);gN++;}
-  const surface = Math.max(3,Math.min(10,Math.round(10-Math.max(0,gN?gSum/gN:0-18)/4)));
-
-  return { centering_front: centering, centering_back: centering, corners, edges, surface };
+  for(let y=iy1+1;y<iy2;y+=4)for(let x=ix1+1;x<ix2;x+=4){const gx=Math.abs(g(x+1,y)-g(x-1,y)),gy=Math.abs(g(x,y+1)-g(x,y-1));gSum+=Math.sqrt(gx*gx+gy*gy);gN++;}
+  const surface=Math.max(3,Math.min(10,Math.round(10-Math.max(0,gN?gSum/gN:0-18)/4)));
+  return{centering_front:centering,centering_back:centering,corners,edges,surface};
 }
 
-// ─── Capture ─────────────────────────────
-function doCapture(n) {
-  const vid = document.getElementById('vid' + n);
-  if (!vid.videoWidth) { alert('Camera not ready, please try again.'); return; }
-  const crop = captureCardCrop(vid);
-  const url  = crop.toDataURL('image/jpeg', 0.92);
-  document.getElementById('prevImg' + n).src = url;
-  document.getElementById('prev' + n).classList.add('show');
-  if (n === 1) frontImg = url; else backImg = url;
+function doCapture(n){
+  const vid=document.getElementById('vid'+n);
+  if(!vid.videoWidth){alert('Camera not ready, please try again.');return;}
+  const crop=captureCardCrop(vid);
+  const url=crop.toDataURL('image/jpeg',0.92);
+  document.getElementById('prevImg'+n).src=url;
+  document.getElementById('prev'+n).classList.add('show');
+  if(n===1)frontImg=url;else backImg=url;
 }
+function retake(n){hidePrev(n);if(n===1)frontImg=null;else backImg=null;}
+function hidePrev(n){document.getElementById('prev'+n).classList.remove('show');}
 
-function retake(n) { hidePrev(n); if (n===1) frontImg=null; else backImg=null; }
-function hidePrev(n) { document.getElementById('prev' + n).classList.remove('show'); }
+function useFront(){stopCam(1);document.getElementById('frontThumbImg').src=frontImg;showScreen(2);startCam(2);}
 
-function useFront() {
-  stopCam(1);
-  document.getElementById('frontThumbImg').src = frontImg;
-  showScreen(2); startCam(2);
-}
-
-async function useBack() {
+async function useBack(){
   stopCam(2);
-  document.getElementById('s3-analyzing').classList.add('show');
+  const overlay=document.getElementById('s3-analyzing');
+  overlay.classList.add('show');
   showScreen(3);
-  await new Promise(r => setTimeout(r, 60));
+  await new Promise(r=>setTimeout(r,60));
 
-  let est = { centering_front:7, centering_back:7, corners:7, edges:7, surface:7 };
-  try {
-    const run = (url) => { const im=new Image(), cv=document.createElement('canvas'); cv.width=504; cv.height=704; im.src=url; cv.getContext('2d').drawImage(im,0,0,504,704); return analyzeCardImage(cv); };
-    const f=run(frontImg), b=run(backImg);
-    est = { centering_front:f.centering_front, centering_back:b.centering_back, corners:Math.round((f.corners+b.corners)/2), edges:Math.round((f.edges+b.edges)/2), surface:Math.round((f.surface+b.surface)/2) };
-  } catch(e) { console.warn('Analysis failed', e); }
+  // Step 1 — pixel analysis
+  document.getElementById('analyzingTxt').textContent='Estimating scores…';
+  document.getElementById('analyzingSub').textContent='Measuring corners, edges, centering, surface';
+  let est={centering_front:7,centering_back:7,corners:7,edges:7,surface:7};
+  try{
+    const run=(url)=>{const im=new Image(),cv=document.createElement('canvas');cv.width=504;cv.height=704;im.src=url;cv.getContext('2d').drawImage(im,0,0,504,704);return analyzeCardImage(cv);};
+    const f=run(frontImg),b=run(backImg);
+    est={centering_front:f.centering_front,centering_back:b.centering_back,
+         corners:Math.round((f.corners+b.corners)/2),
+         edges:Math.round((f.edges+b.edges)/2),
+         surface:Math.round((f.surface+b.surface)/2)};
+  }catch(e){console.warn('Analysis failed',e);}
+  scores={...est};
 
-  scores = { ...est };
-  await new Promise(r => setTimeout(r, 400));
-  document.getElementById('s3-analyzing').classList.remove('show');
-  buildGradingScreen();
+  // Step 2 — card detection
+  document.getElementById('analyzingTxt').textContent='Verifying card…';
+  document.getElementById('analyzingSub').textContent='Checking border uniformity & artwork pattern';
+  await new Promise(r=>setTimeout(r,80));
+  detectionResult=detectIfPokemonCard(frontImg);
+
+  // Step 3 — centering overlay
+  document.getElementById('analyzingTxt').textContent='Measuring centering…';
+  document.getElementById('analyzingSub').textContent='Detecting card borders & calculating L/R and T/B margins';
+  await new Promise(r=>setTimeout(r,60));
+  try{
+    const res=await generateCenteringOverlay(frontImg,scores);
+    centeringOverlayURL=res.dataURL;
+    centeringData={lPct:res.lPct,rPct:res.rPct,tPct:res.tPct,bPct:res.bPct};
+  }catch(e){
+    console.warn('Overlay failed',e);
+    centeringOverlayURL=frontImg;
+    centeringData={lPct:50,rPct:50,tPct:50,bPct:50};
+  }
+
+  overlay.classList.remove('show');
+
+  // Step 4 — show result or warning
+  if(!detectionResult.isCard&&detectionResult.confidence<0.45){
+    document.getElementById('ncReason').textContent=detectionResult.reason;
+    document.getElementById('ncBody').textContent='The photo doesn\'t match the visual pattern of a Pokémon card. Common causes: object doesn\'t fill the guide, poor lighting, or this simply isn\'t a Pokémon card.';
+    document.getElementById('notCardOverlay').classList.add('show');
+  }else{
+    buildGradingScreen();
+  }
 }
 
-// ─── Nav ─────────────────────────────────
-function s1Back() { stopCam(1); showScreen(0); }
-function s2Back() { stopCam(2); backImg=null; hidePrev(2); showScreen(1); startCam(1); }
-function s3Back() { showScreen(2); startCam(2); }
+// ─── Not-a-card ───────────────────────────────────────────
+function dismissNotCard(proceed){
+  document.getElementById('notCardOverlay').classList.remove('show');
+  if(proceed){
+    buildGradingScreen();
+  }else{
+    frontImg=null;backImg=null;centeringOverlayURL=null;centeringData=null;
+    hidePrev(1);hidePrev(2);showScreen(1);startCam(1);
+  }
+}
 
-// ─── Build grading screen ─────────────────
-function buildGradingScreen() {
-  document.getElementById('grFront').src = frontImg;
-  document.getElementById('grBack').src  = backImg;
+// ─── Nav ──────────────────────────────────────────────────
+function s1Back(){stopCam(1);showScreen(0);}
+function s2Back(){stopCam(2);backImg=null;hidePrev(2);showScreen(1);startCam(1);}
+function s3Back(){showScreen(2);startCam(2);}
 
-  const container = document.getElementById('criteriaScroll');
-  container.innerHTML = '';
+// ─── Grading screen ───────────────────────────────────────
+function buildGradingScreen(){
+  // Show centering overlay on front thumbnail (falls back to plain image)
+  document.getElementById('grFront').src=centeringOverlayURL||frontImg;
+  document.getElementById('grBack').src=backImg;
 
-  CRITERIA.forEach(c => {
-    const val = scores[c.key] !== undefined ? scores[c.key] : 7;
-    scores[c.key] = val;
+  // Detection badge
+  const badge=document.getElementById('detectBadge');
+  if(detectionResult){
+    badge.textContent=detectionResult.isCard?('✓ '+detectionResult.eraName):'⚠ Not confirmed as card';
+    badge.className='detect-badge visible '+(detectionResult.isCard?'card-ok':'card-warn');
+  }
 
-    const div = document.createElement('div');
-    div.className = 'crit-card';
-    div.innerHTML = `
+  const container=document.getElementById('criteriaScroll');
+  container.innerHTML='';
+  CRITERIA.forEach(c=>{
+    const val=scores[c.key]!==undefined?scores[c.key]:7; scores[c.key]=val;
+    const div=document.createElement('div'); div.className='crit-card';
+    div.innerHTML=`
       <div class="crit-top">
-        <div class="crit-name-wrap">
-          <div class="crit-name">${c.label}</div>
-          <div class="crit-sub">${c.sub} · ${c.weight}</div>
-        </div>
+        <div class="crit-name-wrap"><div class="crit-name">${c.label}</div><div class="crit-sub">${c.sub} · ${c.weight}</div></div>
         <div class="crit-score-badge" id="badge-${c.key}" style="color:${scoreColor(val)}">${val}</div>
       </div>
-      <input type="range" class="crit-slider" id="slider-${c.key}"
-             min="1" max="10" value="${val}" oninput="handleSlider('${c.key}', this)">
+      <input type="range" class="crit-slider" id="slider-${c.key}" min="1" max="10" value="${val}" oninput="handleSlider('${c.key}',this)">
       <div class="slider-ticks">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<span class="tick">${n}</span>`).join('')}</div>
       <div class="crit-desc" id="desc-${c.key}">${c.descs[val]}</div>
-      ${c.ref ? `<div class="centering-ref">${c.ref}</div>` : ''}
+      ${c.ref?`<div class="centering-ref">${c.ref}</div>`:''}
       <div class="crit-tip">${c.tip}</div>
     `;
     container.appendChild(div);
-    setSliderFill(document.getElementById('slider-' + c.key), val);
+    setSliderFill(document.getElementById('slider-'+c.key),val);
   });
-
   updateLiveGrade();
 }
 
-function handleSlider(key, slider) {
-  const val = parseInt(slider.value);
-  scores[key] = val;
-  setSliderFill(slider, val);
-  document.getElementById('badge-' + key).textContent = val;
-  document.getElementById('badge-' + key).style.color  = scoreColor(val);
-  document.getElementById('desc-'  + key).textContent = CRITERIA.find(c=>c.key===key).descs[val];
+function handleSlider(key,slider){
+  const val=parseInt(slider.value); scores[key]=val;
+  setSliderFill(slider,val);
+  document.getElementById('badge-'+key).textContent=val;
+  document.getElementById('badge-'+key).style.color=scoreColor(val);
+  document.getElementById('desc-'+key).textContent=CRITERIA.find(c=>c.key===key).descs[val];
   updateLiveGrade();
 }
-
-function setSliderFill(slider, val) {
-  const pct = ((val - 1) / 9) * 100;
-  const col = sliderAccent(val);
-  slider.style.background = `linear-gradient(to right, ${col} ${pct}%, var(--dim) ${pct}%)`;
+function setSliderFill(slider,val){
+  const pct=((val-1)/9)*100;
+  slider.style.background=`linear-gradient(to right,${sliderAccent(val)} ${pct}%,var(--dim) ${pct}%)`;
+}
+function updateLiveGrade(){
+  const psa=psaFromWeighted(calcWeighted());
+  document.getElementById('liveNum').textContent=psa;
+  document.getElementById('liveBadge').className='live-psa-badge '+badgeClass(psa);
 }
 
-function updateLiveGrade() {
-  const psa = psaFromWeighted(calcWeighted());
-  document.getElementById('liveNum').textContent = psa;
-  document.getElementById('liveBadge').className = 'live-psa-badge ' + badgeClass(psa);
-}
-
-// ─── Zoom ────────────────────────────────
-function openZoom(side) {
-  document.getElementById('zoomImg').src = side === 'front' ? frontImg : backImg;
-  document.getElementById('zoomLabel').textContent = side === 'front' ? 'Front of Card' : 'Back of Card';
+// ─── Zoom overlay ─────────────────────────────────────────
+function openCenteringZoom(){
+  zoomMode='centering';
+  const toggle=document.getElementById('zoomToggle');
+  toggle.classList.toggle('show',!!centeringOverlayURL);
+  document.getElementById('ztPlain').classList.remove('active');
+  document.getElementById('ztCtr').classList.add('active');
+  document.getElementById('zoomImg').src=centeringOverlayURL||frontImg;
+  const lbl=centeringData?`L/R: ${centeringData.lPct}/${centeringData.rPct}  ·  T/B: ${centeringData.tPct}/${centeringData.bPct}`:'Centering Analysis';
+  document.getElementById('zoomLabel').textContent=lbl;
   document.getElementById('zoomOverlay').classList.add('show');
 }
-function closeZoom() { document.getElementById('zoomOverlay').classList.remove('show'); }
+function openZoom(side){
+  zoomMode='plain';
+  document.getElementById('zoomToggle').classList.remove('show');
+  document.getElementById('zoomImg').src=side==='front'?frontImg:backImg;
+  document.getElementById('zoomLabel').textContent=side==='front'?'Front of Card':'Back of Card';
+  document.getElementById('zoomOverlay').classList.add('show');
+}
+function setZoomMode(mode){
+  zoomMode=mode;
+  document.getElementById('ztPlain').classList.toggle('active',mode==='plain');
+  document.getElementById('ztCtr').classList.toggle('active',mode==='centering');
+  if(mode==='centering'){
+    document.getElementById('zoomImg').src=centeringOverlayURL||frontImg;
+    const lbl=centeringData?`L/R: ${centeringData.lPct}/${centeringData.rPct}  ·  T/B: ${centeringData.tPct}/${centeringData.bPct}`:'Centering Analysis';
+    document.getElementById('zoomLabel').textContent=lbl;
+  }else{
+    document.getElementById('zoomImg').src=frontImg;
+    document.getElementById('zoomLabel').textContent='Front of Card (original)';
+  }
+}
+function closeZoom(){document.getElementById('zoomOverlay').classList.remove('show');}
 
-// ─── Results ─────────────────────────────
-function goToResults() { renderResults(); showScreen(4); }
+// ─── Centering PSA label ──────────────────────────────────
+function ctrPsaLabel(lPct,rPct){
+  const small=Math.min(lPct,rPct);
+  if(small>=45)return{text:'PSA 10',cls:'grade-10'};
+  if(small>=40)return{text:'PSA 9', cls:'grade-9'};
+  if(small>=35)return{text:'PSA 8', cls:'grade-8'};
+  if(small>=30)return{text:'PSA 7', cls:'grade-lo'};
+  return{text:'≤ PSA 6',cls:'grade-lo'};
+}
 
-function renderResults() {
-  document.getElementById('resFront').src = frontImg;
-  document.getElementById('resBack').src  = backImg;
-  const w = calcWeighted(), psa = psaFromWeighted(w);
-  document.getElementById('resGradeNum').textContent = psa;
-  document.getElementById('resWeighted').textContent = w.toFixed(2);
-  document.getElementById('resBadge').className = 'psa-badge-lg ' + badgeClass(psa);
+// ─── Results ──────────────────────────────────────────────
+function goToResults(){renderResults();showScreen(4);}
 
-  const rows = [
-    { key:'centering_front', label:'Centering (Front)', weight:'12.5%' },
-    { key:'centering_back',  label:'Centering (Back)',  weight:'12.5%' },
-    { key:'corners',  label:'Corners', weight:'30%' },
-    { key:'edges',    label:'Edges',   weight:'25%' },
-    { key:'surface',  label:'Surface', weight:'20%' },
+function renderResults(){
+  document.getElementById('resFront').src=frontImg;
+  document.getElementById('resBack').src=backImg;
+  const w=calcWeighted(),psa=psaFromWeighted(w);
+  document.getElementById('resGradeNum').textContent=psa;
+  document.getElementById('resWeighted').textContent=w.toFixed(2);
+  document.getElementById('resBadge').className='psa-badge-lg '+badgeClass(psa);
+
+  // Centering Analysis card
+  document.getElementById('caCenteringImg').src=centeringOverlayURL||frontImg;
+  document.getElementById('caEraBadge').textContent=(detectionResult&&detectionResult.eraName)||'Card';
+
+  if(centeringData){
+    const{lPct,rPct,tPct,bPct}=centeringData;
+    document.getElementById('statLR').textContent=`${lPct} / ${rPct}`;
+    document.getElementById('statTB').textContent=`${tPct} / ${bPct}`;
+    document.getElementById('ctrScore').textContent=`${scores.centering_front||7} / 10`;
+
+    const lrP=ctrPsaLabel(lPct,rPct), tbP=ctrPsaLabel(tPct,bPct);
+    const lrEl=document.getElementById('psaLR'); lrEl.textContent=lrP.text; lrEl.className='ca-psa-pill '+lrP.cls;
+    const tbEl=document.getElementById('psaTB'); tbEl.textContent=tbP.text; tbEl.className='ca-psa-pill '+tbP.cls;
+
+    const dotColor=(p)=>{const d=Math.abs(p-50);return d<6?'#4CAF50':d<12?'#FF9800':'#F44336';};
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      const dLR=document.getElementById('dotLR'); dLR.style.left=lPct+'%'; dLR.style.background=dotColor(lPct);
+      const dTB=document.getElementById('dotTB'); dTB.style.left=tPct+'%'; dTB.style.background=dotColor(tPct);
+    }));
+  }
+
+  // Score breakdown
+  const rows=[
+    {key:'centering_front',label:'Centering (Front)',weight:'12.5%'},
+    {key:'centering_back', label:'Centering (Back)', weight:'12.5%'},
+    {key:'corners',  label:'Corners', weight:'30%'},
+    {key:'edges',    label:'Edges',   weight:'25%'},
+    {key:'surface',  label:'Surface', weight:'20%'},
   ];
-
-  const container = document.getElementById('resScoreCards');
-  container.innerHTML = '';
-  rows.forEach(({ key, label, weight }) => {
-    const s = scores[key] || 7;
-    const color = scoreBarColor(s);
-    const pct   = ((s - 1) / 9 * 100).toFixed(0) + '%';
-    const crit  = CRITERIA.find(c => c.key === key);
-    const card  = document.createElement('div');
-    card.className = 'score-card';
-    card.innerHTML = `
-      <div class="sc-top">
-        <span class="sc-label">${label}</span>
-        <span class="sc-weight">${weight}</span>
-        <span class="sc-num" style="color:${scoreColor(s)}">${s}</span>
-      </div>
-      <div class="sc-bar-track">
-        <div class="sc-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div>
-      </div>
-      <div class="sc-notes">${crit ? crit.descs[s] : ''}</div>
+  const container=document.getElementById('resScoreCards'); container.innerHTML='';
+  rows.forEach(({key,label,weight})=>{
+    const s=scores[key]||7, color=scoreBarColor(s), pct=((s-1)/9*100).toFixed(0)+'%';
+    const crit=CRITERIA.find(c=>c.key===key);
+    const card=document.createElement('div'); card.className='score-card';
+    card.innerHTML=`
+      <div class="sc-top"><span class="sc-label">${label}</span><span class="sc-weight">${weight}</span><span class="sc-num" style="color:${scoreColor(s)}">${s}</span></div>
+      <div class="sc-bar-track"><div class="sc-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div></div>
+      <div class="sc-notes">${crit?crit.descs[s]:''}</div>
     `;
     container.appendChild(card);
   });
-
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    container.querySelectorAll('.sc-bar-fill').forEach(el => { el.style.width = el.dataset.pct; });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    container.querySelectorAll('.sc-bar-fill').forEach(el=>{el.style.width=el.dataset.pct;});
   }));
 }
 
-// ─── Grade another ────────────────────────
-function gradeAnother() {
-  frontImg = null; backImg = null; scores = {};
-  stopAllCams(); hidePrev(1); hidePrev(2);
-  showScreen(1); startCam(1);
+// ─── Reset ────────────────────────────────────────────────
+function gradeAnother(){
+  frontImg=null;backImg=null;scores={};
+  centeringOverlayURL=null;centeringData=null;detectionResult=null;
+  stopAllCams();hidePrev(1);hidePrev(2);showScreen(1);startCam(1);
 }
 </script>
 </body>
