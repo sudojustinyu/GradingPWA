@@ -110,6 +110,59 @@
     .feature-label { font-size: 14px; font-weight: 600; color: var(--text); }
     .feature-desc  { font-size: 12px; color: var(--muted); margin-top: 1px; }
     .feature-step  { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .welcome-brand { margin-top: auto; padding-top: 16px; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; }
+    .welcome-brand span { color: var(--accent); font-weight: 700; }
+
+    /* ════ CARD LOOKUP OVERLAY ════ */
+    #lookupOverlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: rgba(247,243,250,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      display: none; flex-direction: column;
+      padding-top: var(--safe-t);
+      padding-bottom: var(--safe-b);
+    }
+    #lookupOverlay.show { display: flex; }
+    .lookup-hdr { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .lookup-hdr h2 { font-size: 17px; font-weight: 700; color: var(--text); flex: 1; }
+    .lookup-close { background: var(--surf2); border: 1px solid var(--border); border-radius: 99px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; color: var(--text2); flex-shrink: 0; }
+    .lookup-tabs { display: flex; gap: 0; padding: 12px 16px 0; flex-shrink: 0; }
+    .lookup-tab { flex: 1; padding: 9px 10px; background: var(--surf); border: 1.5px solid var(--border); font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; text-align: center; }
+    .lookup-tab:first-child { border-radius: 8px 0 0 8px; }
+    .lookup-tab:last-child  { border-radius: 0 8px 8px 0; border-left: none; }
+    .lookup-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); z-index: 1; }
+    .lookup-pane { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; display: none; flex-direction: column; gap: 12px; }
+    .lookup-pane.show { display: flex; }
+
+    /* Google Lens pane */
+    .lens-card { background: var(--surf); border: 1px solid var(--border); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; box-shadow: var(--shadow-sm); }
+    .lens-icon { font-size: 48px; }
+    .lens-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .lens-desc  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .lens-preview { width: 120px; height: 168px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); box-shadow: var(--shadow-md); flex-shrink: 0; }
+    .lens-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-lens { width: 100%; padding: 15px; background: #1a73e8; border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(26,115,232,0.3); }
+    .btn-lens:active { opacity: 0.88; }
+    .lens-note { font-size: 11px; color: var(--muted); line-height: 1.5; text-align: center; }
+
+    /* TCG Search pane */
+    .tcg-search-row { display: flex; gap: 8px; flex-shrink: 0; }
+    .tcg-input { flex: 1; padding: 12px 14px; background: var(--surf); border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; color: var(--text); outline: none; -webkit-appearance: none; }
+    .tcg-input:focus { border-color: var(--accent); }
+    .btn-tcg-search { padding: 12px 16px; background: var(--accent); border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+    .tcg-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .tcg-results { display: flex; flex-direction: column; gap: 10px; }
+    .tcg-result-card { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; box-shadow: var(--shadow-sm); }
+    .tcg-card-img { width: 56px; height: 78px; border-radius: 6px; overflow: hidden; flex-shrink: 0; background: var(--surf2); border: 1px solid var(--border); }
+    .tcg-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .tcg-card-info { flex: 1; min-width: 0; }
+    .tcg-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .tcg-card-set  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .tcg-card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .tcg-meta-pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--accent-lt); color: var(--accent); border: 1px solid rgba(74,21,75,0.15); }
+    .tcg-card-price { font-size: 12px; font-weight: 600; color: var(--green); margin-top: 4px; }
+    .tcg-empty { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 0; }
+    .tcg-loading { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 24px; color: var(--muted); font-size: 13px; }
+    .tcg-loading-ring { width: 18px; height: 18px; border: 2px solid var(--dim); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
 
     /* ════ CAMERA (S1 + S2) ════ */
     .camera-screen { overflow: hidden; background: #000; }
@@ -275,6 +328,7 @@
     .wr-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
     .wr-score { font-size: 24px; font-weight: 800; color: var(--accent); }
     .res-footer { padding: 4px 14px calc(var(--safe-b) + 20px); }
+    .btn-lookup { padding: 14px 18px; background: var(--surf); border: 1.5px solid var(--accent); border-radius: 10px; color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .btn-reset { width: 100%; padding: 15px; background: var(--surf); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); transition: background 0.1s, transform 0.1s; }
     .btn-reset:active { background: var(--surf2); transform: scale(0.98); }
 
@@ -335,6 +389,7 @@
     </div>
   </div>
   <button class="btn-primary" onclick="startApp()">Start Grading →</button>
+  <div class="welcome-brand">Pre-Grading by <span>Jyu</span></div>
 </div>
 
 
@@ -523,7 +578,60 @@
     </div>
   </div>
   <div class="res-footer">
-    <button class="btn-reset" onclick="gradeAnother()">↺ Grade Another Card</button>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-reset" style="flex:1" onclick="gradeAnother()">↺ Grade Another</button>
+      <button class="btn-lookup" onclick="openLookup()">🔍 Identify Card</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ CARD LOOKUP OVERLAY ══ -->
+<div id="lookupOverlay">
+  <div class="lookup-hdr">
+    <h2>🔍 Identify Card</h2>
+    <button class="lookup-close" onclick="closeLookup()">✕</button>
+  </div>
+  <div class="lookup-tabs">
+    <button class="lookup-tab active" id="tabLens" onclick="switchLookupTab('lens')">📷 Google Lens</button>
+    <button class="lookup-tab" id="tabTcg"  onclick="switchLookupTab('tcg')">📋 Name Search</button>
+  </div>
+
+  <!-- Google Lens Pane -->
+  <div class="lookup-pane show" id="paneLens">
+    <div class="lens-card">
+      <div class="lens-icon">🔎</div>
+      <div id="lensPrevWrap" style="display:none">
+        <div class="lens-preview"><img id="lensPreviewImg" src="" alt="Card"></div>
+      </div>
+      <div class="lens-title">Search with Google Lens</div>
+      <div class="lens-desc">Share your card photo to Google Lens to identify the exact card, set, and variant using visual search.</div>
+      <button class="btn-lens" onclick="openGoogleLens()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Open in Google Lens
+      </button>
+      <div class="lens-note">Tap the button above — your card photo will open in the Google app or Camera for visual search. Requires internet connection.</div>
+    </div>
+    <div class="lens-card" style="background:var(--surf2)">
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;text-align:left;width:100%">
+        <strong style="color:var(--text);display:block;margin-bottom:6px">How it works</strong>
+        1. Tap "Open in Google Lens" above<br>
+        2. Your iPhone share sheet will open<br>
+        3. Select <strong>Google</strong> or <strong>Google Lens</strong><br>
+        4. Google will visually identify your card and show matches
+      </div>
+    </div>
+  </div>
+
+  <!-- TCG Name Search Pane -->
+  <div class="lookup-pane" id="paneTcg">
+    <div class="tcg-hint">Search the Pokémon TCG database by card name, Pokémon name, or set name. Uses the free Pokémon TCG API.</div>
+    <div class="tcg-search-row">
+      <input class="tcg-input" id="tcgInput" type="text" placeholder="e.g. Charizard, Base Set, Lugia…" autocomplete="off" autocorrect="off" spellcheck="false"
+        onkeydown="if(event.key==='Enter'){searchTCG()}">
+      <button class="btn-tcg-search" onclick="searchTCG()">Search</button>
+    </div>
+    <div id="tcgResults" class="tcg-results"></div>
   </div>
 </div>
 
@@ -1253,6 +1361,153 @@ function gradeAnother(){
   centeringOverlayURL=null;centeringData=null;detectionResult=null;
   stopAllCams();hidePrev(1);hidePrev(2);showScreen(1);startCam(1);
 }
+
+// ─── Card Lookup ──────────────────────────────────────────
+
+function openLookup(){
+  const ov = document.getElementById('lookupOverlay');
+  ov.classList.add('show');
+
+  // Show card preview in Lens pane if front image exists
+  const prevWrap = document.getElementById('lensPrevWrap');
+  const prevImg  = document.getElementById('lensPreviewImg');
+  if(frontImg){
+    prevImg.src = frontImg;
+    prevWrap.style.display = 'flex';
+    prevWrap.style.flexDirection = 'column';
+    prevWrap.style.alignItems = 'center';
+  } else {
+    prevWrap.style.display = 'none';
+  }
+}
+
+function closeLookup(){
+  document.getElementById('lookupOverlay').classList.remove('show');
+}
+
+function switchLookupTab(tab){
+  document.getElementById('tabLens').classList.toggle('active', tab==='lens');
+  document.getElementById('tabTcg').classList.toggle('active',  tab==='tcg');
+  document.getElementById('paneLens').classList.toggle('show', tab==='lens');
+  document.getElementById('paneTcg').classList.toggle('show',  tab==='tcg');
+}
+
+async function openGoogleLens(){
+  if(!frontImg){
+    alert('No card photo yet — capture the front of your card first.');
+    return;
+  }
+  // Convert data URL to Blob/File for sharing
+  try {
+    const res  = await fetch(frontImg);
+    const blob = await res.blob();
+    const file = new File([blob], 'pokemon_card.jpg', { type: blob.type || 'image/jpeg' });
+
+    if(navigator.share && navigator.canShare && navigator.canShare({ files:[file] })){
+      await navigator.share({
+        title: 'Identify this Pokémon card',
+        text:  'Search for this card on Google Lens',
+        files: [file]
+      });
+    } else if(navigator.share){
+      // Fallback: share as URL
+      await navigator.share({
+        title: 'Identify this Pokémon card',
+        text:  'Use Google Lens to search for this Pokémon card',
+        url:   'https://lens.google.com/'
+      });
+    } else {
+      // Last resort: open Google Lens website
+      window.open('https://lens.google.com/', '_blank');
+      alert('Your device doesn\'t support direct sharing. Opening Google Lens — you can upload the card photo manually.');
+    }
+  } catch(err){
+    if(err.name !== 'AbortError'){
+      console.error('Share error:', err);
+      // Open Google Lens as fallback
+      window.open('https://lens.google.com/', '_blank');
+    }
+  }
+}
+
+let tcgSearchTimer = null;
+
+async function searchTCG(){
+  const query = document.getElementById('tcgInput').value.trim();
+  if(!query){ return; }
+
+  const resultsDiv = document.getElementById('tcgResults');
+  resultsDiv.innerHTML = '<div class="tcg-loading"><div class="tcg-loading-ring"></div>Searching Pokémon TCG database…</div>';
+
+  try {
+    // Build API query — search name field
+    const encoded = encodeURIComponent(query);
+    const url = `https://api.pokemontcg.io/v2/cards?q=name:"${encoded}"&pageSize=12&orderBy=-set.releaseDate`;
+    const res  = await fetch(url, { signal: AbortSignal.timeout(10000) });
+
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    if(!data.data || data.data.length === 0){
+      // Try a looser search without quotes
+      const url2 = `https://api.pokemontcg.io/v2/cards?q=name:${encoded}*&pageSize=12&orderBy=-set.releaseDate`;
+      const res2 = await fetch(url2, { signal: AbortSignal.timeout(10000) });
+      const data2 = await res2.json();
+      renderTCGResults(data2.data || []);
+    } else {
+      renderTCGResults(data.data);
+    }
+  } catch(err){
+    if(err.name === 'TimeoutError'){
+      resultsDiv.innerHTML = '<div class="tcg-empty">Request timed out. Check your internet connection and try again.</div>';
+    } else {
+      resultsDiv.innerHTML = `<div class="tcg-empty">Couldn't reach the Pokémon TCG API. Make sure you're connected to the internet.</div>`;
+    }
+  }
+}
+
+function renderTCGResults(cards){
+  const div = document.getElementById('tcgResults');
+  if(!cards || cards.length === 0){
+    div.innerHTML = '<div class="tcg-empty">No cards found. Try a different search term.</div>';
+    return;
+  }
+
+  div.innerHTML = cards.map(card => {
+    const name    = card.name || '—';
+    const setName = card.set ? card.set.name : '—';
+    const setYear = card.set && card.set.releaseDate ? card.set.releaseDate.substring(0,4) : '';
+    const rarity  = card.rarity || '';
+    const number  = card.number && card.set ? `${card.number}/${card.set.printedTotal||'?'}` : '';
+    const imgUrl  = card.images ? (card.images.small || card.images.large || '') : '';
+
+    // Market price
+    let priceStr = '';
+    if(card.tcgplayer && card.tcgplayer.prices){
+      const prices = card.tcgplayer.prices;
+      const pObj = prices.holofoil || prices.normal || prices['1stEditionHolofoil'] || prices['reverseHolofoil'] || Object.values(prices)[0];
+      if(pObj && pObj.market){ priceStr = `Market: $${pObj.market.toFixed(2)}`; }
+    }
+
+    const pills = [rarity, number].filter(Boolean).map(p =>
+      `<span class="tcg-meta-pill">${p}</span>`
+    ).join('');
+
+    return `
+      <div class="tcg-result-card">
+        <div class="tcg-card-img">
+          ${imgUrl ? `<img src="${imgUrl}" alt="${name}" loading="lazy">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px">🃏</div>'}
+        </div>
+        <div class="tcg-card-info">
+          <div class="tcg-card-name">${name}</div>
+          <div class="tcg-card-set">${setName}${setYear ? ` · ${setYear}` : ''}</div>
+          ${pills ? `<div class="tcg-card-meta">${pills}</div>` : ''}
+          ${priceStr ? `<div class="tcg-card-price">${priceStr}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
 </script>
 </body>
 </html>
