@@ -149,9 +149,15 @@
     .tcg-input { flex: 1; padding: 12px 14px; background: var(--surf); border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; color: var(--text); outline: none; -webkit-appearance: none; }
     .tcg-input:focus { border-color: var(--accent); }
     .btn-tcg-search { padding: 12px 16px; background: var(--accent); border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+    .btn-tcgplayer { width: 100%; padding: 12px; background: #e55c00; border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; flex-shrink: 0; }
+    .btn-tcgplayer:active { opacity: 0.88; }
+    .tcg-divider { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .tcg-divider::before,.tcg-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+    .tcg-divider span { font-size: 11px; color: var(--muted); white-space: nowrap; }
     .tcg-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .tcg-results { display: flex; flex-direction: column; gap: 10px; }
-    .tcg-result-card { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; box-shadow: var(--shadow-sm); }
+    .tcg-result-card { background: var(--surf); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; box-shadow: var(--shadow-sm); cursor: pointer; transition: border-color 0.15s; }
+    .tcg-result-card:active { border-color: var(--accent); }
     .tcg-card-img { width: 56px; height: 78px; border-radius: 6px; overflow: hidden; flex-shrink: 0; background: var(--surf2); border: 1px solid var(--border); }
     .tcg-card-img img { width: 100%; height: 100%; object-fit: cover; }
     .tcg-card-info { flex: 1; min-width: 0; }
@@ -159,7 +165,8 @@
     .tcg-card-set  { font-size: 12px; color: var(--muted); margin-top: 2px; }
     .tcg-card-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
     .tcg-meta-pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--accent-lt); color: var(--accent); border: 1px solid rgba(74,21,75,0.15); }
-    .tcg-card-price { font-size: 12px; font-weight: 600; color: var(--green); margin-top: 4px; }
+    .tcg-card-price { font-size: 12px; font-weight: 700; color: var(--green); margin-top: 5px; }
+    .tcg-card-tcglink { font-size: 11px; color: #e55c00; font-weight: 600; margin-top: 3px; }
     .tcg-empty { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 0; }
     .tcg-loading { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 24px; color: var(--muted); font-size: 13px; }
     .tcg-loading-ring { width: 18px; height: 18px; border: 2px solid var(--dim); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
@@ -625,12 +632,16 @@
 
   <!-- TCG Name Search Pane -->
   <div class="lookup-pane" id="paneTcg">
-    <div class="tcg-hint">Search the Pokémon TCG database by card name, Pokémon name, or set name. Uses the free Pokémon TCG API.</div>
+    <div class="tcg-hint">Type a Pokémon name or card name to search the TCG database and see pricing. Tap any result to open it on TCGPlayer.</div>
     <div class="tcg-search-row">
-      <input class="tcg-input" id="tcgInput" type="text" placeholder="e.g. Charizard, Base Set, Lugia…" autocomplete="off" autocorrect="off" spellcheck="false"
+      <input class="tcg-input" id="tcgInput" type="text" placeholder="e.g. Charizard, Lugia, Pikachu…" autocomplete="off" autocorrect="off" spellcheck="false"
         onkeydown="if(event.key==='Enter'){searchTCG()}">
       <button class="btn-tcg-search" onclick="searchTCG()">Search</button>
     </div>
+    <button class="btn-tcgplayer" onclick="openTCGPlayerSearch()">
+      🛒 Browse on TCGPlayer
+    </button>
+    <div class="tcg-divider"><span>or search results below</span></div>
     <div id="tcgResults" class="tcg-results"></div>
   </div>
 </div>
@@ -895,39 +906,43 @@ function detectIfPokemonCard(imgDataURL) {
     const avgBorderLuma=borderLumas.reduce((a,v)=>a+v)/4;
     const lumaSpread=Math.max(...borderLumas)-Math.min(...borderLumas);
 
-    // Check 1: Border strips must be uniform (consistent color, low variance)
-    if(avgBorderVar>2200)
+    // Check 1: Border strips must have some uniformity
+    // Raised to 8000 — holographic/foil/rainbow cards have high pixel variance
+    if(avgBorderVar>8000)
       return{isCard:false,confidence:0.1,reason:'No uniform border — card doesn\'t fill the frame, or this isn\'t a card'};
 
-    // Check 2: All four borders must be the same color (consistent all around)
-    if(lumaSpread>65)
-      return{isCard:false,confidence:0.2,reason:'Border color varies around the edges — likely not a card'};
+    // Check 2: All four border strips should be roughly the same brightness
+    // Raised to 120 — lighting from above/below causes real variation on real cards
+    if(lumaSpread>120)
+      return{isCard:false,confidence:0.2,reason:'Border color varies too much around the edges — try better lighting'};
 
-    // Check 3: Border color must match a known Pokémon card era
+    // Check 3: Border color must loosely match a known Pokémon card era
     const avgR=(top.r+bottom.r+left.r+right.r)/4;
     const avgG=(top.g+bottom.g+left.g+right.g)/4;
     const avgB=(top.b+bottom.b+left.b+right.b)/4;
-    const isBlack =avgBorderLuma<65;
-    const isYellow=avgR>140&&avgG>110&&avgR>avgB*1.4&&avgBorderLuma>65&&avgBorderLuma<215;
-    const isGray  =avgBorderLuma>155&&(Math.max(avgR,avgG,avgB)-Math.min(avgR,avgG,avgB))<50;
+    const isBlack =avgBorderLuma<80;                                            // black/dark (EX, DP, BW, XY, SM, SWSH, SV)
+    const isYellow=avgR>130&&avgG>100&&avgR>avgB*1.3&&avgBorderLuma>60&&avgBorderLuma<230; // yellow-gold (WOTC)
+    const isGray  =avgBorderLuma>140&&(Math.max(avgR,avgG,avgB)-Math.min(avgR,avgG,avgB))<70; // gray/white (various)
+    const isWhite =avgBorderLuma>200;                                           // white (full-art, special sets)
+    const isAnyCard=avgBorderVar<8000&&lumaSpread<120;                          // fallback: if it has a uniform border of ANY color, allow it
 
-    if(!isBlack&&!isYellow&&!isGray)
-      return{isCard:false,confidence:0.25,reason:`Border color (R:${Math.round(avgR)} G:${Math.round(avgG)} B:${Math.round(avgB)}) doesn't match any known Pokémon card border`};
+    if(!isBlack&&!isYellow&&!isGray&&!isWhite&&!isAnyCard)
+      return{isCard:false,confidence:0.25,reason:`Border color (R:${Math.round(avgR)} G:${Math.round(avgG)} B:${Math.round(avgB)}) doesn't look like a Pokémon card border`};
 
-    // Check 4: Interior must have complex artwork (not a blank surface)
-    if(interior.variance<100)
+    // Check 4: Interior must have some artwork complexity (not a blank surface)
+    if(interior.variance<60)
       return{isCard:false,confidence:0.3,reason:'Interior is too uniform — no artwork detected'};
 
-    // Check 5: Border must visually contrast with interior
-    if(Math.abs(avgBorderLuma-interior.luma)<10)
+    // Check 5: Border must contrast with interior (loosened)
+    if(Math.abs(avgBorderLuma-interior.luma)<6)
       return{isCard:false,confidence:0.35,reason:'No contrast between border and interior — may not be a card'};
 
     // Map to era
     let eraName='Modern Era (2003–present)', borderType='black';
     if(isYellow){eraName='WOTC Era (1999–2003)';borderType='yellow';}
-    else if(isGray){eraName='Modern Era';borderType='gray';}
+    else if(isGray||isWhite){eraName='Modern Era';borderType='gray';}
 
-    const confidence=(Math.max(0,1-avgBorderVar/2200)*0.4+Math.max(0,1-lumaSpread/65)*0.3+Math.min(1,interior.variance/600)*0.3);
+    const confidence=(Math.max(0,1-avgBorderVar/8000)*0.4+Math.max(0,1-lumaSpread/120)*0.3+Math.min(1,interior.variance/600)*0.3);
     return{isCard:true,confidence,eraName,borderType,reason:`Detected as ${eraName}`};
   } catch(e){
     console.warn('Detection error:',e);
@@ -1176,7 +1191,7 @@ async function useBack(){
   overlay.classList.remove('show');
 
   // Step 4 — show result or warning
-  if(!detectionResult.isCard&&detectionResult.confidence<0.45){
+  if(!detectionResult.isCard&&detectionResult.confidence<0.15){
     document.getElementById('ncReason').textContent=detectionResult.reason;
     document.getElementById('ncBody').textContent='The photo doesn\'t match the visual pattern of a Pokémon card. Common causes: object doesn\'t fill the guide, poor lighting, or this simply isn\'t a Pokémon card.';
     document.getElementById('notCardOverlay').classList.add('show');
@@ -1432,6 +1447,12 @@ async function openGoogleLens(){
 
 let tcgSearchTimer = null;
 
+function openTCGPlayerSearch(){
+  const query = document.getElementById('tcgInput').value.trim();
+  const q = encodeURIComponent(query || 'pokemon');
+  window.open(`https://www.tcgplayer.com/search/pokemon/product?q=${q}&view=grid`, '_blank');
+}
+
 async function searchTCG(){
   const query = document.getElementById('tcgInput').value.trim();
   if(!query){ return; }
@@ -1440,25 +1461,26 @@ async function searchTCG(){
   resultsDiv.innerHTML = '<div class="tcg-loading"><div class="tcg-loading-ring"></div>Searching Pokémon TCG database…</div>';
 
   try {
-    // Build API query — search name field
+    // Build API query — search name field (exact first, then wildcard)
     const encoded = encodeURIComponent(query);
     const url = `https://api.pokemontcg.io/v2/cards?q=name:"${encoded}"&pageSize=12&orderBy=-set.releaseDate`;
-    const res  = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    const res  = await fetch(url, { signal: AbortSignal.timeout(12000) });
 
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
     if(!data.data || data.data.length === 0){
-      // Try a looser search without quotes
+      // Fallback: wildcard/partial match
       const url2 = `https://api.pokemontcg.io/v2/cards?q=name:${encoded}*&pageSize=12&orderBy=-set.releaseDate`;
-      const res2 = await fetch(url2, { signal: AbortSignal.timeout(10000) });
+      const res2 = await fetch(url2, { signal: AbortSignal.timeout(12000) });
       const data2 = await res2.json();
-      renderTCGResults(data2.data || []);
+      renderTCGResults(data2.data || [], query);
     } else {
-      renderTCGResults(data.data);
+      renderTCGResults(data.data, query);
     }
   } catch(err){
-    if(err.name === 'TimeoutError'){
+    const resultsDiv = document.getElementById('tcgResults');
+    if(err.name === 'TimeoutError' || err.name === 'AbortError'){
       resultsDiv.innerHTML = '<div class="tcg-empty">Request timed out. Check your internet connection and try again.</div>';
     } else {
       resultsDiv.innerHTML = `<div class="tcg-empty">Couldn't reach the Pokémon TCG API. Make sure you're connected to the internet.</div>`;
@@ -1466,10 +1488,14 @@ async function searchTCG(){
   }
 }
 
-function renderTCGResults(cards){
+function renderTCGResults(cards, query){
   const div = document.getElementById('tcgResults');
   if(!cards || cards.length === 0){
-    div.innerHTML = '<div class="tcg-empty">No cards found. Try a different search term.</div>';
+    const q = encodeURIComponent(query||'');
+    div.innerHTML = `<div class="tcg-empty">No cards found in the database.<br><br>
+      <button class="btn-tcgplayer" style="max-width:260px" onclick="window.open('https://www.tcgplayer.com/search/pokemon/product?q=${q}','_blank')">
+        🛒 Search "${query}" on TCGPlayer
+      </button></div>`;
     return;
   }
 
@@ -1481,12 +1507,20 @@ function renderTCGResults(cards){
     const number  = card.number && card.set ? `${card.number}/${card.set.printedTotal||'?'}` : '';
     const imgUrl  = card.images ? (card.images.small || card.images.large || '') : '';
 
-    // Market price
+    // Market price from TCGPlayer data in the API
     let priceStr = '';
+    let tcgUrl   = card.tcgplayer ? card.tcgplayer.url : null;
     if(card.tcgplayer && card.tcgplayer.prices){
       const prices = card.tcgplayer.prices;
       const pObj = prices.holofoil || prices.normal || prices['1stEditionHolofoil'] || prices['reverseHolofoil'] || Object.values(prices)[0];
       if(pObj && pObj.market){ priceStr = `Market: $${pObj.market.toFixed(2)}`; }
+      else if(pObj && pObj.mid){ priceStr = `Mid: $${pObj.mid.toFixed(2)}`; }
+    }
+
+    // Build TCGPlayer search URL for this card if no direct link
+    if(!tcgUrl){
+      const tq = encodeURIComponent(`${name} ${setName}`);
+      tcgUrl = `https://www.tcgplayer.com/search/pokemon/product?q=${tq}`;
     }
 
     const pills = [rarity, number].filter(Boolean).map(p =>
@@ -1494,7 +1528,7 @@ function renderTCGResults(cards){
     ).join('');
 
     return `
-      <div class="tcg-result-card">
+      <div class="tcg-result-card" onclick="window.open('${tcgUrl}','_blank')">
         <div class="tcg-card-img">
           ${imgUrl ? `<img src="${imgUrl}" alt="${name}" loading="lazy">` : '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px">🃏</div>'}
         </div>
@@ -1503,6 +1537,7 @@ function renderTCGResults(cards){
           <div class="tcg-card-set">${setName}${setYear ? ` · ${setYear}` : ''}</div>
           ${pills ? `<div class="tcg-card-meta">${pills}</div>` : ''}
           ${priceStr ? `<div class="tcg-card-price">${priceStr}</div>` : ''}
+          <div class="tcg-card-tcglink">View on TCGPlayer →</div>
         </div>
       </div>`;
   }).join('');
